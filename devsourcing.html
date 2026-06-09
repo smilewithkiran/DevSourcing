@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevSourcing.in — Find Developers Where They Build</title>
+<meta name="description" content="Search GitHub, Stack Overflow, Dev.to and 7 more platforms. Real developer profiles, live APIs, AI signal scores. Built for Indian recruiters.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<style>
+/* ── THEME TOKENS ── */
+[data-theme="dark"]{
+  --bg:#080c14;--bg2:#0d1420;--bg3:#111827;--bg4:#1a2235;
+  --b1:#1e2d45;--b2:#243350;--b3:#2d3f60;
+  --t1:#f0f6ff;--t2:#8fa8cc;--t3:#4a6080;
+  --card-bg:#0d1420;--card-border:#1e2d45;
+  --nav-bg:rgba(8,12,20,.92);
+}
+[data-theme="light"]{
+  --bg:#f0f4ff;--bg2:#ffffff;--bg3:#f8fafc;--bg4:#eef2f8;
+  --b1:#dde4f0;--b2:#c8d3e8;--b3:#b0bdd6;
+  --t1:#0f172a;--t2:#475569;--t3:#94a3b8;
+  --card-bg:#ffffff;--card-border:#dde4f0;
+  --nav-bg:rgba(240,244,255,.92);
+}
+:root{
+  --a:#38bdf8;--ah:#0ea5e9;--as:rgba(56,189,248,.1);--ab:rgba(56,189,248,.3);
+  --g:#10b981;--gs:rgba(16,185,129,.1);--gb:rgba(16,185,129,.3);
+  --am:#f59e0b;--ams:rgba(245,158,11,.1);--amb:rgba(245,158,11,.3);
+  --pu:#a78bfa;--pus:rgba(167,139,250,.1);--pub:rgba(167,139,250,.3);
+  --r:#f87171;--rs:rgba(248,113,113,.1);
+  --grd:linear-gradient(135deg,#38bdf8,#818cf8);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t1);font-size:14px;line-height:1.6;min-height:100vh;transition:background .2s,color .2s}
+button{cursor:pointer;border:none;background:none;font-family:inherit;font-size:inherit}
+input,select,textarea{font-family:inherit;font-size:inherit}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--b3);border-radius:4px}
+
+/* ── NAV ── */
+.nav{background:var(--nav-bg);border-bottom:1px solid var(--b1);position:sticky;top:0;z-index:300;backdrop-filter:blur(16px)}
+.nav-in{max-width:1280px;margin:0 auto;padding:0 24px;height:62px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;cursor:default}
+.logo-sq{width:34px;height:34px;border-radius:9px;background:#080c14;border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-t{font-family:'Sora',sans-serif;font-weight:800;font-size:16px;letter-spacing:-.3px;color:var(--t1)}
+.logo-t em{font-style:normal;color:var(--a)}
+.logo-t .dot{font-weight:400;font-size:13px;color:var(--t3)}
+.nav-links{display:flex;gap:2px}
+.nl{padding:6px 13px;border-radius:7px;font-size:13px;font-weight:500;color:var(--t2);transition:.15s;cursor:pointer}
+.nl:hover{background:var(--bg3);color:var(--t1)}
+.nav-r{display:flex;align-items:center;gap:8px}
+.theme-btn{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;border:1px solid var(--b2);color:var(--t3);font-size:16px;transition:.15s;flex-shrink:0}
+.theme-btn:hover{border-color:var(--a);color:var(--a)}
+.nav-cta{padding:8px 18px;border-radius:8px;background:var(--a);color:#080c14;font-size:13px;font-weight:700;transition:.15s}
+.nav-cta:hover{background:var(--ah)}
+.nav-user-wrap{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.uav{width:30px;height:30px;border-radius:50%;background:var(--grd);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;overflow:hidden;flex-shrink:0}
+.uav img{width:100%;height:100%;object-fit:cover}
+.un{font-size:13px;font-weight:600;color:var(--t1);white-space:nowrap}
+.bdg{padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
+.bdg-t{background:var(--ams);color:var(--am);border:1px solid var(--amb)}
+.bdg-p{background:var(--as);color:var(--a);border:1px solid var(--ab)}
+.bdg-e{background:var(--bg3);color:var(--t3);border:1px solid var(--b1)}
+.bdg-a{background:rgba(245,158,11,.15);color:var(--am);border:1px solid var(--amb)}
+.btn-so{padding:5px 12px;border-radius:6px;font-size:12px;font-weight:600;color:var(--t3);border:1px solid var(--b2);transition:.15s;white-space:nowrap}
+.btn-so:hover{border-color:var(--r);color:var(--r)}
+
+/* ── HOMEPAGE SECTIONS ── */
+.page-home{display:block}
+.page-app{display:none}
+.page-auth{display:none}
+.page-admin{display:none}
+
+/* HERO */
+.hero{padding:72px 24px 60px;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid var(--b1)}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 55% at 50% -10%,rgba(56,189,248,.08),transparent);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--as);color:var(--a);border:1px solid var(--ab);border-radius:20px;padding:5px 15px;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:24px}
+.hero-eyebrow span{width:6px;height:6px;border-radius:50%;background:var(--g);animation:blink 2s infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.hero h1{font-family:'Sora',sans-serif;font-size:clamp(30px,4.5vw,52px);font-weight:800;line-height:1.1;letter-spacing:-2px;margin-bottom:10px;color:var(--t1)}
+.hero h1 em{font-style:normal;color:var(--a)}
+.hero-tagline{font-size:15px;color:var(--t2);margin-bottom:10px;font-weight:500}
+.hero-sub{font-size:13px;color:var(--t3);max-width:500px;margin:0 auto 36px;line-height:1.75}
+.hero-btns{display:flex;gap:12px;justify-content:center;margin-bottom:44px;flex-wrap:wrap}
+.btn-hero{padding:13px 28px;border-radius:10px;background:var(--a);color:#080c14;font-size:14px;font-weight:700;transition:.15s;box-shadow:0 4px 20px rgba(56,189,248,.25)}
+.btn-hero:hover{background:var(--ah);transform:translateY(-1px);box-shadow:0 6px 28px rgba(56,189,248,.35)}
+.btn-hero-sec{padding:13px 28px;border-radius:10px;background:var(--bg3);color:var(--t2);font-size:14px;font-weight:600;border:1px solid var(--b2);transition:.15s}
+.btn-hero-sec:hover{border-color:var(--a);color:var(--a)}
+.hero-stats{display:inline-flex;background:var(--bg3);border:1px solid var(--b1);border-radius:16px;overflow:hidden}
+.hstat{padding:12px 22px;border-right:1px solid var(--b1);text-align:center}
+.hstat:last-child{border-right:none}
+.hstat-n{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;color:var(--a)}
+.hstat-l{font-size:9px;color:var(--t3);margin-top:1px;font-weight:500;text-transform:uppercase;letter-spacing:.5px}
+
+/* PLATFORM STRIP */
+.plat-strip{padding:36px 24px;border-bottom:1px solid var(--b1);background:var(--bg2)}
+.strip-lbl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;text-align:center;margin-bottom:18px}
+.plat-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;max-width:900px;margin:0 auto}
+.pcard{background:var(--bg3);border:1.5px solid var(--b1);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:all .18s;position:relative}
+.pcard:hover{border-color:var(--a);background:var(--as);transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.12)}
+.pcard.live{border-color:var(--gb)}
+.pcard.live:hover{border-color:var(--g);background:var(--gs)}
+.pcard-ic{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.pcard-nm{font-size:11px;font-weight:700;color:var(--t1)}
+.pcard-tp{font-size:9px;color:var(--t3);margin-top:1px}
+.live-badge{position:absolute;top:-7px;right:6px;background:var(--g);color:#fff;font-size:7px;font-weight:800;padding:1px 6px;border-radius:6px;letter-spacing:.4px}
+.smart-badge{position:absolute;top:-7px;right:6px;background:var(--pu);color:#fff;font-size:7px;font-weight:800;padding:1px 6px;border-radius:6px}
+/* Tooltip */
+.pcard-tip{position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);background:#0d1420;border:1px solid var(--b2);color:var(--t1);font-size:11px;border-radius:10px;padding:10px 13px;width:200px;text-align:left;opacity:0;pointer-events:none;transition:opacity .18s;z-index:100;line-height:1.55;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.pcard:hover .pcard-tip{opacity:1}
+.pcard-tip strong{display:block;font-size:11px;font-weight:700;color:var(--a);margin-bottom:5px}
+.pcard-tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#0d1420}
+
+/* WHY NOT LINKEDIN — always dark */
+.wnl{padding:64px 24px;background:#050912;border-top:1px solid #1a2235;border-bottom:1px solid #1a2235}
+.wnl-hd{text-align:center;margin-bottom:40px}
+.wnl-eyebrow{display:inline-block;background:rgba(56,189,248,.1);color:#38bdf8;border:1px solid rgba(56,189,248,.25);border-radius:20px;padding:4px 15px;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:14px}
+.wnl h2{font-family:'Sora',sans-serif;font-size:clamp(22px,3vw,34px);font-weight:800;letter-spacing:-.8px;color:#f0f6ff;margin-bottom:10px;line-height:1.2}
+.wnl-hd p{font-size:13px;color:#6b8aaa;max-width:460px;margin:0 auto}
+.wnl-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:700px;margin:0 auto}
+@media(max-width:600px){.wnl-grid{grid-template-columns:1fr}}
+.wnl-card{border-radius:16px;padding:22px}
+.wnl-card.bad{background:rgba(248,113,113,.05);border:1px solid rgba(248,113,113,.15)}
+.wnl-card.good{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.2)}
+.wnl-lbl{font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:13px}
+.wnl-card.bad .wnl-lbl{color:#f87171}
+.wnl-card.good .wnl-lbl{color:#38bdf8}
+.wnl-item{display:flex;align-items:flex-start;gap:9px;margin-bottom:10px;font-size:12px;color:#8fa8cc;line-height:1.55}
+.wnl-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.wnl-dot.bad{background:#f87171}
+.wnl-dot.good{background:#10b981}
+
+/* HOW IT WORKS */
+.how{padding:64px 24px;border-bottom:1px solid var(--b1)}
+.sec-hd{text-align:center;margin-bottom:36px}
+.sec-hd h2{font-family:'Sora',sans-serif;font-size:clamp(20px,2.5vw,30px);font-weight:800;letter-spacing:-.5px;margin-bottom:8px;color:var(--t1)}
+.sec-hd p{font-size:13px;color:var(--t3);max-width:400px;margin:0 auto}
+.how-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:900px;margin:0 auto}
+@media(max-width:700px){.how-steps{grid-template-columns:1fr 1fr}}
+.step{background:var(--bg2);border:1px solid var(--b1);border-radius:16px;padding:20px}
+.step-n{width:30px;height:30px;border-radius:8px;background:var(--as);color:var(--a);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:12px;border:1px solid var(--ab)}
+.step-t{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:5px}
+.step-s{font-size:11px;color:var(--t3);line-height:1.6}
+
+/* SIGNAL */
+.signal{padding:64px 24px;border-bottom:1px solid var(--b1);background:var(--bg2)}
+.sig-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:700px;margin:0 auto}
+@media(max-width:600px){.sig-cards{grid-template-columns:1fr}}
+.sig-card{background:var(--bg3);border:1px solid var(--b1);border-radius:14px;padding:16px;display:flex;align-items:center;gap:12px}
+.sig-ring{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;border:2px solid;flex-shrink:0}
+.shi{background:var(--gs);color:var(--g);border-color:var(--gb)}
+.smd{background:var(--ams);color:var(--am);border-color:var(--amb)}
+.slo{background:var(--rs);color:var(--r);border-color:rgba(248,113,113,.3)}
+.sig-name{font-size:13px;font-weight:700;margin-bottom:2px}
+.sig-sub{font-size:10px;color:var(--t3)}
+
+/* PRICING */
+.pricing{padding:64px 24px;border-bottom:1px solid var(--b1);text-align:center}
+.price-card{background:var(--bg2);border:1.5px solid var(--ab);border-radius:20px;padding:32px 28px;max-width:380px;margin:0 auto;text-align:left}
+.pc-badge{background:var(--as);color:var(--a);font-size:10px;font-weight:800;padding:3px 13px;border-radius:20px;text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px;display:inline-block;border:1px solid var(--ab)}
+.pc-price{font-family:'Sora',sans-serif;font-size:44px;font-weight:800;color:var(--t1);line-height:1;margin-bottom:4px}
+.pc-period{font-size:13px;color:var(--t3);margin-bottom:18px}
+.pc-features{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:22px}
+.pc-feat{display:flex;gap:8px;font-size:12px;color:var(--t2);align-items:flex-start}
+.pc-feat-i{color:var(--g);font-weight:700;flex-shrink:0;margin-top:1px}
+.btn-pay{width:100%;padding:14px;border-radius:10px;background:var(--a);color:#080c14;font-size:15px;font-weight:800;transition:.15s;text-align:center;display:block;box-shadow:0 4px 20px rgba(56,189,248,.25)}
+.btn-pay:hover{background:var(--ah);transform:translateY(-1px)}
+.trial-note{font-size:11px;color:var(--t3);text-align:center;margin-top:12px}
+
+/* FOOTER */
+.footer{padding:32px 24px;border-top:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;max-width:1280px;margin:0 auto}
+.footer-logo{display:flex;align-items:center;gap:9px;font-family:'Sora',sans-serif;font-weight:800;font-size:14px}
+.footer-tag{font-size:11px;color:var(--t3)}
+.footer-links{display:flex;gap:16px}
+.footer-link{font-size:11px;color:var(--t3);cursor:pointer;transition:.15s}
+.footer-link:hover{color:var(--a)}
+
+/* ── APP PAGE ── */
+.app-wrap{max-width:1280px;margin:0 auto;padding:28px 24px 100px}
+.sec-label{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+/* Platform grid */
+.plt-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:24px}
+@media(max-width:880px){.plt-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:480px){.plt-grid{grid-template-columns:repeat(2,1fr)}}
+.pc{background:var(--bg2);border:1.5px solid var(--b1);border-radius:14px;padding:16px 10px 14px;cursor:pointer;transition:all .18s;position:relative;text-align:center}
+.pc:hover{border-color:var(--b3);background:var(--bg3);transform:translateY(-2px)}
+.pc.on{border-color:var(--a);background:var(--as);box-shadow:0 0 0 1px var(--a)}
+.pc.xr{border-style:dashed;border-color:var(--b2)}
+.pc.xr.on{border-color:var(--pu);background:var(--pus);border-style:dashed;box-shadow:0 0 0 1px var(--pu)}
+.pc.xr:hover:not(.on){border-color:var(--pu)}
+.pc-ic{font-size:22px;margin-bottom:7px;height:28px;display:flex;align-items:center;justify-content:center}
+.pc-nm{font-size:11px;font-weight:700;color:var(--t2)}
+.pc-tp{font-size:9px;color:var(--t3);margin-top:3px}
+.pc.on .pc-nm{color:var(--a)}
+.pc.xr.on .pc-nm{color:var(--pu)}
+.live-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--g);margin-right:4px;animation:blink 2s infinite}
+.sm-pill{position:absolute;top:-7px;right:7px;background:var(--pu);color:#fff;font-size:8px;font-weight:800;padding:2px 6px;border-radius:8px;text-transform:uppercase;letter-spacing:.3px}
+/* App platform tooltip */
+.pc-tip{position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);background:var(--bg4);border:1px solid var(--b2);color:var(--t1);font-size:11px;border-radius:10px;padding:10px 13px;width:190px;text-align:left;opacity:0;pointer-events:none;transition:opacity .18s;z-index:100;line-height:1.55;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.pc:hover .pc-tip{opacity:1}
+.pc-tip strong{display:block;font-weight:700;color:var(--a);margin-bottom:5px;font-size:11px}
+.pc-tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--bg4)}
+/* Search box */
+.sbox{background:var(--bg2);border:1px solid var(--b1);border-radius:18px;padding:22px 24px;margin-bottom:20px;display:none}
+.sbox.show{display:block;animation:fu .2s ease}
+@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.spbar{display:flex;align-items:center;gap:12px;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--b1)}
+.sp-ic{font-size:20px}
+.sp-nm{font-size:15px;font-weight:700}
+.sp-dc{font-size:11px;color:var(--t3);margin-left:auto}
+.xr-note{background:var(--pus);border:1px solid var(--pub);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--t2);margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;line-height:1.6}
+.srow{display:grid;grid-template-columns:1fr 1fr 180px auto;gap:10px;align-items:end}
+@media(max-width:740px){.srow{grid-template-columns:1fr 1fr}.srow .bts{grid-column:1/-1}}
+.fl{font-size:10px;font-weight:700;color:var(--t3);margin-bottom:6px;letter-spacing:.4px;text-transform:uppercase}
+.fi{width:100%;padding:10px 14px;border:1.5px solid var(--b2);border-radius:9px;font-size:13px;color:var(--t1);background:var(--bg3);transition:.15s;outline:none}
+.fi:focus{border-color:var(--a);box-shadow:0 0 0 3px rgba(56,189,248,.1)}
+.fi::placeholder{color:var(--t3)}
+.fi option{background:var(--bg3)}
+.bts{padding:11px 22px;border-radius:9px;background:var(--a);color:#080c14;font-size:13px;font-weight:700;display:flex;align-items:center;gap:7px;transition:.15s;white-space:nowrap;justify-content:center}
+.bts:hover{background:var(--ah);transform:translateY(-1px)}
+.bts:disabled{background:var(--bg3);color:var(--t3);cursor:not-allowed;transform:none}
+/* Results */
+.rw{display:none}
+.rw.show{display:block;animation:fu .2s ease}
+.rbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.rtitle{font-size:16px;font-weight:700}
+.rmeta{font-size:11px;color:var(--t3);margin-top:2px}
+.schips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.rchip{padding:4px 12px;border-radius:20px;font-size:10px;font-weight:700;border:1px solid var(--b1);color:var(--t3);background:var(--bg2)}
+.rchip.bl{background:var(--as);color:var(--a);border-color:var(--ab)}
+.rchip.gr{background:var(--gs);color:var(--g);border-color:var(--gb)}
+.fchips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.fc{padding:5px 13px;border-radius:20px;font-size:12px;font-weight:600;border:1.5px solid var(--b1);color:var(--t3);background:var(--bg2);cursor:pointer;transition:.15s}
+.fc:hover,.fc.on{border-color:var(--a);color:var(--a);background:var(--as)}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+/* Profile card */
+.pfc{background:var(--bg2);border:1px solid var(--b1);border-radius:16px;padding:20px;position:relative;transition:all .2s;overflow:hidden}
+.pfc-top{height:2px;position:absolute;top:0;left:0;right:0;border-radius:2px 2px 0 0}
+.pfc-top.gh{background:linear-gradient(90deg,#6e40c9,#4078c8)}
+.pfc-top.so{background:linear-gradient(90deg,#f48024,#f4a524)}
+.pfc-top.dt{background:linear-gradient(90deg,#3b49df,#7352f5)}
+.pfc:hover{box-shadow:0 8px 32px rgba(56,189,248,.12);border-color:var(--b2);transform:translateY(-2px)}
+.pfh{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+.pfav{width:46px;height:46px;border-radius:12px;background:var(--bg3);border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;overflow:hidden;font-weight:700;color:var(--a)}
+.pfav img{width:100%;height:100%;object-fit:cover;border-radius:11px}
+.pfnm{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:2px;line-height:1.3}
+.pfloc{font-size:11px;color:var(--t3)}
+.ppl{padding:3px 8px;border-radius:6px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;flex-shrink:0}
+.pgh{background:rgba(110,64,201,.15);color:#9f7aea;border:1px solid rgba(110,64,201,.2)}
+.pso{background:rgba(244,128,36,.1);color:#f48024;border:1px solid rgba(244,128,36,.2)}
+.pdt{background:rgba(59,73,223,.12);color:#818cf8;border:1px solid rgba(59,73,223,.2)}
+.pbio{font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:36px}
+.sigs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.sig{padding:3px 8px;border-radius:5px;font-size:10px;font-weight:600;background:var(--bg3);color:var(--t3);border:1px solid var(--b1)}
+.sig.gold{background:var(--ams);color:var(--am);border-color:var(--amb)}
+.sig.blue{background:var(--as);color:var(--a);border-color:var(--ab)}
+.sig.green{background:var(--gs);color:var(--g);border-color:var(--gb)}
+.sring{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;border:1.5px solid}
+.pfoot{display:flex;gap:8px;border-top:1px solid var(--b1);padding-top:14px}
+.bvp{flex:1;padding:8px 12px;border-radius:8px;background:var(--a);color:#080c14;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:5px;transition:.15s}
+.bvp:hover{background:var(--ah)}
+.bvp2{flex:1;padding:8px 12px;border-radius:8px;background:var(--bg3);border:1px solid var(--b2);color:var(--t2);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:5px;transition:.15s}
+.bvp2:hover{border-color:var(--a);color:var(--a)}
+/* XRAY */
+.xintro{background:var(--pus);border:1px solid var(--pub);border-radius:14px;padding:18px;margin-bottom:16px;display:flex;gap:14px}
+.xi-tt{font-size:13px;font-weight:700;color:var(--pu);margin-bottom:4px}
+.xi-sb{font-size:12px;color:var(--t2);line-height:1.6}
+.xql{display:flex;flex-direction:column;gap:10px}
+.xqc{background:var(--bg2);border:1px solid var(--b1);border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:14px;transition:.2s}
+.xqc:hover{border-color:var(--b2);background:var(--bg3)}
+.xqn{width:28px;height:28px;border-radius:8px;background:var(--pus);color:var(--pu);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--pub)}
+.xqi{flex:1;min-width:0}
+.xql-t{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:4px}
+.xql-q{font-size:11px;color:var(--t3);font-family:monospace;background:var(--bg3);padding:4px 8px;border-radius:5px;border:1px solid var(--b1);display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bxo{padding:8px 16px;border-radius:8px;background:var(--pus);color:var(--pu);border:1px solid var(--pub);font-size:12px;font-weight:700;white-space:nowrap;flex-shrink:0;transition:.15s}
+.bxo:hover{background:var(--pu);color:#fff}
+/* Loader / empty / error */
+.ls{display:flex;align-items:center;justify-content:center;gap:10px;padding:56px;color:var(--t3);font-size:13px}
+.spin{width:20px;height:20px;border-radius:50%;border:2px solid var(--b2);border-top-color:var(--a);animation:sp .7s linear infinite;flex-shrink:0}
+@keyframes sp{to{transform:rotate(360deg)}}
+.es{text-align:center;padding:56px 24px}
+.es-ic{font-size:40px;margin-bottom:12px}
+.es-tt{font-size:15px;font-weight:700;color:var(--t2);margin-bottom:6px}
+.es-sb{font-size:13px;color:var(--t3);line-height:1.65}
+.err-box{background:var(--rs);border:1px solid rgba(248,113,113,.25);border-radius:10px;padding:14px 18px;font-size:12px;color:var(--r);margin-bottom:14px;line-height:1.6}
+/* Shortlist bar */
+.shortlist-bar{display:none;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--ab);border-radius:10px;padding:10px 16px;margin-bottom:16px;flex-wrap:wrap}
+.shortlist-bar.show{display:flex}
+.sl-count{font-size:13px;font-weight:700;color:var(--a)}
+.sl-btn{padding:6px 14px;border-radius:7px;background:var(--a);color:#080c14;font-size:12px;font-weight:700;transition:.15s}
+.sl-btn:hover{background:var(--ah)}
+.sl-clear{padding:6px 14px;border-radius:7px;background:var(--bg3);border:1px solid var(--b2);color:var(--t3);font-size:12px;font-weight:600}
+
+/* ── MODAL ── */
+.ov{position:fixed;inset:0;background:rgba(3,6,15,.75);display:flex;align-items:center;justify-content:center;z-index:500;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s;backdrop-filter:blur(4px)}
+.ov.open{opacity:1;pointer-events:all}
+.modal{background:var(--bg2);border:1px solid var(--b1);border-radius:20px;width:100%;max-width:520px;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.6);transform:translateY(12px);transition:transform .2s}
+.ov.open .modal{transform:translateY(0)}
+.mhd{padding:20px 24px 16px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2);z-index:1}
+.mtt{font-size:15px;font-weight:700}
+.mcl{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:18px;transition:.15s;border:1px solid var(--b1)}
+.mcl:hover{background:var(--bg3);color:var(--t1)}
+.mbd{padding:20px 24px 24px}
+
+/* ── AUTH PAGE ── */
+.authpg{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:20px;position:relative;overflow:hidden}
+.authpg::before{content:'';position:absolute;width:700px;height:700px;background:radial-gradient(circle,rgba(56,189,248,.07),transparent 70%);top:-200px;left:50%;transform:translateX(-50%);pointer-events:none}
+.authcd{background:var(--bg2);border:1px solid var(--b1);border-radius:24px;box-shadow:0 24px 80px rgba(0,0,0,.5);width:100%;max-width:420px;padding:40px 36px;text-align:center}
+.a-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:28px}
+.a-h{font-family:'Sora',sans-serif;font-size:22px;font-weight:800;margin-bottom:7px}
+.a-s{font-size:13px;color:var(--t2);margin-bottom:24px;line-height:1.7}
+.a-tabs{display:flex;background:var(--bg3);border-radius:10px;padding:4px;margin-bottom:22px;border:1px solid var(--b1);gap:3px}
+.a-tab{flex:1;padding:8px;border-radius:7px;font-size:12px;font-weight:700;color:var(--t3);transition:.15s;cursor:pointer}
+.a-tab.on{background:var(--a);color:#080c14}
+.bgoog{width:100%;padding:12px 18px;border-radius:10px;border:1.5px solid var(--b2);background:var(--bg3);color:var(--t1);font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:9px;transition:.15s;margin-bottom:14px}
+.bgoog:hover{border-color:var(--a)}
+.afeats{background:var(--bg3);border:1px solid var(--b1);border-radius:10px;padding:14px;text-align:left;display:flex;flex-direction:column;gap:8px}
+.afeat{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t2)}
+.aterms{font-size:11px;color:var(--t3);margin-top:14px;line-height:1.6}
+.adwarn{background:var(--ams);border:1px solid var(--amb);border-radius:8px;padding:10px 13px;font-size:12px;color:var(--am);margin-bottom:14px;text-align:left}
+.fg{margin-bottom:12px;text-align:left}
+
+/* ── ADMIN PAGE ── */
+.admin-wrap{max-width:1100px;margin:0 auto;padding:28px 24px 80px}
+.admin-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+.admin-title{font-family:'Sora',sans-serif;font-size:22px;font-weight:800}
+.admin-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.atb{padding:7px 16px;border-radius:8px;font-size:12px;font-weight:700;color:var(--t3);border:1.5px solid var(--b1);transition:.15s;cursor:pointer;background:var(--bg3)}
+.atb.on{background:var(--a);color:#080c14;border-color:var(--a)}
+.atb:hover:not(.on){border-color:var(--a);color:var(--a)}
+.admin-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+@media(max-width:700px){.admin-stats{grid-template-columns:repeat(2,1fr)}}
+.astat{background:var(--bg2);border:1px solid var(--b1);border-radius:14px;padding:18px;text-align:center}
+.astat-n{font-family:'Sora',sans-serif;font-size:30px;font-weight:800;color:var(--a)}
+.astat-l{font-size:11px;color:var(--t3);margin-top:3px}
+.admin-table-wrap{background:var(--bg2);border:1px solid var(--b1);border-radius:16px;overflow:hidden}
+.atbl{width:100%;border-collapse:collapse;font-size:12px}
+.atbl th{text-align:left;padding:10px 14px;font-size:9px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;border-bottom:1.5px solid var(--b1);background:var(--bg3)}
+.atbl td{padding:12px 14px;border-bottom:1px solid var(--b1);vertical-align:middle;color:var(--t1)}
+.atbl tr:last-child td{border-bottom:none}
+.atbl tr:hover td{background:var(--bg3)}
+.plan-badge{padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700}
+.pb-pro{background:var(--as);color:var(--a);border:1px solid var(--ab)}
+.pb-trial{background:var(--ams);color:var(--am);border:1px solid var(--amb)}
+.pb-free{background:var(--bg3);color:var(--t3);border:1px solid var(--b1)}
+.pb-exp{background:var(--rs);color:var(--r);border:1px solid rgba(248,113,113,.3)}
+.admin-plans-form{background:var(--bg2);border:1px solid var(--b1);border-radius:16px;padding:22px}
+.admin-visitor-note{background:var(--as);border:1px solid var(--ab);border-radius:10px;padding:12px 16px;font-size:12px;color:var(--a);margin-bottom:16px}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--bg3);border:1px solid var(--b2);color:var(--t1);padding:12px 18px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.5);z-index:9999;transform:translateY(60px);opacity:0;transition:.25s;max-width:340px}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* Pricing modal */
+.tnote{background:var(--ams);border:1px solid var(--amb);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--am);font-weight:600;display:flex;align-items:center;gap:7px;margin-bottom:14px}
+
+@media(max-width:600px){.nav-links{display:none}.hero-stats{flex-direction:column}.hstat{border-right:none;border-bottom:1px solid var(--b1)}}
+</style>
+</head>
+<body>
+
+<!-- LOGO SVG HELPER -->
+<svg style="display:none" id="logos">
+  <!-- reuse via <use href="#logo-gh"> etc -->
+</svg>
+
+<!-- ── NAV ── -->
+<nav class="nav" id="mainNav">
+  <div class="nav-in">
+    <div class="logo" onclick="goHome()">
+      <div class="logo-sq">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <circle cx="7" cy="7" r="3.5" fill="#6366f1"/>
+          <circle cx="13" cy="7" r="3.5" fill="#38bdf8" opacity=".85"/>
+          <circle cx="7" cy="13" r="3.5" fill="#10b981" opacity=".85"/>
+          <circle cx="13" cy="13" r="3.5" fill="#f59e0b" opacity=".75"/>
+          <line x1="7" y1="7" x2="13" y2="7" stroke="rgba(255,255,255,.18)" stroke-width=".8"/>
+          <line x1="7" y1="7" x2="7" y2="13" stroke="rgba(255,255,255,.18)" stroke-width=".8"/>
+          <line x1="7" y1="7" x2="13" y2="13" stroke="rgba(255,255,255,.18)" stroke-width=".8"/>
+          <line x1="13" y1="7" x2="7" y2="13" stroke="rgba(255,255,255,.18)" stroke-width=".8"/>
+          <line x1="13" y1="7" x2="13" y2="13" stroke="rgba(255,255,255,.18)" stroke-width=".8"/>
+          <line x1="7" y1="13" x2="13" y2="13" stroke="rgba(255,255,255,.18)" stroke-width=".8"/>
+        </svg>
+      </div>
+      <div class="logo-t">Dev<em>Sourcing</em><span class="dot">.in</span></div>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <div class="nl" onclick="scrollToSection('#platforms')">Platforms</div>
+      <div class="nl" onclick="scrollToSection('#how')">How it works</div>
+      <div class="nl" onclick="scrollToSection('#pricing')">Pricing</div>
+    </div>
+    <div class="nav-r">
+      <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme" id="themeBtn">🌙</button>
+      <div id="navUser"><button class="nav-cta" onclick="showAuth()">Start Free Trial →</button></div>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════
+     HOME PAGE
+════════════════════════════════════════ -->
+<div class="page-home" id="pageHome">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-eyebrow"><span></span>Live APIs Active · 10 Platforms</div>
+    <h1>Go beyond LinkedIn.<br><em>Find developers where</em><br><em>they actually build.</em></h1>
+    <div class="hero-tagline">Finding developers on their native platforms.</div>
+    <p class="hero-sub">GitHub profiles. Stack Overflow answers. Dev.to articles. Real signals from where developers work — not just where they list skills.</p>
+    <div class="hero-btns">
+      <button class="btn-hero" onclick="showAuth()">Start Free Trial — 1 Day Free →</button>
+      <button class="btn-hero-sec" onclick="scrollToSection('#how')">See How It Works ↓</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-n">10</div><div class="hstat-l">Platforms</div></div>
+      <div class="hstat"><div class="hstat-n">3</div><div class="hstat-l">Live APIs</div></div>
+      <div class="hstat"><div class="hstat-n">7</div><div class="hstat-l">Smart Search</div></div>
+      <div class="hstat"><div class="hstat-n">Real</div><div class="hstat-l">Profiles</div></div>
+    </div>
+  </section>
+
+  <!-- PLATFORM STRIP -->
+  <section class="plat-strip" id="platforms">
+    <div class="strip-lbl">Search across 10 developer platforms</div>
+    <div class="plat-row">
+      <div class="pcard live">
+        <div class="live-badge">LIVE</div>
+        <div class="pcard-ic" style="background:#f6f8fa;border-radius:6px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#1a1a1a"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </div>
+        <div>
+          <div class="pcard-nm">GitHub</div>
+          <div class="pcard-tp">Live API</div>
+        </div>
+        <div class="pcard-tip"><strong>GitHub</strong>Useful for: Backend devs, OSS contributors, full-stack engineers. Shows real repos, stars, commit history.</div>
+      </div>
+      <div class="pcard live">
+        <div class="live-badge">LIVE</div>
+        <div class="pcard-ic" style="background:#fff7ed;border-radius:6px">
+          <svg width="18" height="18" viewBox="0 0 32 32" fill="#f48024"><path d="M22.438 27.938v-5.5h1.875V29.5H4.438v-7.063h1.875v5.5zM9.063 22.063l.375-1.875 9.5 2 -.375 1.875zm1.25-4.75.688-1.75 8.875 3.5-.688 1.75zm2.062-4.5 1-1.625 7.75 4.75-1 1.625zm3.875-4.375 1.438-1.313 6.125 6.688-1.438 1.312zm5.188-4.063V5.5h1.875V9.625z"/></svg>
+        </div>
+        <div>
+          <div class="pcard-nm">Stack Overflow</div>
+          <div class="pcard-tp">Live API</div>
+        </div>
+        <div class="pcard-tip"><strong>Stack Overflow</strong>Useful for: Senior engineers, problem-solvers. High reputation = proven depth over years.</div>
+      </div>
+      <div class="pcard live">
+        <div class="live-badge">LIVE</div>
+        <div class="pcard-ic" style="background:#f5f3ff;border-radius:6px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#3b49df"><path d="M7.42 10.05c-.18-.16-.46-.23-.84-.23H6l.02 2.44.04 2.45.56-.02c.41 0 .63-.07.83-.26.24-.24.26-.36.26-2.2 0-1.91-.02-1.96-.29-2.18zM0 4.94v14.12h24V4.94H0zM8.56 15.3c-.44.58-1.06.77-2.53.77H4.71V8.53h1.4c1.67 0 2.16.18 2.6.9.27.43.29.6.32 2.57.05 2.23-.02 2.73-.47 3.3zm5.09-5.47h-2.47v1.77h1.52v1.28l-.72.04-.75.03v1.77l1.22.03 1.2.04v1.28h-1.6c-1.53 0-1.6-.01-1.87-.3l-.3-.28v-3.16c0-3.02.01-3.18.25-3.48.23-.31.25-.31 1.88-.31h1.64v1.29zm4.68 5.45c-.17.43-.64.79-1 .79-.18 0-.45-.15-.67-.39-.32-.32-.45-.63-.82-2.08l-.9-3.39-.45-1.67h.76c.4 0 .75.02.75.05 0 .06 1.16 4.54 1.26 4.83.04.15.32-.7.73-2.3l.66-2.52.74-.04c.4-.02.73 0 .73.04 0 .14-1.67 6.38-1.8 6.68z"/></svg>
+        </div>
+        <div>
+          <div class="pcard-nm">Dev.to</div>
+          <div class="pcard-tp">Live API</div>
+        </div>
+        <div class="pcard-tip"><strong>Dev.to</strong>Useful for: Technical writers, frontend/backend devs who publish. Article count + reactions = strong signal.</div>
+      </div>
+      <div class="pcard">
+        <div class="smart-badge">SMART</div>
+        <div class="pcard-ic" style="background:#fff0eb;border-radius:6px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#ff4500"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
+        </div>
+        <div>
+          <div class="pcard-nm">Reddit</div>
+          <div class="pcard-tp">Smart Search</div>
+        </div>
+        <div class="pcard-tip"><strong>Reddit</strong>Useful for: Community-active devs. r/python, r/reactjs, r/devops top contributors. Niche tech depth.</div>
+      </div>
+      <div class="pcard">
+        <div class="smart-badge">SMART</div>
+        <div class="pcard-ic" style="background:#f0f9ff;border-radius:6px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#20beff"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 2c5.514 0 10 4.486 10 10s-4.486 10-10 10S2 17.514 2 12 6.486 2 12 2zm0 3a7 7 0 1 0 0 14A7 7 0 0 0 12 5zm0 2a5 5 0 1 1 0 10A5 5 0 0 1 12 7zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
+        </div>
+        <div>
+          <div class="pcard-nm">Kaggle</div>
+          <div class="pcard-tp">Smart Search</div>
+        </div>
+        <div class="pcard-tip"><strong>Kaggle</strong>Useful for: Data Scientists, ML Engineers, AI researchers. Competition rank = verified ML skill.</div>
+      </div>
+      <div class="pcard">
+        <div class="smart-badge">SMART</div>
+        <div class="pcard-ic" style="background:#fffbeb;border-radius:6px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#ffa116"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/></svg>
+        </div>
+        <div>
+          <div class="pcard-nm">LeetCode</div>
+          <div class="pcard-tp">Smart Search</div>
+        </div>
+        <div class="pcard-tip"><strong>LeetCode</strong>Useful for: Strong DSA-focused engineers. 500+ problems solved = top-tier problem solver. Great for product companies.</div>
+      </div>
+      <div class="pcard">
+        <div class="smart-badge">SMART</div>
+        <div class="pcard-ic" style="background:#f0fdf4;border-radius:6px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#000000"><path d="M9.025 8c0 .898.32 1.718.845 2.362L4.513 16.75A4.494 4.494 0 0 0 2 20.5C2 22.43 3.57 24 5.5 24S9 22.43 9 20.5c0-1.21-.603-2.275-1.52-2.92l4.703-5.989C13.018 11.86 13.5 12 14 12a5 5 0 1 0 0-10 5 5 0 0 0-4.975 6zm5-5a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg>
+        </div>
+        <div>
+          <div class="pcard-nm">Medium</div>
+          <div class="pcard-tp">Smart Search</div>
+        </div>
+        <div class="pcard-tip"><strong>Medium</strong>Useful for: Technical writers, thought leaders. Published articles = domain expertise proof.</div>
+      </div>
+      <div class="pcard">
+        <div class="smart-badge">SMART</div>
+        <div class="pcard-ic" style="background:#fff0f0;border-radius:6px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#ea4335"><path d="M12 0C5.372 0 0 5.373 0 12s5.372 12 12 12 12-5.373 12-12S18.628 0 12 0zm-.04 4.562l.04-.001c1.52 0 2.752 1.232 2.752 2.75S13.52 10.061 12 10.061a2.751 2.751 0 0 1 0-5.5zM7.5 9.25c.828 0 1.5.672 1.5 1.5s-.672 1.5-1.5 1.5S6 11.578 6 10.75s.672-1.5 1.5-1.5zm9 0c.828 0 1.5.672 1.5 1.5s-.672 1.5-1.5 1.5-1.5-.672-1.5-1.5.672-1.5 1.5-1.5zm-4.5 2.25c2.76 0 5 1.12 5 2.5v.75H7v-.75c0-1.38 2.24-2.5 5-2.5zm-7 2.25c.828 0 1.5.672 1.5 1.5v2.25H4.5V15.25c0-.828.672-1.5 1.5-1.5zm14 0c.828 0 1.5.672 1.5 1.5v2.25H19V15.25c0-.828.672-1.5 1.5-1.5zm-12.5 2h10v1.5H6.5v-1.5z"/></svg>
+        </div>
+        <div>
+          <div class="pcard-nm">GDG</div>
+          <div class="pcard-tp">Smart Search</div>
+        </div>
+        <div class="pcard-tip"><strong>GDG / Google DevFest</strong>Useful for: Google ecosystem devs (Android, Flutter, Firebase, Cloud). Speakers = deep expertise.</div>
+      </div>
+      <div class="pcard">
+        <div class="smart-badge">SMART</div>
+        <div class="pcard-ic" style="background:#f0fdf4;border-radius:6px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#232f3e"><path d="M12 0L1.5 6v12L12 24l10.5-6V6L12 0zm0 1.5l9 5.25v10.5L12 22.5l-9-5.25V6.75L12 1.5zm-5.25 9L12 13.5l5.25-3-5.25-3-5.25 3z"/></svg>
+        </div>
+        <div>
+          <div class="pcard-nm">AWS UG</div>
+          <div class="pcard-tp">Smart Search</div>
+        </div>
+        <div class="pcard-tip"><strong>AWS User Group</strong>Useful for: Cloud architects, DevOps, serverless engineers. UG leaders = community-recognized AWS experts.</div>
+      </div>
+      <div class="pcard">
+        <div class="smart-badge">SMART</div>
+        <div class="pcard-ic" style="background:#f5f3ff;border-radius:6px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#2962ff"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-.375 4.5h.75v3h-.75V4.5zm-7.5 7.125v-.75h3v.75h-3zm12.75 0v-.75h3v.75h-3zm-6-6a5.625 5.625 0 0 1 5.625 5.625 5.625 5.625 0 0 1-5.625 5.625A5.625 5.625 0 0 1 6.375 11.25 5.625 5.625 0 0 1 12 5.625zm0 1.5a4.125 4.125 0 0 0-4.125 4.125A4.125 4.125 0 0 0 12 15.375a4.125 4.125 0 0 0 4.125-4.125A4.125 4.125 0 0 0 12 7.125zm0 1.5a2.625 2.625 0 0 1 2.625 2.625A2.625 2.625 0 0 1 12 13.875a2.625 2.625 0 0 1-2.625-2.625A2.625 2.625 0 0 1 12 8.625z"/></svg>
+        </div>
+        <div>
+          <div class="pcard-nm">Hashnode</div>
+          <div class="pcard-tp">Smart Search</div>
+        </div>
+        <div class="pcard-tip"><strong>Hashnode</strong>Useful for: Technical bloggers, full-stack devs who document publicly. Views + articles = active builder signal.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY NOT LINKEDIN — always dark -->
+  <section class="wnl">
+    <div class="wnl-hd">
+      <div class="wnl-eyebrow">Why not LinkedIn?</div>
+      <h2>Developers don't live on LinkedIn.<br>They live where they build.</h2>
+      <p>LinkedIn shows polished resumes. These platforms show actual work. That's the difference.</p>
+    </div>
+    <div class="wnl-grid">
+      <div class="wnl-card bad">
+        <div class="wnl-lbl bad">LinkedIn gives you</div>
+        <div class="wnl-item"><div class="wnl-dot bad"></div><span>Self-declared skills with zero proof</span></div>
+        <div class="wnl-item"><div class="wnl-dot bad"></div><span>Profiles updated only when job hunting</span></div>
+        <div class="wnl-item"><div class="wnl-dot bad"></div><span>Everyone claims "5 years of React"</span></div>
+        <div class="wnl-item"><div class="wnl-dot bad"></div><span>InMail ignored by top developers</span></div>
+        <div class="wnl-item"><div class="wnl-dot bad"></div><span>Expensive per-seat recruiter pricing</span></div>
+      </div>
+      <div class="wnl-card good">
+        <div class="wnl-lbl" style="color:#38bdf8">DevSourcing shows you</div>
+        <div class="wnl-item"><div class="wnl-dot good"></div><span>GitHub repos with real commit history</span></div>
+        <div class="wnl-item"><div class="wnl-dot good"></div><span>Stack Overflow rep built over years</span></div>
+        <div class="wnl-item"><div class="wnl-dot good"></div><span>Dev.to articles proving deep knowledge</span></div>
+        <div class="wnl-item"><div class="wnl-dot good"></div><span>Kaggle rankings for ML/AI talent</span></div>
+        <div class="wnl-item"><div class="wnl-dot good"></div><span>₹499/month — flat, no per-seat cost</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how" id="how">
+    <div class="sec-hd">
+      <h2>How DevSourcing works</h2>
+      <p>From search to shortlist in under 2 minutes.</p>
+    </div>
+    <div class="how-steps">
+      <div class="step"><div class="step-n">1</div><div class="step-t">Pick a platform</div><div class="step-s">Choose GitHub, Stack Overflow, Dev.to or any of 7 Smart Search platforms including Reddit, Kaggle, LeetCode.</div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-t">Enter skill + city</div><div class="step-s">Type the skill or role and an Indian city. We hit the live API or generate precision search queries.</div></div>
+      <div class="step"><div class="step-n">3</div><div class="step-t">See real profiles</div><div class="step-s">Real avatars, bios, repos, reputation — pulled live right now. Not a stale database.</div></div>
+      <div class="step"><div class="step-n">4</div><div class="step-t">Shortlist & export</div><div class="step-s">Save candidates to shortlist, export CSV, visit their platform profile directly.</div></div>
+    </div>
+  </section>
+
+  <!-- AI SIGNAL SCORE -->
+  <section class="signal">
+    <div class="sec-hd">
+      <h2>AI Signal Score — per developer</h2>
+      <p>Every profile gets scored 0–99 based on platform-specific signals.</p>
+    </div>
+    <div class="sig-cards">
+      <div class="sig-card"><div class="sig-ring shi">94</div><div><div class="sig-name">Divya M.</div><div class="sig-sub">GitHub · 2.1k stars · Ex-Swiggy</div></div></div>
+      <div class="sig-card"><div class="sig-ring shi">83</div><div><div class="sig-name">Harish R.</div><div class="sig-sub">SO · 16.8k rep · 2 gold badges</div></div></div>
+      <div class="sig-card"><div class="sig-ring smd">71</div><div><div class="sig-name">Suresh R.</div><div class="sig-sub">Dev.to · 43 articles · 6.8k reactions</div></div></div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="pricing">
+    <div class="sec-hd">
+      <h2>Simple, flat pricing</h2>
+      <p>No per-seat charges. No InMail credits. One plan.</p>
+    </div>
+    <div class="price-card">
+      <div class="pc-badge">Pro Plan</div>
+      <div class="pc-price">₹499</div>
+      <div class="pc-period">per 30 days</div>
+      <ul class="pc-features">
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>All 10 platforms (3 live APIs + 7 Smart Search)</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>Unlimited searches per day</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>Real profiles — GitHub, Stack Overflow, Dev.to</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>AI signal score on every developer</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>Export shortlist to CSV</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>1-day free trial to start</li>
+      </ul>
+      <button class="btn-pay" onclick="showAuth()">Start Free Trial — Pay ₹499 via Razorpay</button>
+      <div class="trial-note">1 free day · No card needed to start</div>
+    </div>
+  </section>
+
+  <footer style="border-top:1px solid var(--b1);background:var(--bg2)">
+    <div class="footer">
+      <div class="footer-logo">
+        <div class="logo-sq" style="width:28px;height:28px">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="7" cy="7" r="3.5" fill="#6366f1"/><circle cx="13" cy="7" r="3.5" fill="#38bdf8" opacity=".85"/><circle cx="7" cy="13" r="3.5" fill="#10b981" opacity=".85"/><circle cx="13" cy="13" r="3.5" fill="#f59e0b" opacity=".75"/></svg>
+        </div>
+        <span>Dev<em style="color:var(--a);font-style:normal">Sourcing</em><span style="color:var(--t3);font-weight:400;font-size:12px">.in</span></span>
+      </div>
+      <div class="footer-tag">Go beyond LinkedIn. Find developers where they build.</div>
+      <div class="footer-links">
+        <span class="footer-link">Privacy</span>
+        <span class="footer-link">Terms</span>
+        <span class="footer-link" onclick="showAuth()">Login</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ════════════════════════════════════════
+     AUTH PAGE
+════════════════════════════════════════ -->
+<div class="page-auth" id="pageAuth" style="min-height:100vh;align-items:center;justify-content:center;background:var(--bg);padding:20px;position:relative;overflow:hidden">
+  <div style="position:absolute;width:700px;height:700px;background:radial-gradient(circle,rgba(56,189,248,.07),transparent 70%);top:-200px;left:50%;transform:translateX(-50%);pointer-events:none"></div>
+  <div class="authcd">
+      <div class="a-logo">
+        <div class="logo-sq" style="width:38px;height:38px;border-radius:10px">
+          <svg width="22" height="22" viewBox="0 0 20 20" fill="none"><circle cx="7" cy="7" r="3.5" fill="#6366f1"/><circle cx="13" cy="7" r="3.5" fill="#38bdf8" opacity=".85"/><circle cx="7" cy="13" r="3.5" fill="#10b981" opacity=".85"/><circle cx="13" cy="13" r="3.5" fill="#f59e0b" opacity=".75"/><line x1="7" y1="7" x2="13" y2="7" stroke="rgba(255,255,255,.2)" stroke-width=".8"/><line x1="7" y1="7" x2="7" y2="13" stroke="rgba(255,255,255,.2)" stroke-width=".8"/><line x1="7" y1="7" x2="13" y2="13" stroke="rgba(255,255,255,.2)" stroke-width=".8"/><line x1="13" y1="7" x2="7" y2="13" stroke="rgba(255,255,255,.2)" stroke-width=".8"/><line x1="13" y1="7" x2="13" y2="13" stroke="rgba(255,255,255,.2)" stroke-width=".8"/><line x1="7" y1="13" x2="13" y2="13" stroke="rgba(255,255,255,.2)" stroke-width=".8"/></svg>
+        </div>
+        <span style="font-family:'Sora',sans-serif;font-weight:800;font-size:18px">Dev<em style="font-style:normal;color:var(--a)">Sourcing</em><span style="color:var(--t3);font-weight:400;font-size:13px">.in</span></span>
+      </div>
+      <div class="a-h">Find developers everywhere</div>
+      <p class="a-s">Real profiles from GitHub, Stack Overflow, Dev.to and 7 more platforms. Built for Indian recruiters.</p>
+      <div class="a-tabs">
+        <button class="a-tab on" id="atG" onclick="swAuth('g',this)">🔍 Google Login</button>
+        <button class="a-tab" id="atA" onclick="swAuth('a',this)">👑 Admin</button>
+      </div>
+      <div id="authG">
+        <button class="bgoog" onclick="handleGoogleLogin()">
+          <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/><path fill="#34A853" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2.04c-.72.48-1.63.77-2.7.77-2.08 0-3.84-1.41-4.47-3.29H1.83v2.07A8 8 0 0 0 8.98 17z"/><path fill="#FBBC05" d="M4.51 10.5A4.78 4.78 0 0 1 4.27 9c0-.52.09-1.03.24-1.5V5.43H1.83A8.01 8.01 0 0 0 .98 9c0 1.29.31 2.51.85 3.57l2.68-2.07z"/><path fill="#EA4335" d="M8.98 3.21c1.17 0 2.22.4 3.05 1.2l2.28-2.28A8 8 0 0 0 1.83 5.43L4.5 7.5C5.14 5.62 6.9 3.21 8.98 3.21z"/></svg>
+          Continue with Google
+        </button>
+        <div class="afeats">
+          <div class="afeat"><span style="color:var(--g)">✓</span> 1-day free trial — all platforms</div>
+          <div class="afeat"><span style="color:var(--g)">✓</span> Real profiles from GitHub, SO, Dev.to live APIs</div>
+          <div class="afeat"><span style="color:var(--g)">✓</span> AI signal score on every developer</div>
+          <div class="afeat"><span style="color:var(--g)">✓</span> Export shortlist to CSV</div>
+        </div>
+        <p class="aterms">₹499 / 30 days after trial. Pay via Razorpay (UPI, card, netbanking).</p>
+      </div>
+      <div id="authA" style="display:none">
+        <div class="adwarn">👑 Admin access — restricted entry.</div>
+        <div class="fg"><div class="fl">Mobile Number</div><input class="fi" id="adPh" type="tel" placeholder="9160075557" maxlength="10"></div>
+        <div class="fg"><div class="fl">Admin PIN</div><input class="fi" id="adPn" type="password" placeholder="PIN" onkeydown="if(event.key==='Enter')doAdminLogin()"></div>
+        <button class="bts" style="width:100%;margin-top:4px" onclick="doAdminLogin()">👑 Login as Admin</button>
+      </div>
+      <div style="margin-top:14px;text-align:center">
+        <button onclick="goHome()" style="font-size:12px;color:var(--t3);padding:4px 8px">← Back to home</button>
+      </div>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     APP PAGE
+════════════════════════════════════════ -->
+<div class="page-app" id="pageApp">
+  <div class="app-wrap">
+    <div class="sec-label">Select a platform to search</div>
+    <div class="plt-grid">
+      <div class="pc" data-p="github" onclick="selPlat(this)">
+        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="var(--t2)"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></div>
+        <div class="pc-nm"><span class="live-dot"></span>GitHub</div>
+        <div class="pc-tp">Live API</div>
+        <div class="pc-tip"><strong>GitHub</strong>Backend devs, OSS contributors. Real repos, stars, commit history.</div>
+      </div>
+      <div class="pc" data-p="stackoverflow" onclick="selPlat(this)">
+        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 32 32" fill="#f48024"><path d="M22.438 27.938v-5.5h1.875V29.5H4.438v-7.063h1.875v5.5zm-13.375-6.875.375-1.875 9.5 2-.375 1.875zm1.25-4.75.688-1.75 8.875 3.5-.688 1.75zm2.062-4.5 1-1.625 7.75 4.75-1 1.625zm3.875-4.375 1.438-1.313 6.125 6.688-1.438 1.312zm5.188-4.063V5.5h1.875V9.625z"/></svg></div>
+        <div class="pc-nm"><span class="live-dot"></span>Stack Overflow</div>
+        <div class="pc-tp">Live API</div>
+        <div class="pc-tip"><strong>Stack Overflow</strong>Senior engineers. High rep = proven depth over years of answering.</div>
+      </div>
+      <div class="pc" data-p="devto" onclick="selPlat(this)">
+        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3b49df"><path d="M7.42 10.05c-.18-.16-.46-.23-.84-.23H6l.02 2.44.04 2.45.56-.02c.41 0 .63-.07.83-.26.24-.24.26-.36.26-2.2 0-1.91-.02-1.96-.29-2.18zM0 4.94v14.12h24V4.94H0zM8.56 15.3c-.44.58-1.06.77-2.53.77H4.71V8.53h1.4c1.67 0 2.16.18 2.6.9.27.43.29.6.32 2.57.05 2.23-.02 2.73-.47 3.3zm5.09-5.47h-2.47v1.77h1.52v1.28l-.72.04-.75.03v1.77l1.22.03 1.2.04v1.28h-1.6c-1.53 0-1.6-.01-1.87-.3l-.3-.28v-3.16c0-3.02.01-3.18.25-3.48.23-.31.25-.31 1.88-.31h1.64v1.29zm4.68 5.45c-.17.43-.64.79-1 .79-.18 0-.45-.15-.67-.39-.32-.32-.45-.63-.82-2.08l-.9-3.39-.45-1.67h.76c.4 0 .75.02.75.05 0 .06 1.16 4.54 1.26 4.83.04.15.32-.7.73-2.3l.66-2.52.74-.04c.4-.02.73 0 .73.04 0 .14-1.67 6.38-1.8 6.68z"/></svg></div>
+        <div class="pc-nm"><span class="live-dot"></span>Dev.to</div>
+        <div class="pc-tp">Live API</div>
+        <div class="pc-tip"><strong>Dev.to</strong>Technical writers, frontend/backend devs. Articles + reactions = depth signal.</div>
+      </div>
+      <div class="pc xr" data-p="reddit" onclick="selPlat(this)">
+        <div class="sm-pill">Smart</div>
+        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="#ff4500"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg></div>
+        <div class="pc-nm">Reddit</div>
+        <div class="pc-tp">Smart Search</div>
+        <div class="pc-tip"><strong>Reddit</strong>r/python, r/reactjs top contributors. Community-active devs hard to find elsewhere.</div>
+      </div>
+      <div class="pc xr" data-p="kaggle" onclick="selPlat(this)">
+        <div class="sm-pill">Smart</div>
+        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="#20beff"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 2c5.514 0 10 4.486 10 10s-4.486 10-10 10S2 17.514 2 12 6.486 2 12 2zm0 3a7 7 0 1 0 0 14A7 7 0 0 0 12 5zm0 2a5 5 0 1 1 0 10A5 5 0 0 1 12 7zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg></div>
+        <div class="pc-nm">Kaggle</div>
+        <div class="pc-tp">Smart Search</div>
+        <div class="pc-tip"><strong>Kaggle</strong>Data Scientists, ML Engineers, AI researchers. Competition ranking = verified skill.</div>
+      </div>
+      <div class="pc xr" data-p="leetcode" onclick="selPlat(this)">
+        <div class="sm-pill">Smart</div>
+        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="#ffa116"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/></svg></div>
+        <div class="pc-nm">LeetCode</div>
+        <div class="pc-tp">Smart Search</div>
+        <div class="pc-tip"><strong>LeetCode</strong>Strong DSA-focused engineers. 500+ solved = top-tier. Great for product companies.</div>
+      </div>
+      <div class="pc xr" data-p="medium" onclick="selPlat(this)">
+        <div class="sm-pill">Smart</div>
+        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="var(--t2)"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg></div>
+        <div class="pc-nm">Medium</div>
+        <div class="pc-tp">Smart Search</div>
+        <div class="pc-tip"><strong>Medium</strong>Technical writers, thought leaders. Published articles = domain expertise proof.</div>
+      </div>
+      <div class="pc xr" data-p="meetup" onclick="selPlat(this)">
+        <div class="sm-pill">Smart</div>
+        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="#f64060"><path d="M19.24 12.59c.08-.29.12-.6.12-.91 0-1.83-1.48-3.31-3.31-3.31-.34 0-.67.05-.98.14C14.44 7.38 13.1 6.5 11.6 6.5c-2.14 0-3.87 1.73-3.87 3.87v.28c-1.48.28-2.6 1.59-2.6 3.15 0 1.77 1.44 3.21 3.21 3.21h10.11c1.47 0 2.66-1.19 2.66-2.66 0-1.08-.65-2.01-1.87-1.76z"/></svg></div>
+        <div class="pc-nm">Meetup</div>
+        <div class="pc-tp">Smart Search</div>
+        <div class="pc-tip"><strong>Meetup</strong>Community organisers and speakers. Active in tech events = well-networked senior devs.</div>
+      </div>
+      <div class="pc xr" data-p="gdg" onclick="selPlat(this)">
+        <div class="sm-pill">Smart</div>
+        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 48 48"><path fill="#ea4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285f4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#fbbc05" d="M10.53 28.59c-.48-1.37-.76-2.83-.76-4.59s.27-3.22.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34a853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.91 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></div>
+        <div class="pc-nm">GDG</div>
+        <div class="pc-tp">Smart Search</div>
+        <div class="pc-tip"><strong>GDG / DevFest</strong>Google ecosystem devs (Android, Flutter, Firebase). Speakers = deep expertise.</div>
+      </div>
+      <div class="pc xr" data-p="aws" onclick="selPlat(this)">
+        <div class="sm-pill">Smart</div>
+        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="#ff9900"><path d="M6.763 10.036c0 .296.032.535.088.71.064.176.144.368.256.576.04.063.056.127.056.183 0 .08-.048.16-.152.24l-.503.335a.383.383 0 0 1-.208.072c-.08 0-.16-.04-.239-.112a2.47 2.47 0 0 1-.287-.375 6.18 6.18 0 0 1-.248-.471c-.622.734-1.405 1.101-2.347 1.101-.67 0-1.205-.191-1.596-.574-.391-.384-.59-.894-.59-1.533 0-.678.239-1.23.726-1.644.487-.415 1.133-.623 1.955-.623.272 0 .551.024.846.064.296.04.6.104.918.176v-.583c0-.607-.127-1.030-.375-1.277-.255-.248-.686-.367-1.3-.367-.28 0-.568.031-.863.103-.295.072-.583.16-.862.272a2.287 2.287 0 0 1-.28.104.488.488 0 0 1-.127.023c-.112 0-.168-.08-.168-.247v-.391c0-.128.016-.224.056-.28a.597.597 0 0 1 .224-.167c.279-.144.614-.264 1.005-.36a4.84 4.84 0 0 1 1.246-.151c.95 0 1.644.216 2.091.647.439.43.662 1.085.662 1.963v2.586zm3.24 1.214c.263 0 .534-.048.822-.144.287-.096.543-.271.758-.51.128-.152.224-.32.272-.512.047-.191.08-.423.08-.694v-.335a6.66 6.66 0 0 0-.735-.136 6.02 6.02 0 0 0-.75-.048c-.535 0-.926.104-1.19.32-.262.215-.39.518-.39.917 0 .375.095.655.295.846.191.2.47.296.838.296zm-3.24-1.214H6.5v2.586c0 .878-.222 1.532-.662 1.963-.447.431-1.14.647-2.091.647a4.84 4.84 0 0 1-1.246-.151c-.391-.096-.726-.216-1.005-.36a.597.597 0 0 1-.224-.167c-.04-.056-.056-.152-.056-.28v-.391c0-.167.056-.247.168-.247a.488.488 0 0 1 .127.023 2.287 2.287 0 0 1 .28.104c.279.112.567.2.862.272.295.072.583.103.863.103.614 0 1.045-.119 1.3-.367.248-.247.375-.67.375-1.277v-.583a6.18 6.18 0 0 1-.918.176c-.295.04-.574.064-.846.064-.822 0-1.468-.208-1.955-.623-.487-.414-.726-.966-.726-1.644 0-.639.199-1.149.59-1.533.391-.383.926-.574 1.596-.574.942 0 1.725.367 2.347 1.101a6.18 6.18 0 0 1 .248-.471.383.383 0 0 1 .208-.072z"/></svg></div>
+        <div class="pc-nm">AWS UG</div>
+        <div class="pc-tp">Smart Search</div>
+        <div class="pc-tip"><strong>AWS User Group</strong>Cloud architects, DevOps engineers. UG leaders = community-recognized AWS experts.</div>
+      </div>
+    </div>
+
+    <div class="sbox" id="sbox">
+      <div class="spbar">
+        <span class="sp-ic" id="spIc"></span>
+        <span class="sp-nm" id="spNm"></span>
+        <span class="sp-dc" id="spDc"></span>
+      </div>
+      <div class="xr-note" id="xrNote" style="display:none">
+        <span>⚡</span>
+        <span>No public API for this platform. We generate <strong style="color:var(--pu)">precision search queries</strong> that surface real profiles indexed on the web. Click <strong style="color:var(--pu)">Open Search</strong> to run instantly.</span>
+      </div>
+      <div class="srow">
+        <div><div class="fl">Skill / Language / Role</div><input class="fi" id="iSk" type="text" placeholder="e.g. React, Python, DevOps, Java" onkeydown="if(event.key==='Enter')runSearch()"></div>
+        <div><div class="fl">City (India)</div><input class="fi" id="iCt" type="text" placeholder="e.g. Bengaluru, Hyderabad, Pune" onkeydown="if(event.key==='Enter')runSearch()"></div>
+        <div><div class="fl">Experience</div>
+          <select class="fi" id="iEx">
+            <option value="">Any level</option>
+            <option value="1">0–2 yrs</option>
+            <option value="3">3–5 yrs</option>
+            <option value="6">6–10 yrs</option>
+            <option value="10">10+ yrs</option>
+          </select>
+        </div>
+        <button class="bts" id="btnS" onclick="runSearch()">🔍 Search</button>
+      </div>
+    </div>
+
+    <div class="shortlist-bar" id="slBar">
+      <span class="sl-count" id="slCount">0 shortlisted</span>
+      <button class="sl-btn" onclick="exportCSV()">⬇ Export CSV</button>
+      <button class="sl-clear" onclick="clearShortlist()">Clear</button>
+    </div>
+
+    <div class="rw" id="rw"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ADMIN PAGE
+════════════════════════════════════════ -->
+<div class="page-admin" id="pageAdmin">
+  <div class="admin-wrap">
+    <div class="admin-hd">
+      <div class="admin-title">⚙️ Admin Panel</div>
+      <div class="admin-tabs">
+        <button class="atb on" onclick="swAdmTab('Overview',this)">📊 Overview</button>
+        <button class="atb" onclick="swAdmTab('Users',this)">👥 Users</button>
+        <button class="atb" onclick="swAdmTab('Plans',this)">💳 Plans</button>
+      </div>
+    </div>
+
+    <!-- OVERVIEW TAB -->
+    <div id="admTabOverview">
+      <div class="admin-stats" id="admStats">
+        <div class="astat"><div class="astat-n" id="statVisitors">—</div><div class="astat-l">Total Visitors</div></div>
+        <div class="astat"><div class="astat-n" id="statTotal">—</div><div class="astat-l">Registered Users</div></div>
+        <div class="astat"><div class="astat-n" id="statPaid">—</div><div class="astat-l">Paid (Pro)</div></div>
+        <div class="astat"><div class="astat-n" id="statFree">—</div><div class="astat-l">Free / Trial</div></div>
+      </div>
+      <div class="admin-visitor-note">
+        📌 Visitor count is tracked via Firebase each time the homepage loads. Unique visitors tracked by session. Install Google Analytics for deeper insights.
+      </div>
+    </div>
+
+    <!-- USERS TAB -->
+    <div id="admTabUsers" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+        <span style="font-size:13px;color:var(--t2)" id="admCnt">Loading...</span>
+        <div style="display:flex;gap:8px">
+          <button onclick="exportUsersCSV()" style="font-size:11px;padding:6px 13px;border-radius:7px;background:var(--gs);border:1px solid var(--gb);color:var(--g);font-weight:700">⬇ Export CSV</button>
+          <button onclick="loadAdmUsers()" style="font-size:11px;padding:6px 13px;border-radius:7px;border:1px solid var(--b2);color:var(--t2);background:var(--bg3)">🔄 Refresh</button>
+        </div>
+      </div>
+      <div class="admin-table-wrap">
+        <div id="admTbl"><div class="ls"><div class="spin"></div>Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- PLANS TAB -->
+    <div id="admTabPlans" style="display:none">
+      <div class="admin-plans-form">
+        <div style="font-size:14px;font-weight:700;margin-bottom:4px">Set user plan</div>
+        <p style="font-size:12px;color:var(--t3);margin-bottom:16px">Enter Firebase UID (copy from Users tab) to change a user's plan.</p>
+        <div class="fg"><div class="fl">Firebase UID</div><input class="fi" id="admUID" placeholder="Paste UID here"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+          <button onclick="admSetPlan('pro')" style="padding:9px 18px;border-radius:8px;background:var(--a);color:#080c14;font-size:12px;font-weight:700">Set Pro (30d)</button>
+          <button onclick="admSetPlan('trial')" style="padding:9px 18px;border-radius:8px;background:var(--am);color:#080c14;font-size:12px;font-weight:700">Set Trial (1d)</button>
+          <button onclick="admSetPlan('expired')" style="padding:9px 18px;border-radius:8px;background:var(--rs);color:var(--r);border:1px solid rgba(248,113,113,.3);font-size:12px;font-weight:700">Expire Plan</button>
+        </div>
+        <div id="admPM" style="font-size:12px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Profile Modal -->
+<div class="ov" id="pfMod">
+  <div class="modal" style="max-width:560px">
+    <div class="mhd"><div class="mtt" id="pfMT">Profile</div><button class="mcl" onclick="closeMod('pfMod')">✕</button></div>
+    <div class="mbd" id="pfMB"></div>
+  </div>
+</div>
+
+<!-- Pricing Modal -->
+<div class="ov" id="prMod">
+  <div class="modal" style="max-width:440px">
+    <div class="mhd"><div class="mtt">⚡ Upgrade to Pro</div><button class="mcl" onclick="closeMod('prMod')">✕</button></div>
+    <div class="mbd">
+      <div class="tnote" id="tnote" style="display:none">🎁 Your free trial has ended</div>
+      <div style="background:var(--bg3);border:1px solid var(--ab);border-radius:14px;padding:22px;margin-bottom:14px">
+        <div class="pc-badge" style="margin-bottom:10px">Pro Plan</div>
+        <div class="pc-price" style="font-family:'Sora',sans-serif;font-size:38px;font-weight:800;color:var(--t1);margin-bottom:3px">₹499</div>
+        <div style="font-size:12px;color:var(--t3);margin-bottom:14px">per 30 days</div>
+        <ul class="pc-features">
+          <li class="pc-feat"><span class="pc-feat-i">✓</span>All 10 platforms (3 live + 7 Smart)</li>
+          <li class="pc-feat"><span class="pc-feat-i">✓</span>Unlimited searches per day</li>
+          <li class="pc-feat"><span class="pc-feat-i">✓</span>Export shortlist to CSV</li>
+          <li class="pc-feat"><span class="pc-feat-i">✓</span>AI signal score on every profile</li>
+        </ul>
+        <button class="btn-pay" style="margin-top:14px" onclick="doPay()">💳 Pay ₹499 via Razorpay</button>
+      </div>
+      <p style="font-size:11px;color:var(--t3);text-align:center">Secure payment via Razorpay · UPI / Card / Netbanking</p>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+// ── FIREBASE ─────────────────────────────────────────
+const FBC={apiKey:"AIzaSyBKl8993C4uNJ_ZN3gxMUwHoQVvIsd99Po",authDomain:"devsourcing-50631.firebaseapp.com",databaseURL:"https://devsourcing-50631-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"devsourcing-50631",storageBucket:"devsourcing-50631.firebasestorage.app",messagingSenderId:"903367845391",appId:"1:903367845391:web:deca21962dcd0cffeee57a"};
+let auth,db;
+try{firebase.initializeApp(FBC);auth=firebase.auth();db=firebase.database();}
+catch(e){console.warn('Firebase unavailable.');auth={signInWithPopup:()=>Promise.reject({code:'auth/operation-not-supported-in-this-environment',message:'Deploy to a real domain for Google login.'}),signInWithRedirect:()=>{},getRedirectResult:()=>Promise.resolve(null),signOut:()=>Promise.resolve(),onAuthStateChanged:()=>{}};db={ref:()=>({once:()=>Promise.resolve({exists:()=>false,val:()=>null,forEach:()=>{}}),set:()=>Promise.resolve(),update:()=>Promise.resolve(),transaction:f=>{const r=f(0);return Promise.resolve({snapshot:{val:()=>r}})}})};}
+
+const AP='9160075557',AP2='ds@admin9160';
+const S={user:null,plan:null,isAdmin:false,plat:null,results:[],shortlist:[]};
+const delay=ms=>new Promise(r=>setTimeout(r,ms));
+
+// ── VISITOR TRACKING ──────────────────────────────────
+function trackVisitor(){
+  try{
+    const key='ds_visited_'+new Date().toDateString();
+    if(!sessionStorage.getItem(key)){
+      sessionStorage.setItem(key,'1');
+      db.ref('ds_meta/visitors').transaction(n=>(n||0)+1);
+    }
+  }catch(e){}
+}
+
+// ── THEME ─────────────────────────────────────────────
+function toggleTheme(){
+  const d=document.documentElement;
+  const isDark=d.getAttribute('data-theme')==='dark';
+  d.setAttribute('data-theme',isDark?'light':'dark');
+  document.getElementById('themeBtn').textContent=isDark?'🌙':'☀️';
+  localStorage.setItem('ds_theme',isDark?'light':'dark');
+}
+(function(){
+  const t=localStorage.getItem('ds_theme')||'dark';
+  document.documentElement.setAttribute('data-theme',t);
+  document.addEventListener('DOMContentLoaded',()=>{
+    const btn=document.getElementById('themeBtn');
+    if(btn)btn.textContent=t==='dark'?'🌙':'☀️';
+  });
+})();
+
+// ── NAVIGATION ────────────────────────────────────────
+function showPage(id){
+  const displays={pageHome:'block',pageApp:'block',pageAuth:'flex',pageAdmin:'block'};
+  ['pageHome','pageApp','pageAuth','pageAdmin'].forEach(p=>{
+    const el=document.getElementById(p);
+    if(el)el.style.display='none';
+  });
+  const target=document.getElementById(id);
+  if(target)target.style.display=displays[id]||'block';
+  document.documentElement.scrollTop=0;document.body.scrollTop=0;
+}
+function goHome(){showPage('pageHome');updateNavLinks(false);}
+function showAuth(){showPage('pageAuth');updateNavLinks(false);}
+function showApp(){showPage('pageApp');updateNavLinks(true);}
+function showAdminPage(){showPage('pageAdmin');updateNavLinks(true);loadAdmOverview();}
+function scrollToSection(sel){
+  if(document.getElementById('pageHome').style.display==='none'||document.getElementById('pageHome').style.display===''){
+    showPage('pageHome');updateNavLinks(false);
+  }
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    const el=document.querySelector(sel);
+    if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  }));
+}
+function updateNavLinks(loggedIn){
+  const nl=document.getElementById('navLinks');
+  if(loggedIn){
+    nl.innerHTML=`
+      <div class="nl" onclick="showApp()">🔍 Search</div>
+      <div class="nl" onclick="showPricing()">Pricing</div>
+      ${S.isAdmin?'<div class="nl" onclick="showAdminPage()">⚙️ Admin</div>':''}`;
+  } else {
+    nl.innerHTML=`
+      <div class="nl" onclick="scrollToSection('#platforms')">Platforms</div>
+      <div class="nl" onclick="scrollToSection('#how')">How it works</div>
+      <div class="nl" onclick="scrollToSection('#pricing')">Pricing</div>`;
+  }
+}
+
+// ── PLATFORM META ──────────────────────────────────────
+const PM={
+  github:{n:'GitHub',ic:'🐙',d:'Real profiles via GitHub API',xr:false},
+  stackoverflow:{n:'Stack Overflow',ic:'📚',d:'Top contributors via SO API',xr:false},
+  devto:{n:'Dev.to',ic:'✍️',d:'Technical authors via Dev.to API',xr:false},
+  reddit:{n:'Reddit',ic:'🟠',d:'Community-active devs via Smart Search',xr:true},
+  kaggle:{n:'Kaggle',ic:'🏆',d:'Data science experts — Smart Search',xr:true},
+  leetcode:{n:'LeetCode',ic:'💻',d:'DSA-focused engineers — Smart Search',xr:true},
+  medium:{n:'Medium',ic:'📰',d:'Technical writers — Smart Search',xr:true},
+  meetup:{n:'Meetup',ic:'🤝',d:'Community members — Smart Search',xr:true},
+  gdg:{n:'GDG',ic:'🎤',d:'GDG speakers — Smart Search',xr:true},
+  aws:{n:'AWS UG',ic:'☁️',d:'AWS community leaders — Smart Search',xr:true}
+};
+
+// ── SMART SEARCH ──────────────────────────────────────
+const XRAY={
+  reddit:{gen:(sk,cy)=>[
+    {l:`r/${sk.toLowerCase().replace(/\s/,'')} top contributors + city`,q:`site:reddit.com/u/ "${sk}" "${cy}" OR India developer`},
+    {l:`Reddit dev profile → GitHub crossref`,q:`site:reddit.com/u/ "${sk}" github.com "${cy}"`},
+    {l:`Subreddit top posters — ${sk}`,q:`site:reddit.com/r/ "${sk}" "${cy}" top contributor 2024`},
+    {l:`Reddit + LinkedIn crossref`,q:`reddit.com/u/ "${sk}" developer "${cy}" site:linkedin.com/in`},
+    {l:`Reddit dev AMA / intro post`,q:`site:reddit.com "${sk}" developer "${cy}" "I am a" OR "AMA"`},
+  ]},
+  kaggle:{gen:(sk,cy)=>[
+    {l:'Kaggle Expert/Master by skill + city',q:`site:kaggle.com "${sk}" "${cy}" Expert OR Master`},
+    {l:`Kaggle ${sk} notebook authors`,q:`site:kaggle.com/code "${sk}" "${cy}"`},
+    {l:'Kaggle competition winners India 2024',q:`site:kaggle.com "${sk}" India competition 2024`},
+    {l:'Kaggle → LinkedIn crossref',q:`site:linkedin.com/in "${sk}" "Kaggle Expert" OR "Kaggle Master" "${cy}"`},
+    {l:`GitHub + Kaggle combo — ${sk}`,q:`site:github.com "${cy}" Kaggle "${sk}" solutions`},
+  ]},
+  leetcode:{gen:(sk,cy)=>[
+    {l:'LeetCode profile → LinkedIn crossref',q:`site:linkedin.com/in "${sk}" LeetCode "${cy}"`},
+    {l:'LeetCode 500+ solver + city',q:`"LeetCode" "${sk}" "${cy}" "500+" OR "1000+" problems`},
+    {l:'GitHub LeetCode solutions + city',q:`site:github.com "${cy}" LeetCode "${sk}" solutions`},
+    {l:'LeetCode profile by city',q:`site:leetcode.com/u "${cy}" "${sk}"`},
+    {l:'LeetCode badge on LinkedIn 2024',q:`site:linkedin.com/in "LeetCode" "${sk}" India 2024`},
+  ]},
+  medium:{gen:(sk,cy)=>[
+    {l:'Medium author by skill + city',q:`site:medium.com "${sk}" "${cy}" developer`},
+    {l:'Medium top writer India',q:`site:medium.com "top writer" "${sk}" India`},
+    {l:'Medium author page',q:`site:medium.com/@ "${sk}" India engineer OR developer`},
+    {l:'Medium → LinkedIn crossref',q:`site:linkedin.com/in "${sk}" "Medium" writer "${cy}"`},
+    {l:'Medium + GitHub combo',q:`"${sk}" "${cy}" site:medium.com OR site:github.com developer`},
+  ]},
+  meetup:{gen:(sk,cy)=>[
+    {l:'Meetup group members — skill + city',q:`site:meetup.com "${sk}" "${cy}" members`},
+    {l:'Meetup organiser → LinkedIn',q:`site:linkedin.com/in "${sk}" "${cy}" Meetup organizer`},
+    {l:'Meetup speaker 2024',q:`site:linkedin.com/in "${sk}" "${cy}" Meetup speaker 2024`},
+    {l:'Meetup India tech group',q:`site:meetup.com/cities/in "${cy}" "${sk}" group`},
+    {l:'Meetup event speakers 2024',q:`site:meetup.com "${cy}" "${sk}" event 2024`},
+  ]},
+  gdg:{gen:(sk,cy)=>[
+    {l:'GDG speaker by city + skill',q:`site:gdg.community "${cy}" speaker "${sk}"`},
+    {l:'DevFest speaker → LinkedIn',q:`"DevFest ${cy}" speaker "${sk}" site:linkedin.com/in`},
+    {l:'GDG organiser on LinkedIn',q:`"GDG ${cy}" organizer "${sk}" site:linkedin.com/in`},
+    {l:'Google Developer Expert India',q:`site:linkedin.com/in "Google Developer Expert" "${sk}" India`},
+    {l:'Sessionize GDG speaker',q:`site:sessionize.com "${cy}" "${sk}" GDG OR DevFest`},
+  ]},
+  aws:{gen:(sk,cy)=>[
+    {l:'AWS UG leader on LinkedIn',q:`site:linkedin.com/in "AWS User Group" "${cy}" leader OR organizer`},
+    {l:'AWS Community Hero India',q:`site:linkedin.com/in "AWS Community Hero" India "${sk}"`},
+    {l:'AWS Certified pro in city',q:`site:linkedin.com/in "AWS Certified" "${sk}" "${cy}"`},
+    {l:'AWS re:Invent speaker India',q:`site:linkedin.com/in AWS speaker India "${sk}" "${cy}"`},
+    {l:'AWS Meetup city group',q:`site:meetup.com "AWS User Group ${cy}" members`},
+  ]}
+};
+
+// ── LIVE API SCORING ──────────────────────────────────
+function scoreGH(u){let s=50;s+=Math.min(u.public_repos*.5,15);s+=Math.min(u.followers*.3,20);if(u.bio)s+=8;if(u.blog)s+=5;if(u.company)s+=4;return Math.min(Math.round(s),99);}
+function scoreSO(u){let s=40;s+=Math.min(u.reputation/500,30);s+=Math.min((u.badge_counts?.gold||0)*3,15);s+=Math.min((u.badge_counts?.silver||0)*1,10);return Math.min(Math.round(s),99);}
+function scoreDT(rc,ac,fc){let s=50;s+=Math.min(rc/50,20);s+=Math.min(ac*2,15);s+=Math.min(fc/100,15);return Math.min(Math.round(s),99);}
+
+async function searchGitHub(skill,city){
+  // Randomize page to get different results each search
+  const page=Math.floor(Math.random()*3)+1;
+  const q=encodeURIComponent(`location:${city} ${skill} in:bio,readme`);
+  const r=await fetch(`https://api.github.com/search/users?q=${q}&per_page=12&sort=followers&page=${page}`,{headers:{Accept:'application/vnd.github.v3+json'}});
+  if(!r.ok)throw new Error(r.status===403?'GitHub rate limit hit — wait 60 seconds and try again.':'GitHub API error '+r.status);
+  const data=await r.json();
+  if(!data.items?.length){
+    // Fallback to page 1 if no results
+    if(page>1){
+      const r2=await fetch(`https://api.github.com/search/users?q=${q}&per_page=12&sort=followers`,{headers:{Accept:'application/vnd.github.v3+json'}});
+      const d2=await r2.json();
+      if(!d2.items?.length)return[];
+      data.items=d2.items;
+    } else return[];
+  }
+  // Shuffle results so order varies
+  const shuffled=[...data.items].sort(()=>Math.random()-.5);
+  const details=await Promise.allSettled(shuffled.slice(0,8).map(u=>
+    fetch(`https://api.github.com/users/${u.login}`,{headers:{Accept:'application/vnd.github.v3+json'}}).then(r=>r.json())
+  ));
+  return details.filter(d=>d.status==='fulfilled'&&d.value.login&&d.value.type==='User').map(d=>{
+    const u=d.value;
+    return{id:u.id,name:u.name||u.login,user:u.login,loc:u.location||city,p:'github',bio:u.bio||`GitHub developer. ${u.public_repos} repos, ${u.followers} followers.`,av:u.avatar_url,url:`https://github.com/${u.login}`,sigs:[{t:`⭐ ${u.followers} followers`,c:'blue'},{t:`📁 ${u.public_repos} repos`,c:''},...(u.company?[{t:`🏢 ${u.company.replace('@','')}`,c:'green'}]:[])],sc:scoreGH(u),blog:u.blog,company:u.company,email:u.email};
+  });
+}
+
+async function searchStackOverflow(skill,city){
+  const page=Math.floor(Math.random()*3)+1;
+  const tag=skill.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9+#.-]/g,'');
+  const r=await fetch(`https://api.stackexchange.com/2.3/users?order=desc&sort=reputation&tagged=${encodeURIComponent(tag)}&site=stackoverflow&pagesize=12&page=${page}`);
+  if(!r.ok)throw new Error('Stack Overflow API error '+r.status);
+  const data=await r.json();
+  const items=(data.items||[]).sort(()=>Math.random()-.5);
+  return items.slice(0,10).map(u=>({id:u.user_id,name:u.display_name,user:String(u.user_id),loc:u.location||city,p:'stackoverflow',bio:`Stack Overflow contributor. ${u.reputation?.toLocaleString()} reputation. ${u.badge_counts?.gold||0} gold, ${u.badge_counts?.silver||0} silver badges.`,av:u.profile_image,url:`https://stackoverflow.com/users/${u.user_id}`,sigs:[{t:`🏆 ${u.reputation?.toLocaleString()} rep`,c:'gold'},...(u.badge_counts?.gold?[{t:`🥇 ${u.badge_counts.gold} gold`,c:'gold'}]:[]),...(u.location?[{t:`📍 ${u.location}`,c:''}]:[])],sc:scoreSO(u),email:null}));
+}
+
+async function searchDevTo(skill,city){
+  const page=Math.floor(Math.random()*3)+1;
+  const tag=skill.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+  const r=await fetch(`https://dev.to/api/articles?tag=${encodeURIComponent(tag)}&per_page=30&page=${page}`);
+  if(!r.ok)throw new Error('Dev.to API error '+r.status);
+  const articles=await r.json();
+  // Shuffle articles before dedup so we get different authors
+  const shuffled=[...articles].sort(()=>Math.random()-.5);
+  const seen=new Set(),authors=[];
+  for(const a of shuffled){
+    const uid=a.user?.username;
+    if(!uid||seen.has(uid))continue;
+    seen.add(uid);
+    authors.push({user:a.user,arts:articles.filter(x=>x.user?.username===uid)});
+    if(authors.length>=10)break;
+  }
+  return authors.map(({user:u,arts})=>({id:u.user_id||Math.random(),name:u.name||u.username,user:u.username,loc:city,p:'devto',bio:u.summary||`Dev.to author writing about ${skill}. ${arts.length} articles published.`,av:u.profile_image||u.profile_image_90,url:`https://dev.to/${u.username}`,sigs:[{t:`📝 ${arts.length} articles`,c:'blue'},{t:`❤️ ${arts.reduce((s,a)=>s+(a.public_reactions_count||0),0)} reactions`,c:'gold'}],sc:scoreDT(arts.reduce((s,a)=>s+(a.public_reactions_count||0),0),arts.length,u.followers_count||0),email:null}));
+}
+
+// ── PLATFORM SELECT ───────────────────────────────────
+function selPlat(el){
+  document.querySelectorAll('.pc').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');S.plat=el.dataset.p;
+  const m=PM[S.plat];
+  document.getElementById('spIc').textContent=m.ic;
+  document.getElementById('spNm').textContent=m.n;
+  document.getElementById('spDc').textContent=m.d;
+  document.getElementById('xrNote').style.display=m.xr?'flex':'none';
+  const sb=document.getElementById('sbox');sb.classList.add('show');
+  sb.scrollIntoView({behavior:'smooth',block:'nearest'});
+  const rw=document.getElementById('rw');rw.classList.remove('show');rw.innerHTML='';
+}
+
+// ── SEARCH ────────────────────────────────────────────
+async function runSearch(){
+  if(!canSearch()){showPricing();return;}
+  const sk=document.getElementById('iSk').value.trim();
+  const ct=document.getElementById('iCt').value.trim();
+  const pl=S.plat;
+  if(!pl){toast('Select a platform first');return;}
+  if(!sk){toast('Enter a skill or role to search');return;}
+  const btn=document.getElementById('btnS');
+  btn.disabled=true;btn.innerHTML='<div class="spin" style="width:14px;height:14px;border-width:2px;margin-right:6px"></div>Searching...';
+  const rw=document.getElementById('rw');rw.className='rw show';
+  if(XRAY[pl]){
+    rw.innerHTML=`<div class="ls"><div class="spin"></div>Building Smart Search queries...</div>`;
+    await delay(300);btn.disabled=false;btn.innerHTML='🔍 Search';
+    renderXray(pl,sk,ct);return;
+  }
+  rw.innerHTML=`<div class="ls"><div class="spin"></div>Fetching live profiles from ${PM[pl].n}...</div>`;
+  try{
+    let results=[];
+    if(pl==='github')results=await searchGitHub(sk,ct||'India');
+    else if(pl==='stackoverflow')results=await searchStackOverflow(sk,ct||'India');
+    else if(pl==='devto')results=await searchDevTo(sk,ct||'India');
+    btn.disabled=false;btn.innerHTML='🔍 Search';
+    S.results=results;
+    renderCards(results,pl,sk,ct);
+  }catch(err){
+    btn.disabled=false;btn.innerHTML='🔍 Search';
+    rw.innerHTML=`<div class="err-box">⚠️ <strong>API Error:</strong> ${err.message}</div>`;
+  }
+}
+
+function renderCards(results,pl,sk,ct){
+  const rw=document.getElementById('rw');
+  if(!results.length){rw.innerHTML=`<div class="es"><div class="es-ic">🔍</div><div class="es-tt">No profiles found</div><div class="es-sb">No "${sk}" developers found ${ct?'in '+ct:''} on ${PM[pl].n}.<br>Try a different skill or city name.</div></div>`;return;}
+  const hi=results.filter(p=>p.sc>=80).length;
+  rw.innerHTML=`
+    <div class="rbar"><div><div class="rtitle">${PM[pl].ic} ${PM[pl].n} — Live Results</div><div class="rmeta">${results.length} real profiles · "${sk}"${ct?' · '+ct:''}</div></div></div>
+    <div class="schips">
+      <div class="rchip bl">📊 ${results.length} found</div>
+      <div class="rchip gr">⚡ Live API</div>
+      ${ct?`<div class="rchip">🏙️ ${ct}</div>`:''}
+      <div class="rchip">🤖 AI scored</div>
+    </div>
+    <div class="fchips">
+      <button class="fc on" onclick="filterC('all',this)">All (${results.length})</button>
+      <button class="fc" onclick="filterC('hi',this)">Score 80+ (${hi})</button>
+    </div>
+    <div class="cgrid" id="cgrid">${results.map(mkCard).join('')}</div>`;
+}
+
+function mkCard(p){
+  const tc={github:'gh',stackoverflow:'so',devto:'dt'}[p.p]||'gh';
+  const pc={github:'pgh',stackoverflow:'pso',devto:'pdt'}[p.p]||'pgh';
+  const pn={github:'GitHub',stackoverflow:'Stack Overflow',devto:'Dev.to'}[p.p]||p.p;
+  const sc=p.sc>=80?'shi':p.sc>=60?'smd':'slo';
+  const isSL=S.shortlist.some(x=>x.id===p.id);
+  const av=p.av?`<img src="${p.av}" alt="${p.name}" onerror="this.parentNode.innerHTML='${(p.name||'?')[0]}'"/>`:`${(p.name||'?')[0]}`;
+  return `<div class="pfc" id="pfc-${p.id}">
+    <div class="pfc-top ${tc}"></div>
+    <div class="sring ${sc}">${p.sc}</div>
+    <div class="pfh">
+      <div class="pfav">${av}</div>
+      <div style="flex:1;min-width:0"><div class="pfnm">${p.name}</div><div class="pfloc">📍 ${p.loc}</div></div>
+      <span class="ppl ${pc}" style="margin-top:2px">${pn}</span>
+    </div>
+    <div class="pbio">${p.bio||'No bio available.'}</div>
+    <div class="sigs">${(p.sigs||[]).map(s=>`<span class="sig ${s.c}">${s.t}</span>`).join('')}</div>
+    <div class="pfoot">
+      <a href="${p.url||'#'}" target="_blank" class="bvp">View on ${pn} ↗</a>
+      <button class="bvp2" onclick="toggleSL(${p.id})" id="sl-${p.id}">${isSL?'✓ Saved':'+ Shortlist'}</button>
+    </div>
+  </div>`;
+}
+
+function filterC(t,btn){
+  document.querySelectorAll('.fc').forEach(c=>c.classList.remove('on'));btn.classList.add('on');
+  let f=[...S.results];
+  if(t==='hi')f=f.filter(p=>p.sc>=80);
+  const g=document.getElementById('cgrid');
+  if(g)g.innerHTML=f.length?f.map(mkCard).join(''):`<div class="es"><div class="es-ic">🔍</div><div class="es-tt">No results</div></div>`;
+}
+
+function renderXray(pl,sk,ct){
+  const cfg=XRAY[pl],s=sk||'developer',c=ct||'India';
+  if(!cfg){toast('Smart search not available');return;}
+  const qs=cfg.gen(s,c);
+  document.getElementById('rw').innerHTML=`
+    <div class="rbar"><div><div class="rtitle">${PM[pl].ic} ${PM[pl].n} — Smart Search</div><div class="rmeta">${qs.length} precision queries · "${s}" · ${c}</div></div></div>
+    <div class="xintro"><div style="font-size:24px;flex-shrink:0">⚡</div><div><div class="xi-tt">How Smart Search works</div><div class="xi-sb">${PM[pl].n} has no public API. We build precision queries using indexed profiles. Click <strong>Open Search</strong> — real developer profiles appear in Google results instantly.</div></div></div>
+    <div class="xql">${qs.map((q,i)=>`<div class="xqc"><div class="xqn">${i+1}</div><div class="xqi"><div class="xql-t">${q.l}</div><div class="xql-q">${q.q}</div></div><button class="bxo" onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(q.q)}','_blank')">🔍 Open</button></div>`).join('')}</div>`;
+}
+
+// ── SHORTLIST ─────────────────────────────────────────
+function toggleSL(id){
+  const p=S.results.find(x=>x.id===id);if(!p)return;
+  const idx=S.shortlist.findIndex(x=>x.id===id);
+  if(idx>=0){S.shortlist.splice(idx,1);toast('Removed from shortlist');}
+  else{S.shortlist.push(p);toast('Added to shortlist ✓');}
+  const btn=document.getElementById('sl-'+id);
+  if(btn)btn.textContent=S.shortlist.some(x=>x.id===id)?'✓ Saved':'+ Shortlist';
+  const bar=document.getElementById('slBar');
+  bar.classList.toggle('show',S.shortlist.length>0);
+  document.getElementById('slCount').textContent=`${S.shortlist.length} shortlisted`;
+}
+function clearShortlist(){S.shortlist=[];document.getElementById('slBar').classList.remove('show');toast('Shortlist cleared');}
+function exportCSV(){
+  if(!S.shortlist.length){toast('No profiles shortlisted yet');return;}
+  const rows=[['Name','Username','Platform','Location','Score','Bio','URL'],...S.shortlist.map(p=>[p.name,p.user,p.p,p.loc,p.sc,(p.bio||'').replace(/,/g,';'),p.url||''])];
+  const csv=rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='devsourcing-shortlist.csv';a.click();
+  toast('CSV downloaded ✓');
+}
+
+// ── RAZORPAY ──────────────────────────────────────────
+// IMPORTANT: Replace RZPKEY below with your actual Razorpay Key ID from dashboard.razorpay.com
+const RZPKEY='rzp_live_XXXXXXXXXXXXXXXX'; // ← Paste your Razorpay Key ID here
+
+function doPay(){
+  const u=S.user;
+  if(!u){toast('Please sign in first');return;}
+  if(!RZPKEY||RZPKEY.includes('XXXX')){
+    toast('⚠️ Razorpay key not configured. Add your key to go live.',5000);
+    return;
+  }
+  const options={
+    key:RZPKEY,
+    amount:49900,
+    currency:'INR',
+    name:'DevSourcing.in',
+    description:'Pro Plan — 30 Days',
+    handler:async function(response){
+      closeMod('prMod');
+      const end=Date.now()+30*86400000;
+      if(u.uid&&!S.isAdmin){
+        await db.ref('ds_users/'+u.uid).update({plan:'pro',proEnd:end,razorpay_payment_id:response.razorpay_payment_id});
+      }
+      S.plan='pro';S.user.plan='pro';renderNav();
+      toast('🎉 Pro activated! Enjoy all 10 platforms.');
+    },
+    prefill:{name:u.name||'',email:u.email||''},
+    theme:{color:'#38bdf8'},
+    modal:{
+      ondismiss:()=>toast('Payment window closed.'),
+      escape:true
+    }
+  };
+  try{
+    const rzp=new Razorpay(options);
+    rzp.on('payment.failed',function(resp){
+      toast('❌ Payment failed: '+( resp.error?.description||'Please try again.'),5000);
+    });
+    rzp.open();
+  }catch(e){
+    toast('⚠️ Razorpay could not load. Check your internet connection.',4000);
+  }
+}
+
+// ── AUTH ──────────────────────────────────────────────
+function swAuth(t,btn){
+  document.querySelectorAll('.a-tab').forEach(x=>x.classList.remove('on'));btn.classList.add('on');
+  document.getElementById('authG').style.display=t==='g'?'block':'none';
+  document.getElementById('authA').style.display=t==='a'?'block':'none';
+}
+function doAdminLogin(){
+  const ph=document.getElementById('adPh').value.trim().replace(/\D/g,'');
+  const pn=document.getElementById('adPn').value.trim();
+  if(ph!==AP){toast('⚠️ Incorrect mobile');return;}
+  if(pn!==AP2){toast('⚠️ Incorrect PIN');return;}
+  const ud={uid:'admin_'+AP,name:'Kiran',email:'admin@devsourcing.in',phone:AP,avatar:'K',plan:'pro',isAdmin:true};
+  localStorage.setItem('ds_adm',JSON.stringify(ud));
+  enterApp(ud);toast('👑 Welcome, Admin!');
+}
+function handleGoogleLogin(){
+  const b=document.querySelector('.bgoog');
+  b.disabled=true;b.innerHTML='<div class="spin" style="width:16px;height:16px;border-width:2px;margin-right:8px"></div>Signing in...';
+  const pr=new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(pr).then(r=>onGoogOK(r.user)).catch(err=>{
+    if(err.code==='auth/operation-not-supported-in-this-environment'){
+      toast('🔄 Redirecting to Google...',2000);auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
+    } else {
+      b.disabled=false;b.innerHTML='<svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/><path fill="#34A853" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2.04c-.72.48-1.63.77-2.7.77-2.08 0-3.84-1.41-4.47-3.29H1.83v2.07A8 8 0 0 0 8.98 17z"/><path fill="#FBBC05" d="M4.51 10.5A4.78 4.78 0 0 1 4.27 9c0-.52.09-1.03.24-1.5V5.43H1.83A8.01 8.01 0 0 0 .98 9c0 1.29.31 2.51.85 3.57l2.68-2.07z"/><path fill="#EA4335" d="M8.98 3.21c1.17 0 2.22.4 3.05 1.2l2.28-2.28A8 8 0 0 0 1.83 5.43L4.5 7.5C5.14 5.62 6.9 3.21 8.98 3.21z"/></svg> Continue with Google';
+      toast('⚠️ '+(err.message||'Login failed'),4000);
+    }
+  });
+}
+async function onGoogOK(fu){
+  const uid=fu.uid,email=fu.email,name=fu.displayName||email.split('@')[0],photo=fu.photoURL;
+  const ref=db.ref('ds_users/'+uid);
+  const snap=await ref.once('value');let ud;
+  if(!snap.exists()){
+    ud={uid,email,name,photo:photo||null,avatar:name[0].toUpperCase(),plan:'trial',isAdmin:false,trialStart:Date.now(),trialEnd:Date.now()+86400000,createdAt:Date.now()};
+    await ref.set(ud);toast('🎉 Welcome! 1-day free trial started.');
+  } else {
+    ud=snap.val();
+    if(ud.plan==='trial'&&Date.now()>ud.trialEnd){ud.plan='expired';await ref.update({plan:'expired'});}
+    toast('👋 Welcome back, '+name.split(' ')[0]+'!');
+  }
+  enterApp(ud);
+}
+function enterApp(ud){
+  S.user=ud;S.plan=ud.plan;S.isAdmin=ud.isAdmin||false;
+  showApp();renderNav();
+}
+function renderNav(){
+  const u=S.user;if(!u)return;
+  const av=u.photo?`<div class="uav"><img src="${u.photo}" referrerpolicy="no-referrer"></div>`:`<div class="uav">${u.avatar||'U'}</div>`;
+  const bdg=u.isAdmin?'<span class="bdg bdg-a">👑 Admin</span>':({trial:'<span class="bdg bdg-t">Trial</span>',pro:'<span class="bdg bdg-p">Pro</span>',expired:'<span class="bdg bdg-e">Expired</span>'}[S.plan]||'');
+  document.getElementById('navUser').innerHTML=`<div class="nav-user-wrap">${av}<span class="un">${(u.name||'').split(' ')[0]}</span>${bdg}<button class="btn-so" onclick="doSignOut()">Sign out</button></div>`;
+  updateNavLinks(true);
+}
+function doSignOut(){
+  localStorage.removeItem('ds_adm');
+  auth.signOut().then(()=>{
+    S.user=null;S.plan=null;S.isAdmin=false;
+    document.getElementById('navUser').innerHTML=`<button class="nav-cta" onclick="showAuth()">Start Free Trial →</button>`;
+    goHome();updateNavLinks(false);
+  });
+}
+function canSearch(){
+  if(!S.user)return false;
+  if(S.isAdmin||S.plan==='pro')return true;
+  if(S.plan==='trial'){if(Date.now()>S.user.trialEnd){S.plan='expired';if(S.user.uid&&!S.isAdmin)db.ref('ds_users/'+S.user.uid).update({plan:'expired'});renderNav();return false;}return true;}
+  return false;
+}
+
+// ── MODALS ────────────────────────────────────────────
+function openMod(id){document.getElementById(id).classList.add('open');}
+function closeMod(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+function showPricing(){const tn=document.getElementById('tnote');if(tn)tn.style.display=S.plan==='expired'?'flex':'none';openMod('prMod');}
+
+// ── ADMIN ─────────────────────────────────────────────
+function swAdmTab(t,btn){
+  document.querySelectorAll('.atb').forEach(x=>x.classList.remove('on'));btn.classList.add('on');
+  ['Overview','Users','Plans'].forEach(n=>document.getElementById('admTab'+n).style.display=n===t?'block':'none');
+}
+async function loadAdmOverview(){
+  try{
+    const [snapUsers,snapMeta]=await Promise.all([db.ref('ds_users').once('value'),db.ref('ds_meta').once('value')]);
+    let total=0,paid=0,free=0;
+    snapUsers.forEach(c=>{const u=c.val();total++;if(u.plan==='pro')paid++;else free++;});
+    const visitors=snapMeta.val()?.visitors||0;
+    document.getElementById('statVisitors').textContent=visitors.toLocaleString();
+    document.getElementById('statTotal').textContent=total;
+    document.getElementById('statPaid').textContent=paid;
+    document.getElementById('statFree').textContent=free;
+  }catch(e){console.warn('Admin overview error',e);}
+}
+async function loadAdmUsers(){
+  try{
+    const snap=await db.ref('ds_users').once('value');
+    const users=[];snap.forEach(c=>{users.push(c.val());});
+    document.getElementById('admCnt').textContent=`${users.length} registered users`;
+    document.getElementById('admTbl').innerHTML=users.length
+      ?`<div style="overflow-x:auto"><table class="atbl"><thead><tr><th>Name</th><th>Gmail</th><th>Plan</th><th>UID</th><th>Joined</th></tr></thead><tbody>${users.map(u=>`<tr><td style="font-weight:600">${u.name||'—'}</td><td style="font-size:11px;color:var(--t2)">${u.email||u.phone||'—'}</td><td><span class="plan-badge ${u.plan==='pro'?'pb-pro':u.plan==='trial'?'pb-trial':u.plan==='expired'?'pb-exp':'pb-free'}">${u.plan||'free'}</span></td><td style="font-size:10px;color:var(--t3);font-family:monospace">${(u.uid||'').substring(0,14)}...</td><td style="font-size:11px">${u.createdAt?new Date(u.createdAt).toLocaleDateString('en-IN'):'—'}</td></tr>`).join('')}</tbody></table></div>`
+      :`<div class="es"><div class="es-ic">👥</div><div class="es-tt">No users yet</div></div>`;
+  }catch(e){document.getElementById('admTbl').innerHTML='<div style="padding:20px;color:var(--t3);font-size:12px">Firebase unavailable in preview mode.</div>';}
+}
+async function exportUsersCSV(){
+  try{
+    const snap=await db.ref('ds_users').once('value');
+    const rows=[['Name','Gmail','Plan','UID','Joined']];
+    snap.forEach(c=>{const u=c.val();rows.push([u.name||'',u.email||u.phone||'',u.plan||'',u.uid||'',u.createdAt?new Date(u.createdAt).toLocaleDateString('en-IN'):'']);});
+    const csv=rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
+    const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='devsourcing-users.csv';a.click();
+    toast('Users CSV downloaded ✓');
+  }catch(e){toast('Export failed: '+e.message);}
+}
+async function admSetPlan(plan){
+  const uid=document.getElementById('admUID').value.trim();
+  if(!uid){toast('Paste a UID first');return;}
+  try{
+    const end=plan==='pro'?Date.now()+30*86400000:plan==='trial'?Date.now()+86400000:0;
+    await db.ref('ds_users/'+uid).update({plan,proEnd:end});
+    document.getElementById('admPM').innerHTML=`<span style="color:var(--g)">✓ Plan set to "${plan}"</span>`;
+  }catch(e){document.getElementById('admPM').innerHTML=`<span style="color:var(--r)">✕ ${e.message}</span>`;}
+}
+
+// ── TOAST ─────────────────────────────────────────────
+function toast(msg,dur=3200){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
+
+// ── SESSION RESTORE ───────────────────────────────────
+window.addEventListener('DOMContentLoaded',()=>{
+  trackVisitor();
+  const saved=localStorage.getItem('ds_adm');
+  if(saved){
+    try{enterApp(JSON.parse(saved));}
+    catch(e){localStorage.removeItem('ds_adm');}
+  } else {
+    document.getElementById('navUser').innerHTML=`<button class="nav-cta" onclick="showAuth()">Start Free Trial →</button>`;
+    try{
+      // Handle redirect result first (after Google OAuth redirect back)
+      auth.getRedirectResult().then(result=>{
+        if(result&&result.user){onGoogOK(result.user);}
+        else{
+          // Then check if already signed in
+          auth.onAuthStateChanged(u=>{if(u)onGoogOK(u);});
+        }
+      }).catch(()=>{
+        auth.onAuthStateChanged(u=>{if(u)onGoogOK(u);});
+      });
+    }catch(e){}
+  }
+});
+</script>
+</body>
+</html>
