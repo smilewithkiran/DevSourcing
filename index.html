@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -1359,9 +1360,11 @@ function doSignOut(){
     document.getElementById('navUser').innerHTML=`<button class="nav-cta" onclick="showAuth()">Start Free Trial →</button>`;
     updateNavLinks(false);
     if(wasAdmin){
+      adminPageActive=true;
       window.location.hash='#admin';
       showPage('pageAdmin404');
     } else {
+      adminPageActive=false;
       window.location.hash='';
       goHome();
     }
@@ -1517,12 +1520,15 @@ function doChangePin(){
 function toast(msg,dur=3200){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
 
 // ── SESSION RESTORE ───────────────────────────────────
+function checkAdminHash(){
+  const h=window.location.hash;
+  return h==='#admin'||h==='#/admin'||h.startsWith('#admin');
+}
+
+let adminPageActive=false; // flag to prevent auth override
+
 window.addEventListener('DOMContentLoaded',()=>{
-  // ── Detect /admin URL (GitHub Pages uses hash routing for SPA) ──
-  const path=window.location.pathname;
-  const isAdminPath=path.endsWith('/admin')||path.endsWith('/admin.html')||
-                    window.location.search.includes('admin')||
-                    window.location.hash==='#admin';
+  const isAdminPath=checkAdminHash();
 
   trackVisitor();
 
@@ -1532,30 +1538,45 @@ window.addEventListener('DOMContentLoaded',()=>{
       const ud=JSON.parse(saved);
       S.user=ud;S.plan=ud.plan;S.isAdmin=ud.isAdmin||false;
       renderNav();
-      if(isAdminPath&&ud.isAdmin){showAdminPage();}
-      else if(ud.isAdmin){showAdminPage();}
+      if(ud.isAdmin){showAdminPage();}
       else{showApp();}
       return;
     }catch(e){localStorage.removeItem('ds_adm');}
   }
 
-  // Show admin login if /admin path
+  // Show admin login if #admin hash
   if(isAdminPath){
-    showPage('pageAdmin404');
+    adminPageActive=true;
     document.getElementById('navUser').innerHTML=`<button class="nav-cta" onclick="showAuth()">Start Free Trial →</button>`;
-    return;
+    showPage('pageAdmin404');
+    return; // Don't start Firebase auth flow
   }
 
   // Normal user flow
   document.getElementById('navUser').innerHTML=`<button class="nav-cta" onclick="showAuth()">Start Free Trial →</button>`;
   try{
     auth.getRedirectResult().then(result=>{
+      if(adminPageActive)return; // guard
       if(result&&result.user){onGoogOK(result.user);}
-      else{auth.onAuthStateChanged(u=>{if(u)onGoogOK(u);});}
+      else{auth.onAuthStateChanged(u=>{
+        if(adminPageActive)return; // guard
+        if(u)onGoogOK(u);
+      });}
     }).catch(()=>{
-      auth.onAuthStateChanged(u=>{if(u)onGoogOK(u);});
+      auth.onAuthStateChanged(u=>{
+        if(adminPageActive)return; // guard
+        if(u)onGoogOK(u);
+      });
     });
   }catch(e){}
+});
+
+// Also listen for hash changes
+window.addEventListener('hashchange',()=>{
+  if(checkAdminHash()&&!S.user){
+    adminPageActive=true;
+    showPage('pageAdmin404');
+  }
 });
 </script>
 </body>
