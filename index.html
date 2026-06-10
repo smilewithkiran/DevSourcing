@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -674,30 +673,35 @@ a{text-decoration:none;color:inherit}
 </div>
 
 <!-- ════════════════════════════════════════
-     SECRET ADMIN LOGIN PAGE
-     Access via: devsourcing.in/?admin
+     ADMIN LOGIN — devsourcing.in/admin
+     Separate page, not linked from main site
 ════════════════════════════════════════ -->
-<div class="page-auth" id="pageAdminAuth" style="display:none">
-  <div class="authpg">
-    <div class="authcd">
-      <div class="a-logo">
-        <div class="logo-sq" style="width:38px;height:38px;border-radius:10px">
-          <svg width="22" height="22" viewBox="0 0 20 20" fill="none"><circle cx="7" cy="7" r="3.5" fill="#6366f1"/><circle cx="13" cy="7" r="3.5" fill="#38bdf8" opacity=".85"/><circle cx="7" cy="13" r="3.5" fill="#10b981" opacity=".85"/><circle cx="13" cy="13" r="3.5" fill="#f59e0b" opacity=".75"/></svg>
-        </div>
-        <span style="font-family:'Sora',sans-serif;font-weight:800;font-size:18px">Dev<em style="font-style:normal;color:var(--a)">Sourcing</em><span style="color:var(--t3);font-weight:400;font-size:13px">.in</span></span>
+<div id="pageAdmin404" style="display:none;min-height:100vh;align-items:center;justify-content:center;background:var(--bg);padding:20px;position:relative;overflow:hidden">
+  <div style="position:absolute;width:700px;height:700px;background:radial-gradient(circle,rgba(56,189,248,.07),transparent 70%);top:-200px;left:50%;transform:translateX(-50%);pointer-events:none"></div>
+  <div class="authcd" style="max-width:400px">
+    <div class="a-logo" style="justify-content:center;margin-bottom:20px">
+      <div class="logo-sq" style="width:38px;height:38px;border-radius:10px">
+        <svg width="22" height="22" viewBox="0 0 20 20" fill="none"><circle cx="7" cy="7" r="3.5" fill="#6366f1"/><circle cx="13" cy="7" r="3.5" fill="#38bdf8" opacity=".85"/><circle cx="7" cy="13" r="3.5" fill="#10b981" opacity=".85"/><circle cx="13" cy="13" r="3.5" fill="#f59e0b" opacity=".75"/><line x1="7" y1="7" x2="13" y2="7" stroke="rgba(255,255,255,.2)" stroke-width=".8"/><line x1="7" y1="7" x2="7" y2="13" stroke="rgba(255,255,255,.2)" stroke-width=".8"/><line x1="7" y1="7" x2="13" y2="13" stroke="rgba(255,255,255,.2)" stroke-width=".8"/><line x1="13" y1="7" x2="7" y2="13" stroke="rgba(255,255,255,.2)" stroke-width=".8"/><line x1="13" y1="7" x2="13" y2="13" stroke="rgba(255,255,255,.2)" stroke-width=".8"/><line x1="7" y1="13" x2="13" y2="13" stroke="rgba(255,255,255,.2)" stroke-width=".8"/></svg>
       </div>
-      <div class="a-h">Admin Access</div>
-      <p class="a-s" style="margin-bottom:20px">Restricted. Authorised personnel only.</p>
-      <div class="adwarn">👑 This login is not publicly accessible.</div>
-      <div class="fg"><div class="fl">Mobile Number</div><input class="fi" id="adPh" type="tel" placeholder="9160075557" maxlength="10"></div>
-      <div class="fg"><div class="fl">Admin PIN</div><input class="fi" id="adPn" type="password" placeholder="Enter PIN" onkeydown="if(event.key==='Enter')doAdminLogin()"></div>
-      <button class="bts" style="width:100%;margin-top:4px" onclick="doAdminLogin()">👑 Access Admin Panel</button>
-      <div style="margin-top:14px;text-align:center">
-        <button onclick="goHome()" style="font-size:12px;color:var(--t3);padding:4px 8px">← Back to home</button>
-      </div>
+      <span style="font-family:'Sora',sans-serif;font-weight:800;font-size:18px;margin-left:8px">Dev<em style="font-style:normal;color:var(--a)">Sourcing</em><span style="color:var(--t3);font-weight:400;font-size:13px">.in</span></span>
+    </div>
+    <div class="a-h" style="text-align:center;margin-bottom:6px">Admin Access</div>
+    <p style="font-size:13px;color:var(--t2);text-align:center;margin-bottom:20px">Restricted. Authorised personnel only.</p>
+    <div style="background:rgba(245,158,11,.08);border:1px solid var(--amb);border-radius:8px;padding:10px 13px;font-size:12px;color:var(--am);margin-bottom:18px;text-align:center">
+      👑 This login is not publicly accessible.
+    </div>
+    <div class="fg"><div class="fl">Mobile Number</div><input class="fi" id="adPh" type="tel" placeholder="9160075557" maxlength="10" autocomplete="off"></div>
+    <div class="fg"><div class="fl">Admin PIN</div><input class="fi" id="adPn" type="password" placeholder="Enter PIN" onkeydown="if(event.key==='Enter')doAdminLogin()"></div>
+    <button class="bts" style="width:100%;margin-top:4px;justify-content:center" onclick="doAdminLogin()">👑 Access Admin Panel</button>
+    <div style="margin-top:14px;text-align:center">
+      <button onclick="goHome()" style="font-size:12px;color:var(--t3);padding:4px 8px">← Back to home</button>
     </div>
   </div>
 </div>
+
+<!-- ════════════════════════════════════════
+     APP PAGE
+════════════════════════════════════════ -->
 <div class="page-app" id="pageApp">
   <div class="app-wrap">
     <div class="sec-label">Select a platform to search</div>
@@ -940,8 +944,8 @@ function toggleTheme(){
 
 // ── NAVIGATION ────────────────────────────────────────
 function showPage(id){
-  const displays={pageHome:'block',pageApp:'block',pageAuth:'flex',pageAdmin:'block',pageAdminAuth:'flex'};
-  ['pageHome','pageApp','pageAuth','pageAdmin','pageAdminAuth'].forEach(p=>{
+  const displays={pageHome:'block',pageApp:'block',pageAuth:'flex',pageAdmin:'block',pageAdmin404:'flex'};
+  ['pageHome','pageApp','pageAuth','pageAdmin','pageAdmin404'].forEach(p=>{
     const el=document.getElementById(p);
     if(el)el.style.display='none';
   });
@@ -1283,13 +1287,16 @@ function swAuth(t,btn){
   document.getElementById('authA').style.display=t==='a'?'block':'none';
 }
 function doAdminLogin(){
-  const ph=document.getElementById('adPh').value.trim().replace(/\D/g,'');
-  const pn=document.getElementById('adPn').value.trim();
+  const ph=(document.getElementById('adPh')||{value:''}).value.trim().replace(/\D/g,'');
+  const pn=(document.getElementById('adPn')||{value:''}).value.trim();
   if(ph!==AP){toast('⚠️ Incorrect mobile');return;}
   if(pn!==AP2){toast('⚠️ Incorrect PIN');return;}
   const ud={uid:'admin_'+AP,name:'Kiran',email:'admin@devsourcing.in',phone:AP,avatar:'K',plan:'pro',isAdmin:true};
   localStorage.setItem('ds_adm',JSON.stringify(ud));
-  enterApp(ud);toast('👑 Welcome, Admin!');
+  S.user=ud;S.plan='pro';S.isAdmin=true;
+  renderNav();
+  showAdminPage();
+  toast('👑 Welcome, Admin!');
 }
 function handleGoogleLogin(){
   const b=document.querySelector('.bgoog');
@@ -1330,11 +1337,19 @@ function renderNav(){
   updateNavLinks(true);
 }
 function doSignOut(){
+  const wasAdmin=S.isAdmin;
   localStorage.removeItem('ds_adm');
   auth.signOut().then(()=>{
     S.user=null;S.plan=null;S.isAdmin=false;
     document.getElementById('navUser').innerHTML=`<button class="nav-cta" onclick="showAuth()">Start Free Trial →</button>`;
-    goHome();updateNavLinks(false);
+    updateNavLinks(false);
+    if(wasAdmin){
+      window.location.hash='#admin';
+      showPage('pageAdmin404');
+    } else {
+      window.location.hash='';
+      goHome();
+    }
   });
 }
 function canSearch(){
@@ -1356,16 +1371,40 @@ function swAdmTab(t,btn){
   ['Overview','Users','Plans'].forEach(n=>document.getElementById('admTab'+n).style.display=n===t?'block':'none');
 }
 async function loadAdmOverview(){
+  // Reset to loading state
+  ['statVisitors','statTotal','statPaid','statFree'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.innerHTML='<div class="spin" style="width:14px;height:14px;border-width:2px;margin:0 auto"></div>';
+  });
   try{
-    const [snapUsers,snapMeta]=await Promise.all([db.ref('ds_users').once('value'),db.ref('ds_meta').once('value')]);
+    const [snapUsers,snapMeta]=await Promise.all([
+      db.ref('ds_users').once('value'),
+      db.ref('ds_meta').once('value')
+    ]);
     let total=0,paid=0,free=0;
-    snapUsers.forEach(c=>{const u=c.val();total++;if(u.plan==='pro')paid++;else free++;});
-    const visitors=snapMeta.val()?.visitors||0;
-    document.getElementById('statVisitors').textContent=visitors.toLocaleString();
-    document.getElementById('statTotal').textContent=total;
-    document.getElementById('statPaid').textContent=paid;
-    document.getElementById('statFree').textContent=free;
-  }catch(e){console.warn('Admin overview error',e);}
+    snapUsers.forEach(c=>{
+      const u=c.val();
+      total++;
+      if(u.plan==='pro')paid++;
+      else free++;
+    });
+    const metaVal=snapMeta.val();
+    const visitors=metaVal&&metaVal.visitors?metaVal.visitors:0;
+    const sV=document.getElementById('statVisitors');
+    const sT=document.getElementById('statTotal');
+    const sP=document.getElementById('statPaid');
+    const sF=document.getElementById('statFree');
+    if(sV)sV.textContent=visitors.toLocaleString();
+    if(sT)sT.textContent=total;
+    if(sP)sP.textContent=paid;
+    if(sF)sF.textContent=free;
+  }catch(e){
+    console.error('Admin overview error',e);
+    ['statVisitors','statTotal','statPaid','statFree'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el)el.textContent='—';
+    });
+  }
 }
 async function loadAdmUsers(){
   try{
@@ -1402,30 +1441,35 @@ function toast(msg,dur=3200){const t=document.getElementById('toast');t.textCont
 
 // ── SESSION RESTORE ───────────────────────────────────
 window.addEventListener('DOMContentLoaded',()=>{
-  trackVisitor();
+  // ── Detect /admin URL (GitHub Pages uses hash routing for SPA) ──
+  const path=window.location.pathname;
+  const isAdminPath=path.endsWith('/admin')||path.endsWith('/admin.html')||
+                    window.location.search.includes('admin')||
+                    window.location.hash==='#admin';
 
-  // ── SECRET ADMIN URL: devsourcing.in/?admin ──
-  const isAdminURL=window.location.search.includes('admin')||window.location.hash==='#admin';
+  trackVisitor();
 
   const saved=localStorage.getItem('ds_adm');
   if(saved){
     try{
       const ud=JSON.parse(saved);
-      enterApp(ud);
-      // If already admin and visiting ?admin, go straight to admin panel
-      if(isAdminURL&&ud.isAdmin)showAdminPage();
+      S.user=ud;S.plan=ud.plan;S.isAdmin=ud.isAdmin||false;
+      renderNav();
+      if(isAdminPath&&ud.isAdmin){showAdminPage();}
+      else if(ud.isAdmin){showAdminPage();}
+      else{showApp();}
       return;
     }catch(e){localStorage.removeItem('ds_adm');}
   }
 
-  // Show secret admin login if ?admin in URL
-  if(isAdminURL){
-    showPage('pageAdminAuth');
+  // Show admin login if /admin path
+  if(isAdminPath){
+    showPage('pageAdmin404');
     document.getElementById('navUser').innerHTML=`<button class="nav-cta" onclick="showAuth()">Start Free Trial →</button>`;
     return;
   }
 
-  // Normal flow
+  // Normal user flow
   document.getElementById('navUser').innerHTML=`<button class="nav-cta" onclick="showAuth()">Start Free Trial →</button>`;
   try{
     auth.getRedirectResult().then(result=>{
