@@ -693,8 +693,21 @@ a{text-decoration:none;color:inherit}
     <div class="fg"><div class="fl">Mobile Number</div><input class="fi" id="adPh" type="tel" placeholder="9160075557" maxlength="10" autocomplete="off"></div>
     <div class="fg"><div class="fl">Admin PIN</div><input class="fi" id="adPn" type="password" placeholder="Enter PIN" onkeydown="if(event.key==='Enter')doAdminLogin()"></div>
     <button class="bts" style="width:100%;margin-top:4px;justify-content:center" onclick="doAdminLogin()">👑 Access Admin Panel</button>
-    <div style="margin-top:14px;text-align:center">
+    <div style="margin-top:12px;text-align:center;display:flex;align-items:center;justify-content:center;gap:16px">
       <button onclick="goHome()" style="font-size:12px;color:var(--t3);padding:4px 8px">← Back to home</button>
+      <button onclick="showChangePin()" style="font-size:12px;color:var(--a);padding:4px 8px;background:none;border:none;cursor:pointer">🔑 Change PIN</button>
+    </div>
+    <!-- Change PIN form (hidden by default) -->
+    <div id="changePinForm" style="display:none;margin-top:16px;border-top:1px solid var(--b1);padding-top:16px">
+      <div style="font-size:12px;font-weight:700;color:var(--t2);margin-bottom:12px;text-align:left">Change Admin PIN</div>
+      <div class="fg"><div class="fl">Current PIN</div><input class="fi" id="oldPin" type="password" placeholder="Current PIN"></div>
+      <div class="fg"><div class="fl">New PIN</div><input class="fi" id="newPin" type="password" placeholder="New PIN (min 8 chars)"></div>
+      <div class="fg"><div class="fl">Confirm New PIN</div><input class="fi" id="newPin2" type="password" placeholder="Repeat new PIN" onkeydown="if(event.key==='Enter')doChangePin()"></div>
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <button class="bts" style="flex:1;justify-content:center;font-size:12px;padding:9px" onclick="doChangePin()">✓ Update PIN</button>
+        <button onclick="document.getElementById('changePinForm').style.display='none'" style="padding:9px 14px;border-radius:9px;border:1px solid var(--b2);color:var(--t3);font-size:12px;background:var(--bg3)">Cancel</button>
+      </div>
+      <div id="changePinMsg" style="margin-top:8px;font-size:12px;text-align:center"></div>
     </div>
   </div>
 </div>
@@ -833,6 +846,7 @@ a{text-decoration:none;color:inherit}
         <div class="astat"><div class="astat-n" id="statPaid">—</div><div class="astat-l">Paid (Pro)</div></div>
         <div class="astat"><div class="astat-n" id="statFree">—</div><div class="astat-l">Free / Trial</div></div>
       </div>
+      <div id="admDbWarn" style="display:none;background:var(--rs);border:1px solid rgba(248,113,113,.3);border-radius:10px;padding:12px 16px;font-size:12px;color:var(--r);margin-bottom:16px;line-height:1.7"></div>
       <div class="admin-visitor-note">
         📌 Visitor count is tracked via Firebase each time the homepage loads. Unique visitors tracked by session. Install Google Analytics for deeper insights.
       </div>
@@ -1289,8 +1303,9 @@ function swAuth(t,btn){
 function doAdminLogin(){
   const ph=(document.getElementById('adPh')||{value:''}).value.trim().replace(/\D/g,'');
   const pn=(document.getElementById('adPn')||{value:''}).value.trim();
+  const currentPin=getAdminPin();
   if(ph!==AP){toast('⚠️ Incorrect mobile');return;}
-  if(pn!==AP2){toast('⚠️ Incorrect PIN');return;}
+  if(pn!==currentPin){toast('⚠️ Incorrect PIN');return;}
   const ud={uid:'admin_'+AP,name:'Kiran',email:'admin@devsourcing.in',phone:AP,avatar:'K',plan:'pro',isAdmin:true};
   localStorage.setItem('ds_adm',JSON.stringify(ud));
   S.user=ud;S.plan='pro';S.isAdmin=true;
@@ -1371,50 +1386,76 @@ function swAdmTab(t,btn){
   ['Overview','Users','Plans'].forEach(n=>document.getElementById('admTab'+n).style.display=n===t?'block':'none');
 }
 async function loadAdmOverview(){
-  // Reset to loading state
-  ['statVisitors','statTotal','statPaid','statFree'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el)el.innerHTML='<div class="spin" style="width:14px;height:14px;border-width:2px;margin:0 auto"></div>';
-  });
+  const ids=['statVisitors','statTotal','statPaid','statFree'];
+  ids.forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='<div class="spin" style="width:14px;height:14px;border-width:2px;display:inline-block"></div>';});
   try{
-    const [snapUsers,snapMeta]=await Promise.all([
-      db.ref('ds_users').once('value'),
-      db.ref('ds_meta').once('value')
+    // Fetch users and meta in parallel with timeout
+    const timeout=ms=>new Promise((_,r)=>setTimeout(()=>r(new Error('Timeout')),ms));
+    const [snapUsers,snapMeta]=await Promise.race([
+      Promise.all([db.ref('ds_users').once('value'),db.ref('ds_meta').once('value')]),
+      timeout(8000).then(()=>{throw new Error('Firebase timeout — check DB rules');})
     ]);
-    let total=0,paid=0,free=0;
+    let total=0,paid=0,trial=0,free=0;
     snapUsers.forEach(c=>{
-      const u=c.val();
+      const u=c.val();if(!u)return;
       total++;
       if(u.plan==='pro')paid++;
+      else if(u.plan==='trial')trial++;
       else free++;
     });
-    const metaVal=snapMeta.val();
-    const visitors=metaVal&&metaVal.visitors?metaVal.visitors:0;
-    const sV=document.getElementById('statVisitors');
-    const sT=document.getElementById('statTotal');
-    const sP=document.getElementById('statPaid');
-    const sF=document.getElementById('statFree');
-    if(sV)sV.textContent=visitors.toLocaleString();
-    if(sT)sT.textContent=total;
-    if(sP)sP.textContent=paid;
-    if(sF)sF.textContent=free;
+    const metaVal=snapMeta.val()||{};
+    const visitors=metaVal.visitors||0;
+    const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
+    set('statVisitors',visitors.toLocaleString('en-IN'));
+    set('statTotal',total);
+    set('statPaid',paid);
+    set('statFree',trial+free);
+    // Show DB rules warning in overview if 0 users and 0 visitors
+    const warn=document.getElementById('admDbWarn');
+    if(warn)warn.style.display=(total===0&&visitors===0)?'block':'none';
   }catch(e){
-    console.error('Admin overview error',e);
-    ['statVisitors','statTotal','statPaid','statFree'].forEach(id=>{
-      const el=document.getElementById(id);
-      if(el)el.textContent='—';
-    });
+    console.error('Admin overview error:',e.message);
+    ids.forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='!';});
+    const warn=document.getElementById('admDbWarn');
+    if(warn){warn.style.display='block';warn.innerHTML='⚠️ Firebase read failed: <strong>'+e.message+'</strong><br>Fix: Firebase Console → Realtime DB → Rules → set read/write to <code>true</code> temporarily to test.';}
   }
 }
 async function loadAdmUsers(){
+  const tbl=document.getElementById('admTbl');
+  const cnt=document.getElementById('admCnt');
+  if(tbl)tbl.innerHTML='<div class="ls"><div class="spin"></div>Loading from Firebase...</div>';
   try{
     const snap=await db.ref('ds_users').once('value');
-    const users=[];snap.forEach(c=>{users.push(c.val());});
-    document.getElementById('admCnt').textContent=`${users.length} registered users`;
-    document.getElementById('admTbl').innerHTML=users.length
-      ?`<div style="overflow-x:auto"><table class="atbl"><thead><tr><th>Name</th><th>Gmail</th><th>Plan</th><th>UID</th><th>Joined</th></tr></thead><tbody>${users.map(u=>`<tr><td style="font-weight:600">${u.name||'—'}</td><td style="font-size:11px;color:var(--t2)">${u.email||u.phone||'—'}</td><td><span class="plan-badge ${u.plan==='pro'?'pb-pro':u.plan==='trial'?'pb-trial':u.plan==='expired'?'pb-exp':'pb-free'}">${u.plan||'free'}</span></td><td style="font-size:10px;color:var(--t3);font-family:monospace">${(u.uid||'').substring(0,14)}...</td><td style="font-size:11px">${u.createdAt?new Date(u.createdAt).toLocaleDateString('en-IN'):'—'}</td></tr>`).join('')}</tbody></table></div>`
-      :`<div class="es"><div class="es-ic">👥</div><div class="es-tt">No users yet</div></div>`;
-  }catch(e){document.getElementById('admTbl').innerHTML='<div style="padding:20px;color:var(--t3);font-size:12px">Firebase unavailable in preview mode.</div>';}
+    const users=[];
+    snap.forEach(c=>{const v=c.val();if(v)users.push(v);});
+    if(cnt)cnt.textContent=users.length+' registered users';
+    if(!tbl)return;
+    if(!users.length){
+      tbl.innerHTML='<div class="es"><div class="es-ic">👥</div><div class="es-tt">No users yet</div><div class="es-sb">Users appear here after first Google login.</div></div>';
+      return;
+    }
+    // Sort newest first
+    users.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+    tbl.innerHTML=`<div style="overflow-x:auto"><table class="atbl">
+      <thead><tr><th>#</th><th>Name</th><th>Gmail</th><th>Plan</th><th>UID</th><th>Joined</th></tr></thead>
+      <tbody>${users.map((u,i)=>`<tr>
+        <td style="color:var(--t3);font-size:11px">${i+1}</td>
+        <td style="font-weight:600">${u.name||'—'}</td>
+        <td style="font-size:11px;color:var(--t2)">${u.email||u.phone||'—'}</td>
+        <td><span class="plan-badge ${u.plan==='pro'?'pb-pro':u.plan==='trial'?'pb-trial':u.plan==='expired'?'pb-exp':'pb-free'}">${u.plan||'free'}</span></td>
+        <td style="font-size:10px;color:var(--t3);font-family:monospace" title="${u.uid||''}">${(u.uid||'').substring(0,12)}…</td>
+        <td style="font-size:11px">${u.createdAt?new Date(u.createdAt).toLocaleDateString('en-IN'):'—'}</td>
+      </tr>`).join('')}</tbody>
+    </table></div>`;
+  }catch(e){
+    if(tbl)tbl.innerHTML=`<div style="padding:20px;font-size:12px;color:var(--r)">
+      ⚠️ Firebase read failed: ${e.message}<br><br>
+      <strong>Fix:</strong> Go to <a href="https://console.firebase.google.com" target="_blank" style="color:var(--a)">Firebase Console</a> → 
+      Realtime Database → Rules → change to:<br>
+      <code style="background:var(--bg3);padding:4px 8px;border-radius:4px;display:inline-block;margin-top:8px">{"rules":{".read":true,".write":true}}</code><br>
+      <em style="color:var(--t3)">(Only for testing — tighten rules after)</em>
+    </div>`;
+  }
 }
 async function exportUsersCSV(){
   try{
@@ -1434,6 +1475,42 @@ async function admSetPlan(plan){
     await db.ref('ds_users/'+uid).update({plan,proEnd:end});
     document.getElementById('admPM').innerHTML=`<span style="color:var(--g)">✓ Plan set to "${plan}"</span>`;
   }catch(e){document.getElementById('admPM').innerHTML=`<span style="color:var(--r)">✕ ${e.message}</span>`;}
+}
+
+
+// ── ADMIN PIN MANAGEMENT ─────────────────────────────
+function showChangePin(){
+  const f=document.getElementById('changePinForm');
+  if(f)f.style.display=f.style.display==='none'?'block':'none';
+}
+function getAdminPin(){
+  const stored=localStorage.getItem('ds_admin_pin');
+  return stored?atob(stored):AP2; // fallback to default
+}
+function doChangePin(){
+  const oldPin=document.getElementById('oldPin').value.trim();
+  const newPin=document.getElementById('newPin').value.trim();
+  const newPin2=document.getElementById('newPin2').value.trim();
+  const msg=document.getElementById('changePinMsg');
+  const currentPin=getAdminPin();
+  if(oldPin!==currentPin){
+    msg.innerHTML='<span style="color:var(--r)">✕ Current PIN is incorrect</span>';return;
+  }
+  if(newPin.length<8){
+    msg.innerHTML='<span style="color:var(--r)">✕ New PIN must be at least 8 characters</span>';return;
+  }
+  if(newPin!==newPin2){
+    msg.innerHTML='<span style="color:var(--r)">✕ New PINs do not match</span>';return;
+  }
+  localStorage.setItem('ds_admin_pin',btoa(newPin));
+  msg.innerHTML='<span style="color:var(--g)">✓ PIN updated successfully!</span>';
+  document.getElementById('oldPin').value='';
+  document.getElementById('newPin').value='';
+  document.getElementById('newPin2').value='';
+  setTimeout(()=>{
+    document.getElementById('changePinForm').style.display='none';
+    msg.innerHTML='';
+  },2000);
 }
 
 // ── TOAST ─────────────────────────────────────────────
