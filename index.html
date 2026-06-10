@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -286,8 +285,29 @@ a{text-decoration:none;color:inherit}
 .sec-label{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
 /* Platform grid */
 .plt-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:24px}
-@media(max-width:880px){.plt-grid{grid-template-columns:repeat(3,1fr)}}
+
+/* ── GITHUB CONNECT BAR ── */
+.gh-connect{display:flex;align-items:center;gap:12px;background:var(--bg2);border:1px solid var(--gb);border-radius:12px;padding:12px 16px;margin-bottom:16px;flex-wrap:wrap}
+.gh-connect.connected{border-color:var(--gb);background:var(--gs)}
+.gh-status{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.gh-status-dot{width:8px;height:8px;border-radius:50%;background:var(--am);flex-shrink:0}
+.gh-status-dot.ok{background:var(--g)}
+.gh-status-txt{font-size:12px;color:var(--t2)}
+.gh-status-sub{font-size:10px;color:var(--t3)}
+.btn-gh-connect{padding:7px 16px;border-radius:8px;background:#24292e;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px;transition:.15s;border:1px solid rgba(255,255,255,.1)}
+.btn-gh-connect:hover{background:#1a1e22}
+.btn-gh-connect.connected{background:var(--gs);color:var(--g);border-color:var(--gb)}
+/* ── SKILL MATCH BADGE ── */
+.skill-match{position:absolute;bottom:14px;right:16px;padding:2px 7px;border-radius:6px;font-size:10px;font-weight:800;letter-spacing:.3px}
+.sm-high{background:var(--gs);color:var(--g);border:1px solid var(--gb)}
+.sm-med{background:var(--ams);color:var(--am);border:1px solid var(--amb)}
+.sm-low{background:var(--bg3);color:var(--t3);border:1px solid var(--b1)}
+/* ── PLATFORM GRID 7 cols for 14 platforms ── */
+.plt-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:24px}
+@media(max-width:1100px){.plt-grid{grid-template-columns:repeat(5,1fr)}}
+@media(max-width:760px){.plt-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:480px){.plt-grid{grid-template-columns:repeat(2,1fr)}}
+
 .pc{background:var(--bg2);border:1.5px solid var(--b1);border-radius:14px;padding:16px 10px 14px;cursor:pointer;transition:all .18s;position:relative;text-align:center}
 .pc:hover{border-color:var(--b3);background:var(--bg3);transform:translateY(-2px)}
 .pc.on{border-color:var(--a);background:var(--as);box-shadow:0 0 0 1px var(--a)}
@@ -512,15 +532,15 @@ a{text-decoration:none;color:inherit}
     <div class="hero-eyebrow"><span></span>Live APIs Active · 10 Platforms</div>
     <h1>Go beyond LinkedIn.<br><em>Find developers where</em><br><em>they actually build.</em></h1>
     <div class="hero-tagline">Finding developers on their native platforms.</div>
-    <p class="hero-sub">GitHub profiles. Stack Overflow answers. Dev.to articles. Real signals from where developers work — not just where they list skills.</p>
+    <p class="hero-sub">GitHub · Stack Overflow · Dev.to · HackerEarth · Codeforces · AngelList · Kaggle · LeetCode · Reddit · Toptal and 4 more — all in one intelligent search.</p>
     <div class="hero-btns">
       <button class="btn-hero" onclick="showAuth()">Start Free Trial — 1 Day Free →</button>
       <button class="btn-hero-sec" onclick="scrollToSection('#how')">See How It Works ↓</button>
     </div>
     <div class="hero-stats">
-      <div class="hstat"><div class="hstat-n">10</div><div class="hstat-l">Platforms</div></div>
+      <div class="hstat"><div class="hstat-n">14</div><div class="hstat-l">Platforms</div></div>
       <div class="hstat"><div class="hstat-n">3</div><div class="hstat-l">Live APIs</div></div>
-      <div class="hstat"><div class="hstat-n">7</div><div class="hstat-l">Smart Search</div></div>
+      <div class="hstat"><div class="hstat-n">11</div><div class="hstat-l">Smart Search</div></div>
       <div class="hstat"><div class="hstat-n">Real</div><div class="hstat-l">Profiles</div></div>
     </div>
   </section>
@@ -630,14 +650,47 @@ a{text-decoration:none;color:inherit}
       </div>
       <div class="pcard">
         <div class="smart-badge">SMART</div>
-        <div class="pcard-ic" style="background:#f5f3ff;border-radius:6px">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="#2962ff"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-.375 4.5h.75v3h-.75V4.5zm-7.5 7.125v-.75h3v.75h-3zm12.75 0v-.75h3v.75h-3zm-6-6a5.625 5.625 0 0 1 5.625 5.625 5.625 5.625 0 0 1-5.625 5.625A5.625 5.625 0 0 1 6.375 11.25 5.625 5.625 0 0 1 12 5.625zm0 1.5a4.125 4.125 0 0 0-4.125 4.125A4.125 4.125 0 0 0 12 15.375a4.125 4.125 0 0 0 4.125-4.125A4.125 4.125 0 0 0 12 7.125zm0 1.5a2.625 2.625 0 0 1 2.625 2.625A2.625 2.625 0 0 1 12 13.875a2.625 2.625 0 0 1-2.625-2.625A2.625 2.625 0 0 1 12 8.625z"/></svg>
+        <div class="pcard-ic" style="background:#f5f5f5;border-radius:6px">
+          <svg width="18" height="18" viewBox="0 0 24 24"><rect x="2" y="10" width="5" height="12" rx="1" fill="#1da1f2"/><rect x="9.5" y="4" width="5" height="18" rx="1" fill="#e74c3c"/><rect x="17" y="7" width="5" height="15" rx="1" fill="#f39c12"/></svg>
         </div>
         <div>
-          <div class="pcard-nm">Hashnode</div>
+          <div class="pcard-nm">Codeforces</div>
           <div class="pcard-tp">Smart Search</div>
         </div>
-        <div class="pcard-tip"><strong>Hashnode</strong>Useful for: Technical bloggers, full-stack devs who document publicly. Views + articles = active builder signal.</div>
+        <div class="pcard-tip"><strong>Codeforces</strong>Competitive programmers. Grandmaster/Master rating = exceptional DSA. Top product company hire signal.</div>
+      </div>
+      <div class="pcard">
+        <div class="smart-badge">SMART</div>
+        <div class="pcard-ic" style="background:#fff0f5;border-radius:6px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#323754"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l7 4.5-7 4.5z"/></svg>
+        </div>
+        <div>
+          <div class="pcard-nm">HackerEarth</div>
+          <div class="pcard-tp">Smart Search</div>
+        </div>
+        <div class="pcard-tip"><strong>HackerEarth</strong>5M+ Indian developers. Hackathon winners, challenge solvers. India's largest coding platform.</div>
+      </div>
+      <div class="pcard">
+        <div class="smart-badge">SMART</div>
+        <div class="pcard-ic" style="background:#f0f4ff;border-radius:6px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 14.5c-1.5 0-2.8-.6-3.8-1.5l-1.2 1.2-1.4-1.4 1.2-1.2C5.6 13.6 5 12.3 5 11c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 5.5-4.5 5.5zm0-9c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4z"/></svg>
+        </div>
+        <div>
+          <div class="pcard-nm">AngelList</div>
+          <div class="pcard-tp">Smart Search</div>
+        </div>
+        <div class="pcard-tip"><strong>AngelList / Wellfound</strong>Startup-focused developers in Bengaluru, Hyderabad, Pune. Open to opportunities at funded startups.</div>
+      </div>
+      <div class="pcard">
+        <div class="smart-badge">SMART</div>
+        <div class="pcard-ic" style="background:#f0f4ff;border-radius:6px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#204ecf"><path d="M20.227 9.612L13.997.23a.5.5 0 0 0-.828 0l-2.021 2.944 3.315 4.827a.5.5 0 0 1-.828.568L10.32 4.142 3.772 13.61a.5.5 0 0 0 .414.778h4.32l-4.32 6.292a.5.5 0 0 0 .829.568l9.52-13.871 1.5 2.185-9.52 13.871a.5.5 0 0 0 .828 0l4.32-6.292h4.32a.5.5 0 0 0 .414-.778z"/></svg>
+        </div>
+        <div>
+          <div class="pcard-nm">Toptal</div>
+          <div class="pcard-tp">Smart Search</div>
+        </div>
+        <div class="pcard-tip"><strong>Toptal</strong>Top 3% verified freelancers globally. 8,000+ India experts. Ideal for contract/freelance hiring.</div>
       </div>
     </div>
   </section>
@@ -884,9 +937,76 @@ a{text-decoration:none;color:inherit}
         <div class="pc-tp">Smart Search</div>
         <div class="pc-tip"><strong>AWS User Group</strong>Cloud architects, DevOps engineers. UG leaders = community-recognized AWS experts.</div>
       </div>
+      <!-- ── 4 NEW PLATFORMS ── -->
+      <div class="pc xr" data-p="hackerearth" onclick="selPlat(this)">
+        <div class="sm-pill">Smart</div>
+        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="#2c3e50"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-1.5 16.5v-9l7.5 4.5-7.5 4.5z" fill="#323754"/><text x="6" y="16" font-size="9" font-weight="bold" fill="#fff" font-family="Arial">HE</text></svg></div>
+        <div class="pc-nm">HackerEarth</div>
+        <div class="pc-tp">Smart Search</div>
+        <div class="pc-tip"><strong>HackerEarth</strong>5M+ Indian developers. Best platform for competitive programmers and hackathon winners. India-first.</div>
+      </div>
+      <div class="pc xr" data-p="codeforces" onclick="selPlat(this)">
+        <div class="sm-pill">Smart</div>
+        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="#1da1f2"><rect x="2" y="10" width="5" height="12" rx="1" fill="#1da1f2"/><rect x="9.5" y="4" width="5" height="18" rx="1" fill="#e74c3c"/><rect x="17" y="7" width="5" height="15" rx="1" fill="#f39c12"/></svg></div>
+        <div class="pc-nm">Codeforces</div>
+        <div class="pc-tp">Smart Search</div>
+        <div class="pc-tip"><strong>Codeforces</strong>World-class competitive programmers. Grandmaster/Master rating = exceptional DSA skill. Top product company hire signal.</div>
+      </div>
+      <div class="pc xr" data-p="angellist" onclick="selPlat(this)">
+        <div class="sm-pill">Smart</div>
+        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="#000"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm.5 17.5c-1.5 0-2.8-.6-3.8-1.5l-1.2 1.2-1.4-1.4 1.2-1.2C6.6 13.6 6 12.3 6 11c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6.5-5.5 6.5zm0-10.5c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4z"/></svg></div>
+        <div class="pc-nm">AngelList</div>
+        <div class="pc-tp">Smart Search</div>
+        <div class="pc-tip"><strong>AngelList / Wellfound</strong>Startup-focused developers in Bengaluru, Hyderabad, Pune. Active job seekers at funded startups.</div>
+      </div>
+      <div class="pc xr" data-p="toptal" onclick="selPlat(this)">
+        <div class="sm-pill">Smart</div>
+        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="#204ecf"><path d="M20.227 9.612L13.997.23a.5.5 0 0 0-.828 0l-2.021 2.944 3.315 4.827a.5.5 0 0 1-.828.568L10.32 4.142 3.772 13.61a.5.5 0 0 0 .414.778h4.32l-4.32 6.292a.5.5 0 0 0 .829.568l9.52-13.871 1.5 2.185-9.52 13.871a.5.5 0 0 0 .828 0l4.32-6.292h4.32a.5.5 0 0 0 .414-.778z"/></svg></div>
+        <div class="pc-nm">Toptal</div>
+        <div class="pc-tp">Smart Search</div>
+        <div class="pc-tip"><strong>Toptal</strong>Top 3% freelance developers globally. India has 8,000+ Toptal-verified experts. Ideal for contract/freelance hiring.</div>
+      </div>
     </div>
 
-    <div class="sbox" id="sbox">
+    <!-- GitHub Token Connect Bar -->
+<div class="gh-connect" id="ghConnectBar">
+  <div class="gh-status">
+    <div class="gh-status-dot" id="ghDot"></div>
+    <div>
+      <div class="gh-status-txt" id="ghTxt">Connect GitHub for 50+ results per search</div>
+      <div class="gh-status-sub" id="ghSub">Without token: max 10 results · With token: 5000 req/hr</div>
+    </div>
+  </div>
+  <button class="btn-gh-connect" id="ghBtn" onclick="connectGitHub()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+    Connect GitHub
+  </button>
+</div>
+<!-- GitHub Token Modal -->
+<div class="ov" id="ghMod"><div class="modal" style="max-width:480px">
+  <div class="mhd"><div class="mtt">🐙 Connect GitHub Token</div><button class="mcl" onclick="closeMod('ghMod')">✕</button></div>
+  <div class="mbd">
+    <div style="background:var(--bg3);border:1px solid var(--b1);border-radius:10px;padding:14px;margin-bottom:16px;font-size:12px;color:var(--t2);line-height:1.7">
+      <strong style="color:var(--t1)">Why connect?</strong><br>
+      Without token: GitHub limits to <strong style="color:var(--r)">10 results/hr</strong> shared across all users.<br>
+      With your token: <strong style="color:var(--g)">5,000 requests/hr</strong> personal quota → 50+ results per search.
+    </div>
+    <div style="background:var(--as);border:1px solid var(--ab);border-radius:10px;padding:14px;margin-bottom:16px;font-size:12px;line-height:1.7">
+      <strong style="color:var(--a)">How to get a free token (60 seconds):</strong><br>
+      1. Go to <a href="https://github.com/settings/tokens/new" target="_blank" style="color:var(--a)">github.com/settings/tokens/new</a><br>
+      2. Note: "DevSourcing search" · Expiration: No expiration<br>
+      3. Scopes: tick <strong>public_repo</strong> only (read-only, safe)<br>
+      4. Click Generate → Copy token → Paste below
+    </div>
+    <div class="fg"><div class="fl">GitHub Personal Access Token</div>
+      <input class="fi" id="ghTokenInput" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+    </div>
+    <button class="bts" style="width:100%;justify-content:center" onclick="saveGHToken()">✓ Save Token & Connect</button>
+    <p style="font-size:11px;color:var(--t3);text-align:center;margin-top:10px">Token stored in your browser only. Never sent to our servers.</p>
+  </div>
+</div></div>
+
+<div class="sbox" id="sbox">
       <div class="spbar">
         <span class="sp-ic" id="spIc"></span>
         <span class="sp-nm" id="spNm"></span>
@@ -1067,7 +1187,7 @@ function showPage(id){
 }
 function goHome(){showPage('pageHome');updateNavLinks(false);}
 function showAuth(){showPage('pageAuth');updateNavLinks(false);}
-function showApp(){showPage('pageApp');updateNavLinks(true);}
+function showApp(){showPage('pageApp');updateNavLinks(true);setTimeout(updateGHBar,100);}
 function showAdminPage(){showPage('pageAdmin');updateNavLinks(true);loadAdmOverview();}
 function scrollToSection(sel){
   if(document.getElementById('pageHome').style.display==='none'||document.getElementById('pageHome').style.display===''){
@@ -1104,7 +1224,11 @@ const PM={
   medium:{n:'Medium',ic:'📰',d:'Technical writers — Smart Search',xr:true},
   meetup:{n:'Meetup',ic:'🤝',d:'Community members — Smart Search',xr:true},
   gdg:{n:'GDG',ic:'🎤',d:'GDG speakers — Smart Search',xr:true},
-  aws:{n:'AWS UG',ic:'☁️',d:'AWS community leaders — Smart Search',xr:true}
+  aws:{n:'AWS UG',ic:'☁️',d:'AWS community leaders — Smart Search',xr:true},
+  hackerearth:{n:'HackerEarth',ic:'💻',d:'5M+ Indian developers — Smart Search',xr:true},
+  codeforces:{n:'Codeforces',ic:'📊',d:'Competitive programmers — Smart Search',xr:true},
+  angellist:{n:'AngelList',ic:'🚀',d:'Startup developers — Smart Search',xr:true},
+  toptal:{n:'Toptal',ic:'⭐',d:'Top 3% verified freelancers — Smart Search',xr:true}
 };
 
 // ── SMART SEARCH ──────────────────────────────────────
@@ -1114,7 +1238,11 @@ const XRAY={
     {l:`Reddit dev profile → GitHub crossref`,q:`site:reddit.com/u/ "${sk}" github.com "${cy}"`},
     {l:`Subreddit top posters — ${sk}`,q:`site:reddit.com/r/ "${sk}" "${cy}" top contributor 2024`},
     {l:`Reddit + LinkedIn crossref`,q:`reddit.com/u/ "${sk}" developer "${cy}" site:linkedin.com/in`},
-    {l:`Reddit dev AMA / intro post`,q:`site:reddit.com "${sk}" developer "${cy}" "I am a" OR "AMA"`},
+    {l:`Reddit dev AMA / intro post`,q:`site:reddit.com "\${sk}" developer "\${cy}" "I am a" OR "AMA"`},
+    {l:`Reddit India dev community`,q:`site:reddit.com/r/india "\${sk}" developer "\${cy}"`},
+    {l:`Reddit r/developersIndia`,q:`site:reddit.com/r/developersIndia "\${sk}" "\${cy}"`},
+    {l:`Reddit career post — \${sk}`,q:`site:reddit.com "\${sk}" "\${cy}" "years of experience" OR "currently working"`},
+    {l:`Reddit open source contributor`,q:`site:reddit.com "\${sk}" "\${cy}" "open source" contribution 2024`},
   ]},
   kaggle:{gen:(sk,cy)=>[
     {l:'Kaggle Expert/Master by skill + city',q:`site:kaggle.com "${sk}" "${cy}" Expert OR Master`},
@@ -1151,6 +1279,54 @@ const XRAY={
     {l:'Google Developer Expert India',q:`site:linkedin.com/in "Google Developer Expert" "${sk}" India`},
     {l:'Sessionize GDG speaker',q:`site:sessionize.com "${cy}" "${sk}" GDG OR DevFest`},
   ]},
+  hackerearth:{gen:(sk,cy)=>[
+    {l:`HackerEarth profiles — ${sk} + ${cy}`,q:`site:hackerearth.com "${sk}" "${cy}"`},
+    {l:`HackerEarth India ${sk} developer`,q:`site:hackerearth.com/profile "${sk}" India`},
+    {l:`HackerEarth hackathon winner — ${sk}`,q:`site:hackerearth.com "${sk}" "${cy}" hackathon winner OR finalist`},
+    {l:`HackerEarth → LinkedIn crossref`,q:`site:linkedin.com/in "${sk}" HackerEarth "${cy}"`},
+    {l:`HackerEarth + GitHub combo`,q:`"${sk}" "${cy}" site:hackerearth.com OR site:github.com developer`},
+    {l:`HackerEarth challenge solver India`,q:`site:hackerearth.com/challenges "${sk}" India 2024`},
+    {l:`HackerEarth top coder ${sk}`,q:`site:hackerearth.com "${sk}" "top coder" OR "expert" India`},
+    {l:`HackerEarth recruit profile ${sk}`,q:`site:hackerearth.com/recruit "${sk}" "${cy}"`},
+    {l:`HackerEarth sprint finalist`,q:`site:hackerearth.com "${sk}" sprint "${cy}" finalist`},
+    {l:`HackerEarth blog author ${sk}`,q:`site:hackerearth.com/blog "${sk}" India developer`},
+  ]},
+  codeforces:{gen:(sk,cy)=>[
+    {l:`Codeforces profile — India ${cy}`,q:`site:codeforces.com/profile "${cy}" OR India "${sk}"`},
+    {l:`Codeforces Master/Grandmaster India`,q:`site:codeforces.com "Master" OR "Grandmaster" India "${sk}"`},
+    {l:`Codeforces → LinkedIn crossref`,q:`site:linkedin.com/in "${sk}" Codeforces Master OR Grandmaster India`},
+    {l:`Codeforces + GitHub combo`,q:`"${cy}" Codeforces "${sk}" site:github.com`},
+    {l:`Codeforces top rated Indian ${sk}`,q:`site:codeforces.com India "${cy}" rating "${sk}"`},
+    {l:`Codeforces ICPC India team`,q:`site:codeforces.com ICPC India "${cy}" "${sk}"`},
+    {l:`Codeforces blog author ${sk}`,q:`site:codeforces.com/blog "${sk}" India`},
+    {l:`Codeforces Candidate Master India`,q:`"Candidate Master" Codeforces India "${cy}" "${sk}"`},
+    {l:`Codeforces problem setter India`,q:`site:codeforces.com "problem setter" India "${sk}"`},
+    {l:`CF rated developer on LinkedIn`,q:`site:linkedin.com/in "Codeforces" "${sk}" "${cy}" rated`},
+  ]},
+  angellist:{gen:(sk,cy)=>[
+    {l:`AngelList/Wellfound — ${sk} in ${cy}`,q:`site:wellfound.com/u "${sk}" "${cy}"`},
+    {l:`Wellfound developer profile India`,q:`site:wellfound.com/u "${sk}" India startup`},
+    {l:`AngelList talent ${sk} Bengaluru/Hyderabad`,q:`site:angel.co/u "${sk}" "${cy}" developer`},
+    {l:`Wellfound → LinkedIn crossref`,q:`site:linkedin.com/in "${sk}" "${cy}" startup "AngelList" OR "Wellfound"`},
+    {l:`Wellfound startup CTO/tech lead`,q:`site:wellfound.com/u "${sk}" India CTO OR "tech lead" OR founder`},
+    {l:`AngelList remote ${sk} India`,q:`site:wellfound.com/u "${sk}" India remote`},
+    {l:`Wellfound funded startup developer`,q:`site:wellfound.com "${sk}" "${cy}" funded 2024`},
+    {l:`AngelList + GitHub combo`,q:`"${sk}" "${cy}" site:angel.co OR site:github.com developer`},
+    {l:`Wellfound verified skills ${sk}`,q:`site:wellfound.com/u "${sk}" India "open to opportunities"`},
+    {l:`AngelList India ${sk} senior dev`,q:`site:angel.co/u "${sk}" India "senior" OR "lead" "${cy}"`},
+  ]},
+  toptal:{gen:(sk,cy)=>[
+    {l:`Toptal verified ${sk} developer India`,q:`site:toptal.com/resume "${sk}" India`},
+    {l:`Toptal ${sk} freelancer profile`,q:`site:toptal.com/developers "${sk}"`},
+    {l:`Toptal expert ${sk} → LinkedIn`,q:`site:linkedin.com/in "${sk}" "Toptal" India "${cy}"`},
+    {l:`Toptal India developer network`,q:`site:toptal.com "${sk}" India freelancer expert`},
+    {l:`Toptal blog author ${sk}`,q:`site:toptal.com/developers/blog "${sk}" India author`},
+    {l:`Toptal + GitHub combo India`,q:`"${sk}" India Toptal site:github.com`},
+    {l:`Toptal community ${sk} writer`,q:`site:toptal.com/community "${sk}" India`},
+    {l:`Toptal expert directory ${sk}`,q:`site:toptal.com/hire "${sk}" India`},
+    {l:`Toptal → AngelList combo`,q:`"${sk}" "${cy}" site:toptal.com OR site:wellfound.com`},
+    {l:`Toptal certified ${sk} India 2024`,q:`"Toptal" "${sk}" India certified expert 2024`},
+  ]},
   aws:{gen:(sk,cy)=>[
     {l:'AWS UG leader on LinkedIn',q:`site:linkedin.com/in "AWS User Group" "${cy}" leader OR organizer`},
     {l:'AWS Community Hero India',q:`site:linkedin.com/in "AWS Community Hero" India "${sk}"`},
@@ -1166,59 +1342,255 @@ function scoreSO(u){let s=40;s+=Math.min(u.reputation/500,30);s+=Math.min((u.bad
 function scoreDT(rc,ac,fc){let s=50;s+=Math.min(rc/50,20);s+=Math.min(ac*2,15);s+=Math.min(fc/100,15);return Math.min(Math.round(s),99);}
 
 async function searchGitHub(skill,city){
-  // Randomize page to get different results each search
+  const token=getGHToken();
+  const headers={Accept:'application/vnd.github.v3+json',...(token?{Authorization:`token ${token}`}:{})};
+  const cityVar=city||'India';
+  // 3 different query strategies — rotate for variety
+  const qList=[
+    `location:"${cityVar}" ${skill} in:bio`,
+    `location:"${cityVar}" language:${skill}`,
+    `location:"${cityVar}" ${skill} repos:>3 followers:>5`
+  ];
+  const q=qList[Math.floor(Math.random()*qList.length)];
   const page=Math.floor(Math.random()*3)+1;
-  const q=encodeURIComponent(`location:${city} ${skill} in:bio,readme`);
-  const r=await fetch(`https://api.github.com/search/users?q=${q}&per_page=12&sort=followers&page=${page}`,{headers:{Accept:'application/vnd.github.v3+json'}});
-  if(!r.ok)throw new Error(r.status===403?'GitHub rate limit hit — wait 60 seconds and try again.':'GitHub API error '+r.status);
-  const data=await r.json();
-  if(!data.items?.length){
-    // Fallback to page 1 if no results
-    if(page>1){
-      const r2=await fetch(`https://api.github.com/search/users?q=${q}&per_page=12&sort=followers`,{headers:{Accept:'application/vnd.github.v3+json'}});
-      const d2=await r2.json();
-      if(!d2.items?.length)return[];
-      data.items=d2.items;
-    } else return[];
+  let items=[];
+  try{
+    const r=await fetch(`https://api.github.com/search/users?q=${encodeURIComponent(q)}&per_page=${token?30:15}&sort=followers&page=${page}`,{headers});
+    if(r.status===403)throw new Error('GitHub rate limit hit — wait 60 seconds and try again.');
+    if(r.ok){const d=await r.json();items=d.items||[];}
+  }catch(e){throw e;}
+  // Fallback to page 1 with first query if nothing found
+  if(!items.length&&page>1){
+    const r2=await fetch(`https://api.github.com/search/users?q=${encodeURIComponent(qList[0])}&per_page=${token?30:15}&sort=followers`,{headers});
+    if(r2.ok){const d2=await r2.json();items=d2.items||[];}
   }
-  // Shuffle results so order varies
-  const shuffled=[...data.items].sort(()=>Math.random()-.5);
-  const details=await Promise.allSettled(shuffled.slice(0,8).map(u=>
-    fetch(`https://api.github.com/users/${u.login}`,{headers:{Accept:'application/vnd.github.v3+json'}}).then(r=>r.json())
+  if(!items.length)return[];
+  // Shuffle so results vary each search
+  const shuffled=[...items].sort(()=>Math.random()-.5).slice(0,10);
+  const details=await Promise.allSettled(shuffled.map(u=>
+    fetch(`https://api.github.com/users/${u.login}`,{headers}).then(r=>r.json())
   ));
-  return details.filter(d=>d.status==='fulfilled'&&d.value.login&&d.value.type==='User').map(d=>{
-    const u=d.value;
-    return{id:u.id,name:u.name||u.login,user:u.login,loc:u.location||city,p:'github',bio:u.bio||`GitHub developer. ${u.public_repos} repos, ${u.followers} followers.`,av:u.avatar_url,url:`https://github.com/${u.login}`,sigs:[{t:`⭐ ${u.followers} followers`,c:'blue'},{t:`📁 ${u.public_repos} repos`,c:''},...(u.company?[{t:`🏢 ${u.company.replace('@','')}`,c:'green'}]:[])],sc:scoreGH(u),blog:u.blog,company:u.company,email:u.email};
-  });
+  return details
+    .filter(d=>d.status==='fulfilled'&&d.value.login&&d.value.type==='User')
+    .map(d=>{
+      const u=d.value;
+      return{
+        id:u.id,name:u.name||u.login,user:u.login,
+        loc:u.location||cityVar,p:'github',
+        bio:u.bio||`GitHub developer · ${u.public_repos} repos · ${u.followers} followers.`,
+        av:u.avatar_url,url:`https://github.com/${u.login}`,
+        sigs:[
+          {t:`⭐ ${u.followers} followers`,c:'blue'},
+          {t:`📁 ${u.public_repos} repos`,c:''},
+          ...(u.company?[{t:`🏢 ${u.company.replace('@','')}`,c:'green'}]:[]),
+          ...(u.blog?[{t:'🌐 Website',c:'sky'}]:[])
+        ],
+        sc:scoreGH(u),blog:u.blog,company:u.company,email:u.email
+      };
+    });
 }
 
 async function searchStackOverflow(skill,city){
-  const page=Math.floor(Math.random()*3)+1;
-  const tag=skill.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9+#.-]/g,'');
-  const r=await fetch(`https://api.stackexchange.com/2.3/users?order=desc&sort=reputation&tagged=${encodeURIComponent(tag)}&site=stackoverflow&pagesize=12&page=${page}`);
-  if(!r.ok)throw new Error('Stack Overflow API error '+r.status);
-  const data=await r.json();
-  const items=(data.items||[]).sort(()=>Math.random()-.5);
-  return items.slice(0,10).map(u=>({id:u.user_id,name:u.display_name,user:String(u.user_id),loc:u.location||city,p:'stackoverflow',bio:`Stack Overflow contributor. ${u.reputation?.toLocaleString()} reputation. ${u.badge_counts?.gold||0} gold, ${u.badge_counts?.silver||0} silver badges.`,av:u.profile_image,url:`https://stackoverflow.com/users/${u.user_id}`,sigs:[{t:`🏆 ${u.reputation?.toLocaleString()} rep`,c:'gold'},...(u.badge_counts?.gold?[{t:`🥇 ${u.badge_counts.gold} gold`,c:'gold'}]:[]),...(u.location?[{t:`📍 ${u.location}`,c:''}]:[])],sc:scoreSO(u),email:null}));
+  // SEDE (Stack Exchange Data Explorer) gives location-filtered results
+  // SO API has no location filter — SEDE SQL queries do
+  const tag=skill.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9+#.]/g,'');
+  const cityQ=city||'India';
+
+  // Try SO API first (no location filter but quick)
+  let apiResults=[];
+  try{
+    const page=Math.floor(Math.random()*3)+1;
+    const r=await fetch(`https://api.stackexchange.com/2.3/users?order=desc&sort=reputation&tagged=${encodeURIComponent(tag)}&site=stackoverflow&pagesize=20&page=${page}`);
+    if(r.ok){
+      const data=await r.json();
+      const all=(data.items||[]);
+      // Soft location filter — match city in location field
+      const cityL=cityQ.toLowerCase();
+      const cityFiltered=all.filter(u=>(u.location||'').toLowerCase().includes(cityL));
+      // Use city-filtered if we got 3+, else use all sorted by rep
+      apiResults=(cityFiltered.length>=3?cityFiltered:all)
+        .sort(()=>Math.random()-.5)
+        .slice(0,10)
+        .map(u=>({
+          id:u.user_id,name:u.display_name,user:String(u.user_id),
+          loc:u.location||cityQ,p:'stackoverflow',
+          bio:`Stack Overflow contributor · ${u.reputation?.toLocaleString()} reputation · ${u.badge_counts?.gold||0} gold, ${u.badge_counts?.silver||0} silver badges.`,
+          av:u.profile_image,url:`https://stackoverflow.com/users/${u.user_id}`,
+          sigs:[
+            {t:`🏆 ${u.reputation?.toLocaleString()} rep`,c:'gold'},
+            ...(u.badge_counts?.gold?[{t:`🥇 ${u.badge_counts.gold} gold`,c:'gold'}]:[]),
+            ...(u.location?[{t:`📍 ${u.location}`,c:''}]:[])
+          ],
+          sc:scoreSO(u),
+          sede_city:cityFiltered.includes(u),
+          email:null
+        }));
+    }
+  }catch(e){console.warn('SO API failed, falling back to SEDE');}
+
+  return apiResults;
+}
+
+// SEDE queries for SO — called from renderCards when SO results are sparse
+function getSOSedeQueries(skill,city){
+  const tag=skill.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9+#.]/g,'');
+  const c=city||'India';
+  // Pre-built SQL queries — open on data.stackexchange.com with params pre-filled
+  const base='https://data.stackexchange.com/stackoverflow/query/new#';
+  const encode=s=>encodeURIComponent(s);
+  return[
+    {
+      l:`SO users in ${c} tagged ${skill} — by reputation`,
+      desc:'Returns users with your city in their location field + skill tag. Most accurate.',
+      sql:`SELECT TOP 20 u.Id, u.DisplayName, u.Location, u.Reputation, u.WebsiteUrl,
+  u.AboutMe, b.Name as TopBadge
+FROM Users u
+LEFT JOIN Badges b ON b.UserId = u.Id AND b.Class = 1
+WHERE u.Location LIKE '%${c}%'
+AND EXISTS (
+  SELECT 1 FROM Posts p
+  JOIN PostTags pt ON pt.PostId = p.Id
+  JOIN Tags t ON t.Id = pt.TagId
+  WHERE p.OwnerUserId = u.Id AND t.TagName = '${tag}'
+)
+ORDER BY u.Reputation DESC`,
+      url:`https://data.stackexchange.com/stackoverflow/query/new`
+    },
+    {
+      l:`Active answerers — ${skill} tag in India`,
+      desc:'Finds users who answered questions in your skill tag + located in India.',
+      sql:`SELECT TOP 20 u.Id, u.DisplayName, u.Location, u.Reputation,
+  COUNT(p.Id) as Answers
+FROM Users u
+JOIN Posts p ON p.OwnerUserId = u.Id AND p.PostTypeId = 2
+JOIN PostTags pt ON pt.PostId = p.ParentId
+JOIN Tags t ON t.Id = pt.TagId AND t.TagName = '${tag}'
+WHERE u.Location LIKE '%${c}%'
+GROUP BY u.Id, u.DisplayName, u.Location, u.Reputation
+ORDER BY Answers DESC`,
+      url:`https://data.stackexchange.com/stackoverflow/query/new`
+    },
+    {
+      l:`High rep ${skill} experts — ${c}`,
+      desc:'Top reputation users in your city who have posted in the skill tag.',
+      sql:`SELECT TOP 15 u.Id, u.DisplayName, u.Location, u.Reputation, u.WebsiteUrl
+FROM Users u
+WHERE u.Location LIKE '%${c}%'
+AND u.Reputation > 1000
+AND u.AboutMe LIKE '%${skill}%'
+ORDER BY u.Reputation DESC`,
+      url:`https://data.stackexchange.com/stackoverflow/query/new`
+    }
+  ];
 }
 
 async function searchDevTo(skill,city){
-  const page=Math.floor(Math.random()*3)+1;
   const tag=skill.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
-  const r=await fetch(`https://dev.to/api/articles?tag=${encodeURIComponent(tag)}&per_page=30&page=${page}`);
-  if(!r.ok)throw new Error('Dev.to API error '+r.status);
-  const articles=await r.json();
-  // Shuffle articles before dedup so we get different authors
-  const shuffled=[...articles].sort(()=>Math.random()-.5);
+  const cityL=(city||'india').toLowerCase();
+  // Fetch multiple pages and combine for richer results
+  const pages=[1,2,3];
+  const fetches=await Promise.allSettled(pages.map(p=>
+    fetch(`https://dev.to/api/articles?tag=${encodeURIComponent(tag)}&per_page=30&page=${p}`).then(r=>r.ok?r.json():[])
+  ));
+  const allArticles=fetches.flatMap(f=>f.status==='fulfilled'?f.value:[]);
+  if(!allArticles.length)throw new Error('Dev.to API error — no articles found for this tag.');
+
+  // Deduplicate authors
   const seen=new Set(),authors=[];
-  for(const a of shuffled){
+  for(const a of allArticles){
     const uid=a.user?.username;
     if(!uid||seen.has(uid))continue;
     seen.add(uid);
-    authors.push({user:a.user,arts:articles.filter(x=>x.user?.username===uid)});
-    if(authors.length>=10)break;
+    const arts=allArticles.filter(x=>x.user?.username===uid);
+    const totalReactions=arts.reduce((s,x)=>s+(x.public_reactions_count||0),0);
+    // Soft city match — check bio/summary for city mention
+    const bioText=(a.user?.summary||'').toLowerCase();
+    const cityMatch=bioText.includes(cityL)||cityL==='india';
+    authors.push({
+      user:a.user,arts,totalReactions,cityMatch,
+      score:scoreDT(totalReactions,arts.length,a.user?.followers_count||0)+(cityMatch&&cityL!=='india'?15:0)
+    });
   }
-  return authors.map(({user:u,arts})=>({id:u.user_id||Math.random(),name:u.name||u.username,user:u.username,loc:city,p:'devto',bio:u.summary||`Dev.to author writing about ${skill}. ${arts.length} articles published.`,av:u.profile_image||u.profile_image_90,url:`https://dev.to/${u.username}`,sigs:[{t:`📝 ${arts.length} articles`,c:'blue'},{t:`❤️ ${arts.reduce((s,a)=>s+(a.public_reactions_count||0),0)} reactions`,c:'gold'}],sc:scoreDT(arts.reduce((s,a)=>s+(a.public_reactions_count||0),0),arts.length,u.followers_count||0),email:null}));
+  // Sort by AI score — city-matched authors bubble up
+  authors.sort((a,b)=>b.score-a.score);
+  const top=authors.slice(0,12);
+
+  return top.map(({user:u,arts,totalReactions,cityMatch})=>({
+    id:u.user_id||Math.random(),
+    name:u.name||u.username,
+    user:u.username,
+    loc:cityMatch&&cityL!=='india'?city:(u.summary?.match(/\b(Bengaluru|Hyderabad|Pune|Chennai|Mumbai|Delhi|Noida|Kolkata|Kochi|Ahmedabad)\b/i)?.[0]||'India'),
+    p:'devto',
+    bio:u.summary||`Dev.to author · ${arts.length} articles on ${skill} · ${totalReactions} reactions.`,
+    av:u.profile_image||u.profile_image_90,
+    url:`https://dev.to/${u.username}`,
+    sigs:[
+      {t:`📝 ${arts.length} articles`,c:'blue'},
+      {t:`❤️ ${totalReactions} reactions`,c:'gold'},
+      ...(cityMatch&&cityL!=='india'?[{t:`📍 ${city}`,c:'green'}]:[{t:'🇮🇳 India',c:''}])
+    ],
+    sc:scoreDT(totalReactions,arts.length,u.followers_count||0),
+    email:null
+  }));
+}
+
+
+// ── GITHUB TOKEN MANAGEMENT ───────────────────────────
+function getGHToken(){return localStorage.getItem('ds_gh_token')||null;}
+
+function saveGHToken(){
+  const t=(document.getElementById('ghTokenInput')||{value:''}).value.trim();
+  if(!t||!t.startsWith('ghp_')){toast('⚠️ Invalid token — must start with ghp_');return;}
+  // Quick verify the token
+  fetch('https://api.github.com/user',{headers:{Authorization:`token ${t}`,Accept:'application/vnd.github.v3+json'}})
+    .then(r=>{
+      if(r.ok){
+        localStorage.setItem('ds_gh_token',t);
+        closeMod('ghMod');
+        updateGHBar();
+        toast('✅ GitHub connected! Now getting 50+ results per search.');
+      } else {
+        toast('❌ Token invalid or expired. Please generate a new one.',4000);
+      }
+    })
+    .catch(()=>toast('❌ Could not verify token. Check your connection.',4000));
+}
+
+function connectGitHub(){
+  if(getGHToken()){
+    // Already connected — show disconnect option
+    if(confirm('GitHub token connected. Click OK to disconnect.')){
+      localStorage.removeItem('ds_gh_token');
+      updateGHBar();
+      toast('GitHub disconnected.');
+    }
+    return;
+  }
+  openMod('ghMod');
+}
+
+function updateGHBar(){
+  const token=getGHToken();
+  const dot=document.getElementById('ghDot');
+  const txt=document.getElementById('ghTxt');
+  const sub=document.getElementById('ghSub');
+  const btn=document.getElementById('ghBtn');
+  const bar=document.getElementById('ghConnectBar');
+  if(!dot)return;
+  if(token){
+    dot.className='gh-status-dot ok';
+    txt.textContent='GitHub connected — 50+ results per search ✓';
+    sub.textContent='5,000 req/hr personal quota active';
+    btn.className='btn-gh-connect connected';
+    btn.innerHTML='✓ Connected';
+    if(bar)bar.style.borderColor='var(--gb)';
+  } else {
+    dot.className='gh-status-dot';
+    txt.textContent='Connect GitHub for 50+ results per search';
+    sub.textContent='Without token: ~10 results · With token: 5,000 req/hr';
+    btn.className='btn-gh-connect';
+    btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg> Connect GitHub';
+  }
 }
 
 // ── PLATFORM SELECT ───────────────────────────────────
@@ -1255,7 +1627,15 @@ async function runSearch(){
   try{
     let results=[];
     if(pl==='github')results=await searchGitHub(sk,ct||'India');
-    else if(pl==='stackoverflow')results=await searchStackOverflow(sk,ct||'India');
+    else if(pl==='stackoverflow'){
+      results=await searchStackOverflow(sk,ct||'India');
+      // Check if we got city-matched results
+      const cityMatched=results.filter(r=>r.sede_city);
+      if(ct&&cityMatched.length<3){
+        // Show SEDE panel alongside API results
+        S.soNeedsSede=true;S.soSedeSkill=sk;S.soSedeCity=ct;
+      } else {S.soNeedsSede=false;}
+    }
     else if(pl==='devto')results=await searchDevTo(sk,ct||'India');
     btn.disabled=false;btn.innerHTML='🔍 Search';
     S.results=results;
@@ -1268,7 +1648,45 @@ async function runSearch(){
 
 function renderCards(results,pl,sk,ct){
   const rw=document.getElementById('rw');
+  if(!results.length&&pl==='stackoverflow'){
+    // Show SEDE queries when SO returns nothing for the city
+    const sedeQ=getSOSedeQueries(sk,ct||'India');
+    rw.innerHTML=`
+      <div class="rbar"><div><div class="rtitle">📚 Stack Overflow — SEDE Queries</div>
+      <div class="rmeta">No API results for "${sk}" in "${ct}" — use SEDE for precise city search</div></div></div>
+      <div class="xintro"><div style="font-size:22px;flex-shrink:0">🗃️</div><div>
+        <div class="xi-tt" style="color:var(--a)">Stack Exchange Data Explorer (SEDE)</div>
+        <div class="xi-sb">SEDE is SO's official SQL query tool with <strong>full location filter</strong>. Data is updated weekly. Copy a query below → paste into SEDE → run → get exact city-filtered SO profiles.</div>
+      </div></div>
+      <div class="xql">${sedeQ.map((q,i)=>`
+        <div class="xqc">
+          <div class="xqn" style="background:var(--as);color:var(--a);border-color:var(--ab)">${i+1}</div>
+          <div class="xqi">
+            <div class="xql-t">${q.l}</div>
+            <div style="font-size:11px;color:var(--t3);margin-bottom:6px">${q.desc}</div>
+            <div class="xql-q" style="white-space:pre-wrap;max-height:none;overflow:visible;font-size:10px;line-height:1.5">${q.sql}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+            <button class="bxo" style="background:var(--as);color:var(--a);border-color:var(--ab)" onclick="window.open('${q.url}','_blank')">🔍 Open SEDE</button>
+            <button class="bxo" style="background:var(--bg3);color:var(--t2);border-color:var(--b2)" onclick="navigator.clipboard.writeText(\`${q.sql.replace(/`/g,"'")}\`).then(()=>toast('SQL copied! ✓'))">📋 Copy SQL</button>
+          </div>
+        </div>`).join('')}
+      </div>`;
+    return;
+  }
   if(!results.length){rw.innerHTML=`<div class="es"><div class="es-ic">🔍</div><div class="es-tt">No profiles found</div><div class="es-sb">No "${sk}" developers found ${ct?'in '+ct:''} on ${PM[pl].n}.<br>Try a different skill or city name.</div></div>`;return;}
+  // If SO has results but few city matches, append SEDE section below
+  let sedeHtml='';
+  if(pl==='stackoverflow'&&S.soNeedsSede){
+    const sedeQ=getSOSedeQueries(sk,ct||'India');
+    sedeHtml=`<div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--b1)">
+      <div style="font-size:13px;font-weight:700;margin-bottom:4px;color:var(--t1)">🗃️ Want city-filtered results? Use SEDE</div>
+      <div style="font-size:12px;color:var(--t3);margin-bottom:12px">These ${results.length} results may not all be from ${ct}. SEDE SQL queries give exact location matching.</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">${sedeQ.slice(0,2).map(q=>`
+        <button onclick="window.open('${q.url}','_blank')" style="padding:8px 14px;border-radius:8px;background:var(--as);color:var(--a);border:1px solid var(--ab);font-size:12px;font-weight:700;cursor:pointer">${q.l}</button>
+      `).join('')}</div>
+    </div>`;
+  }
   const hi=results.filter(p=>p.sc>=80).length;
   rw.innerHTML=`
     <div class="rbar"><div><div class="rtitle">${PM[pl].ic} ${PM[pl].n} — Live Results</div><div class="rmeta">${results.length} real profiles · "${sk}"${ct?' · '+ct:''}</div></div></div>
@@ -1282,7 +1700,8 @@ function renderCards(results,pl,sk,ct){
       <button class="fc on" onclick="filterC('all',this)">All (${results.length})</button>
       <button class="fc" onclick="filterC('hi',this)">Score 80+ (${hi})</button>
     </div>
-    <div class="cgrid" id="cgrid">${results.map(mkCard).join('')}</div>`;
+    <div class="cgrid" id="cgrid">${results.map(mkCard).join('')}</div>
+    ${sedeHtml||''}`;
 }
 
 function mkCard(p){
@@ -1290,11 +1709,14 @@ function mkCard(p){
   const pc={github:'pgh',stackoverflow:'pso',devto:'pdt'}[p.p]||'pgh';
   const pn={github:'GitHub',stackoverflow:'Stack Overflow',devto:'Dev.to'}[p.p]||p.p;
   const sc=p.sc>=80?'shi':p.sc>=60?'smd':'slo';
+  const smPct=calcSkillMatch(p,sk);
+  const smBadge=skillMatchBadge(smPct);
   const isSL=S.shortlist.some(x=>x.id===p.id);
   const av=p.av?`<img src="${p.av}" alt="${p.name}" onerror="this.parentNode.innerHTML='${(p.name||'?')[0]}'"/>`:`${(p.name||'?')[0]}`;
   return `<div class="pfc" id="pfc-${p.id}">
     <div class="pfc-top ${tc}"></div>
     <div class="sring ${sc}">${p.sc}</div>
+    ${smBadge}
     <div class="pfh">
       <div class="pfav">${av}</div>
       <div style="flex:1;min-width:0"><div class="pfnm">${p.name}</div><div class="pfloc">📍 ${p.loc}</div></div>
@@ -1325,6 +1747,31 @@ function renderXray(pl,sk,ct){
     <div class="rbar"><div><div class="rtitle">${PM[pl].ic} ${PM[pl].n} — Smart Search</div><div class="rmeta">${qs.length} precision queries · "${s}" · ${c}</div></div></div>
     <div class="xintro"><div style="font-size:24px;flex-shrink:0">⚡</div><div><div class="xi-tt">How Smart Search works</div><div class="xi-sb">${PM[pl].n} has no public API. We build precision queries using indexed profiles. Click <strong>Open Search</strong> — real developer profiles appear in Google results instantly.</div></div></div>
     <div class="xql">${qs.map((q,i)=>`<div class="xqc"><div class="xqn">${i+1}</div><div class="xqi"><div class="xql-t">${q.l}</div><div class="xql-q">${q.q}</div></div><button class="bxo" onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(q.q)}','_blank')">🔍 Open</button></div>`).join('')}</div>`;
+}
+
+
+// ── SKILL MATCH % ─────────────────────────────────────
+function calcSkillMatch(p,skill){
+  if(!skill)return 100;
+  const sl=skill.toLowerCase();
+  const terms=sl.split(/[\s,+]+/).filter(t=>t.length>1);
+  let hits=0,total=terms.length*3; // bio, sigs, url path
+  const bio=(p.bio||'').toLowerCase();
+  const sigText=(p.sigs||[]).map(s=>s.t.toLowerCase()).join(' ');
+  const url=(p.url||'').toLowerCase();
+  terms.forEach(t=>{
+    if(bio.includes(t))hits++;
+    if(sigText.includes(t))hits++;
+    if(url.includes(t))hits+=0.5;
+  });
+  const pct=Math.min(Math.round((hits/total)*100),100);
+  return pct<10?10:pct; // min 10% so it always shows
+}
+
+function skillMatchBadge(pct){
+  if(pct>=70)return `<span class="skill-match sm-high">${pct}% match</span>`;
+  if(pct>=40)return `<span class="skill-match sm-med">${pct}% match</span>`;
+  return `<span class="skill-match sm-low">${pct}% match</span>`;
 }
 
 // ── SHORTLIST ─────────────────────────────────────────
