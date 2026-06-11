@@ -1101,6 +1101,7 @@ a{text-decoration:none;color:inherit}
       <div class="srow">
         <div><div class="fl">Skill / Language / Role</div><input class="fi" id="iSk" type="text" placeholder="e.g. React, Python, DevOps, Java" onkeydown="if(event.key==='Enter')runSearch()"></div>
         <div><div class="fl">City (India)</div><input class="fi" id="iCt" type="text" placeholder="e.g. Bengaluru, Hyderabad, Pune" onkeydown="if(event.key==='Enter')runSearch()"></div>
+        <div id="tenureCoWrap" style="display:none"><div class="fl">Target Company (optional)</div><input class="fi" id="iTenureCo" type="text" placeholder="e.g. Infosys, TCS, Wipro, JPMorgan"></div>
         <div><div class="fl">Experience</div>
           <select class="fi" id="iEx">
             <option value="">Any level</option>
@@ -1177,23 +1178,38 @@ a{text-decoration:none;color:inherit}
       <div style="background:var(--bg3);border:1px solid var(--b1);border-radius:14px;padding:16px;margin-bottom:14px">
         <div style="font-size:11px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">✅ Active Features</div>
         <div style="display:flex;flex-direction:column;gap:7px">
-          ${[
-            ['🐙 GitHub Live API','Multi-query strategy · 3 rotating search patterns · shuffle results','green'],
-            ['📚 Stack Overflow','SEDE SQL queries + soft city filter','green'],
-            ['✍️ Dev.to','3-page fetch · 90 articles · city soft match · AI score sort','green'],
-            ['🏢 GCC Hunt','100+ companies · LinkedIn X-Ray (8 batches) · GitHub company filter','amber'],
-            ['⏳ Tenure Targeting','Startups 2-3yr · Product 3-5yr · GCC 4-6yr · Behaviour signals','amber'],
-            ['🎯 Score Card Tool','JD match · LinkedIn URL · PDF upload · Bulk folder scoring','blue'],
-            ['📊 Deep Profile','Per-card score card with skill bars + community scores','blue'],
-            ['🔒 Admin Panel','PIN login · Change PIN · REST API stats · CSV export','green'],
-          ].map(([title,desc,color])=>`
           <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:var(--bg2);border:1px solid var(--b1);border-radius:8px">
-            <div style="width:6px;height:6px;border-radius:50%;background:var(--${color==='green'?'g':color==='amber'?'am':'a'});flex-shrink:0;margin-top:5px"></div>
-            <div>
-              <div style="font-size:12px;font-weight:700;color:var(--t1)">${title}</div>
-              <div style="font-size:10px;color:var(--t3);margin-top:1px">${desc}</div>
-            </div>
-          </div>`).join('')}
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--g);flex-shrink:0;margin-top:5px"></div>
+            <div><div style="font-size:12px;font-weight:700;color:var(--t1)">🐙 GitHub Live API</div><div style="font-size:10px;color:var(--t3);margin-top:1px">Multi-query strategy · 3 rotating search patterns · shuffle results</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:var(--bg2);border:1px solid var(--b1);border-radius:8px">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--g);flex-shrink:0;margin-top:5px"></div>
+            <div><div style="font-size:12px;font-weight:700;color:var(--t1)">📚 Stack Overflow</div><div style="font-size:10px;color:var(--t3);margin-top:1px">SEDE SQL queries + soft city filter for Indian cities</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:var(--bg2);border:1px solid var(--b1);border-radius:8px">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--g);flex-shrink:0;margin-top:5px"></div>
+            <div><div style="font-size:12px;font-weight:700;color:var(--t1)">✍️ Dev.to</div><div style="font-size:10px;color:var(--t3);margin-top:1px">3-page fetch · 90 articles · city soft match · AI score sort</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:var(--bg2);border:1px solid var(--b1);border-radius:8px">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--am);flex-shrink:0;margin-top:5px"></div>
+            <div><div style="font-size:12px;font-weight:700;color:var(--t1)">🏢 GCC Hunt</div><div style="font-size:10px;color:var(--t3);margin-top:1px">100+ companies · LinkedIn X-Ray (8 batches) · GitHub company filter</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:var(--bg2);border:1px solid var(--b1);border-radius:8px">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--am);flex-shrink:0;margin-top:5px"></div>
+            <div><div style="font-size:12px;font-weight:700;color:var(--t1)">⏳ Tenure Targeting</div><div style="font-size:10px;color:var(--t3);margin-top:1px">Startups 2-3yr · Product 3-5yr · GCC 4-6yr · Behaviour signals</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:var(--bg2);border:1px solid var(--b1);border-radius:8px">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--a);flex-shrink:0;margin-top:5px"></div>
+            <div><div style="font-size:12px;font-weight:700;color:var(--t1)">🎯 Score Card Tool</div><div style="font-size:10px;color:var(--t3);margin-top:1px">JD match · LinkedIn URL · PDF upload · Bulk folder scoring</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:var(--bg2);border:1px solid var(--b1);border-radius:8px">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--a);flex-shrink:0;margin-top:5px"></div>
+            <div><div style="font-size:12px;font-weight:700;color:var(--t1)">📊 Deep Profile Score Card</div><div style="font-size:10px;color:var(--t3);margin-top:1px">Per-card score card with skill bars + community scores + insights</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:var(--bg2);border:1px solid var(--b1);border-radius:8px">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--g);flex-shrink:0;margin-top:5px"></div>
+            <div><div style="font-size:12px;font-weight:700;color:var(--t1)">🔒 Admin Panel</div><div style="font-size:10px;color:var(--t3);margin-top:1px">PIN login · Change PIN · REST API stats · Extend Pro · CSV export</div></div>
+          </div>
         </div>
       </div>
 
@@ -1384,7 +1400,7 @@ try{firebase.initializeApp(FBC);auth=firebase.auth();db=firebase.database();}
 catch(e){console.warn('Firebase unavailable.');auth={signInWithPopup:()=>Promise.reject({code:'auth/operation-not-supported-in-this-environment',message:'Deploy to a real domain for Google login.'}),signInWithRedirect:()=>{},getRedirectResult:()=>Promise.resolve(null),signOut:()=>Promise.resolve(),onAuthStateChanged:()=>{}};db={ref:()=>({once:()=>Promise.resolve({exists:()=>false,val:()=>null,forEach:()=>{}}),set:()=>Promise.resolve(),update:()=>Promise.resolve(),transaction:f=>{const r=f(0);return Promise.resolve({snapshot:{val:()=>r}})}})};}
 
 const AP='9160075557',AP2='ds@admin9160';
-const S={user:null,plan:null,isAdmin:false,plat:null,results:[],shortlist:[]};
+const S={user:null,plan:null,isAdmin:false,plat:null,results:[],shortlist:[],sk:'',ct:'',ex:''};
 const delay=ms=>new Promise(r=>setTimeout(r,ms));
 
 // ── VISITOR TRACKING ──────────────────────────────────
@@ -1836,7 +1852,7 @@ const TENURE_COMPANIES={
 };
 const TENURE_RANGES={startups:{min:2,max:3,label:'2–3 years'},product:{min:3,max:5,label:'3–5 years'},gcc:{min:4,max:6,label:'4–6 years'}};
 
-function getTenureQueries(skill,city,companyType){
+function getTenureQueries(skill,city,companyType,targetCompany){
   const s=skill||'developer',c=city||'India',type=companyType||'product';
   const companies=TENURE_COMPANIES[type]||TENURE_COMPANIES.product;
   const range=TENURE_RANGES[type]||TENURE_RANGES.product;
@@ -1853,12 +1869,19 @@ function getTenureQueries(skill,city,companyType){
   queries.push({type:'tenure',l:`Same role ${range.min}+ yrs · ${s} · ${c}`,desc:`Developers in same position for ${range.label} — highest response rate`,q:`site:linkedin.com/in "${s}" "${c}" "${joinYears[0]}" OR "${joinYears[1]}" "present"`,tag:'linkedin'});
   queries.push({type:'tenure',l:`Recent certs signal · ${s} · ${c}`,desc:'AWS/GCP/Azure certs = active learner = job-seeking signal',q:`site:linkedin.com/in "${s}" "${c}" ("AWS Certified" OR "GCP" OR "Azure certified") "${joinYears[0]}" OR "${joinYears[1]}"`,tag:'signal'});
   queries.push({type:'tenure',l:`Speaker/Conference signal · ${s} · ${c}`,desc:'Recently started speaking = exploring opportunities signal',q:`site:linkedin.com/in "${s}" "${c}" (speaker OR conference OR meetup OR "tech talk") "${joinYears[0]}" OR "${joinYears[1]}"`,tag:'signal'});
-  queries.push({type:'tenure',l:`GitHub profiles · ${s} · ${c}`,desc:'GitHub profiles — filter by company field at target companies',q:`location:"${c}" ${s} in:bio`,tag:'github',ghUrl:`https://github.com/search?q=location%3A"${encodeURIComponent(c)}"+${encodeURIComponent(s)}+in%3Abio&type=users`});
+  // Specific company targeting (if provided)
+  if(targetCompany){
+    const tc=targetCompany.trim();
+    queries.push({type:'tenure',l:`LinkedIn — ${tc} employees · ${s} · ${c} · ${range.label} tenure`,desc:`Specifically targeting ${tc} employees with ${range.label} tenure`,q:`site:linkedin.com/in "${s}" "${c}" "${tc}" (${yearsStr})`,tag:'linkedin'});
+    queries.push({type:'tenure',l:`GitHub — ${tc} developers · ${s} · ${c}`,desc:`GitHub profiles with company set to ${tc}`,q:`location:"${c}" ${s} company:${tc.toLowerCase().replace(/\s+/g,'')} in:bio`,tag:'github',ghUrl:`https://github.com/search?q=location%3A"${encodeURIComponent(c)}"+${encodeURIComponent(s)}+company%3A${encodeURIComponent(tc.toLowerCase())}&type=users`});
+    queries.push({type:'tenure',l:`${tc} + Open to change · ${s}`,desc:'Tenure signal combined with recent activity suggesting job exploration',q:`site:linkedin.com/in "${s}" "${tc}" "${c}" ("open to" OR "exploring" OR certification) (${yearsStr})`,tag:'signal'});
+  }
+  queries.push({type:'tenure',l:`GitHub profiles · ${s} · ${c}`,desc:`GitHub profiles for ${s} developers in ${c} — cross-reference with company`,q:`location:"${c}" ${s} in:bio`,tag:'github',ghUrl:`https://github.com/search?q=location%3A"${encodeURIComponent(c)}"+${encodeURIComponent(s)}+in%3Abio&type=users`});
   return queries;
 }
 
-function renderTenure(sk,ct,compType){
-  const queries=getTenureQueries(sk,ct,compType||'product');
+function renderTenure(sk,ct,compType,targetCompany){
+  const queries=getTenureQueries(sk,ct,compType||'product',targetCompany||'');
   const liQ=queries.filter(q=>q.tag==='linkedin');
   const sigQ=queries.filter(q=>q.tag==='signal');
   const ghQ=queries.filter(q=>q.tag==='github');
@@ -1878,9 +1901,9 @@ function renderTenure(sk,ct,compType){
       </div>
     </div>
     <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
-      <button onclick="renderTenure('${sk}','${ct}','startups')" style="${btnStyle('startups')}">🚀 Startups (2–3 yrs)</button>
-      <button onclick="renderTenure('${sk}','${ct}','product')" style="${btnStyle('product')}">🏢 Product Co (3–5 yrs)</button>
-      <button onclick="renderTenure('${sk}','${ct}','gcc')" style="${btnStyle('gcc')}">🌐 GCC (4–6 yrs)</button>
+      <button onclick="renderTenure('${sk}','${ct}','startups','${targetCompany||''}')" style="${btnStyle('startups')}">🚀 Startups (2–3 yrs)</button>
+      <button onclick="renderTenure('${sk}','${ct}','product','${targetCompany||''}')" style="${btnStyle('product')}">🏢 Product Co (3–5 yrs)</button>
+      <button onclick="renderTenure('${sk}','${ct}','gcc','${targetCompany||''}')" style="${btnStyle('gcc')}">🌐 GCC (4–6 yrs)</button>
     </div>
     <div style="font-size:11px;font-weight:700;color:var(--a);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">🔗 LinkedIn Tenure Queries (${liQ.length})</div>
     <div class="xql" style="margin-bottom:20px">${liQ.map((q,i)=>`<div class="xqc"><div class="xqn" style="background:var(--as);color:var(--a);border-color:var(--ab)">${i+1}</div><div class="xqi"><div class="xql-t">${q.l}</div><div style="font-size:10px;color:var(--t3);margin-bottom:4px">${q.desc}</div><div class="xql-q">${q.q}</div></div><button class="bxo" onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(q.q)}','_blank')">🔍 Search</button></div>`).join('')}</div>
@@ -2173,6 +2196,9 @@ function exportScoreCard(name, overall, skillsStr){
 function selPlat(el){
   document.querySelectorAll('.pc').forEach(c=>c.classList.remove('on'));
   el.classList.add('on');S.plat=el.dataset.p;
+  // Show tenure company field only for tenure platform
+  const tenureWrap=document.getElementById('tenureCoWrap');
+  if(tenureWrap)tenureWrap.style.display=el.dataset.p==='tenure'?'block':'none';
   const m=PM[S.plat];
   document.getElementById('spIc').textContent=m.ic;
   document.getElementById('spNm').textContent=m.n;
@@ -2188,6 +2214,7 @@ async function runSearch(){
   if(!canSearch()){showPricing();return;}
   const sk=document.getElementById('iSk').value.trim();
   const ct=document.getElementById('iCt').value.trim();
+  S.sk=sk; S.ct=ct; S.ex=document.getElementById('iEx')?.value||'';
   const pl=S.plat;
   if(!pl){toast('Select a platform first');return;}
   if(!sk){toast('Enter a skill or role to search');return;}
@@ -2199,15 +2226,39 @@ async function runSearch(){
     rw.innerHTML=`<div class="ls"><div class="spin"></div>Building Tenure Targeting queries...</div>`;
     await delay(400);
     btn.disabled=false;btn.innerHTML='🔍 Search';
-    renderTenure(sk,ct,'product');
+    const tenureCo=document.getElementById('iTenureCo')?.value?.trim()||'';
+    renderTenure(sk,ct,'product',tenureCo);
     return;
   }
   // GCC Hunt
   if(pl==='gcc'){
     rw.innerHTML=`<div class="ls"><div class="spin"></div>Building GCC Hunt queries for ${sk||'developer'} in ${ct||'India'}...</div>`;
-    await delay(400);
+    await delay(600);
     btn.disabled=false;btn.innerHTML='🔍 Search';
     renderGCC(sk,ct,document.getElementById('iEx').value);
+    // Also fetch GitHub results for top GCCs in parallel
+    try{
+      const ghRes=await searchGitHub(sk||'developer',ct||'India');
+      const gccFiltered=ghRes.filter(u=>{
+        const co=(u.company||'').toLowerCase();
+        const topGCCs=['walmart','jpmorgan','amex','google','microsoft','amazon','barclays','hsbc','deutsche','visa','mastercard','paypal','cisco','adobe','oracle','ibm','sap','qualcomm','intel','honeywell'];
+        return topGCCs.some(g=>co.includes(g));
+      });
+      if(gccFiltered.length>0){
+        const rw2=document.getElementById('rw');
+        const existing=rw2.innerHTML;
+        rw2.innerHTML=`
+          <div style="background:var(--gs);border:1px solid var(--gb);border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;gap:12px;align-items:flex-start">
+            <div style="font-size:20px">🐙</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--g);margin-bottom:4px">Found ${gccFiltered.length} GitHub profiles at GCC companies</div>
+              <div style="font-size:11px;color:var(--t3)">Developers with GCC companies in their GitHub profile</div>
+            </div>
+          </div>
+          <div class="cgrid" id="cgrid">${gccFiltered.map(mkCard).join('')}</div>
+          <div style="margin-top:20px;border-top:1px solid var(--b1);padding-top:16px">${existing}</div>`;
+      }
+    }catch(e){} // silent fail — X-Ray queries still show below
     return;
   }
   if(XRAY[pl]){
@@ -2301,7 +2352,7 @@ function mkCard(p){
   const pc={github:'pgh',stackoverflow:'pso',devto:'pdt'}[p.p]||'pgh';
   const pn={github:'GitHub',stackoverflow:'Stack Overflow',devto:'Dev.to'}[p.p]||p.p;
   const sc=p.sc>=80?'shi':p.sc>=60?'smd':'slo';
-  const smPct=calcSkillMatch(p,sk);
+  const smPct=calcSkillMatch(p,S.sk||sk||'');
   const smBadge=skillMatchBadge(smPct);
   const isSL=S.shortlist.some(x=>x.id===p.id);
   const av=p.av?`<img src="${p.av}" alt="${p.name}" onerror="this.parentNode.innerHTML='${(p.name||'?')[0]}'"/>`:`${(p.name||'?')[0]}`;
@@ -2864,7 +2915,7 @@ function openDp(profileId) {
 
   // Simulate analysis time for effect
   setTimeout(() => {
-    const skill = document.getElementById('iSk')?.value?.trim() || 'Developer';
+    const skill = S.sk || document.getElementById('iSk')?.value?.trim() || 'Developer';
     const scores = scoreFromProfile(profile, skill);
 
     // Set avatar
