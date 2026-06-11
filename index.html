@@ -701,7 +701,7 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
       <button class="btn-hero-sec" onclick="scrollToSection('#how')">See How It Works ↓</button>
     </div>
     <div class="hero-stats">
-      <div class="hstat"><div class="hstat-n">13</div><div class="hstat-l">Platforms</div></div>
+      <div class="hstat"><div class="hstat-n">15</div><div class="hstat-l">Platforms</div></div>
       <div class="hstat"><div class="hstat-n">3</div><div class="hstat-l">Live APIs</div></div>
       <div class="hstat"><div class="hstat-n">10</div><div class="hstat-l">Smart Search</div></div>
       <div class="hstat"><div class="hstat-n">Real</div><div class="hstat-l">Profiles</div></div>
@@ -792,6 +792,18 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
         <div class="pcard-ic" style="background:#f5f3ff;border-radius:6px;font-size:16px;display:flex;align-items:center;justify-content:center">⏳</div>
         <div><div class="pcard-nm">Tenure Target</div><div class="pcard-tp">Passive Candidates</div></div>
         <div class="pcard-tip"><strong>Tenure Targeting</strong>Find engineers at 2-3yr startups, 3-5yr product cos, 4-6yr GCCs. 70% higher response rate than active seekers.</div>
+      </div>
+      <div class="pcard" style="border-color:rgba(6,182,212,.4)">
+        <div class="smart-badge" style="background:linear-gradient(135deg,#06b6d4,#0284c7)">Passive</div>
+        <div class="pcard-ic" style="background:#ecfeff;border-radius:6px;font-size:16px;display:flex;align-items:center;justify-content:center">🕵️</div>
+        <div><div class="pcard-nm">Passive Finder</div><div class="pcard-tp">Hidden Candidates</div></div>
+        <div class="pcard-tip"><strong>Passive Finder</strong>Inactive profiles — no Open to Work, long tenure, dormant 6-12 months. Highest response rates. Your competitors can't see them.</div>
+      </div>
+      <div class="pcard" style="border-color:rgba(217,70,239,.4)">
+        <div class="smart-badge" style="background:linear-gradient(135deg,#d946ef,#9333ea)">AI</div>
+        <div class="pcard-ic" style="background:#fdf4ff;border-radius:6px;font-size:16px;display:flex;align-items:center;justify-content:center">🔮</div>
+        <div><div class="pcard-nm">Hidden Talent</div><div class="pcard-tp">Title Expansion</div></div>
+        <div class="pcard-tip"><strong>Hidden Talent Discovery</strong>"Java Developer" expands to SDE-II, Platform Engineer, Backend Engineer and 9+ more titles. 5x bigger talent pool than LinkedIn.</div>
       </div>
     </div>
   </section>
@@ -1047,6 +1059,22 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
         <div class="pc-tp">100+ Companies</div>
         <div class="pc-tip"><strong>GCC Hunt</strong>Search profiles from 100+ Global Capability Centres — Walmart, JPMorgan, Amex, Google, Microsoft and more. LinkedIn X-Ray + GitHub combined.</div>
       </div>
+      <!-- PASSIVE FINDER -->
+      <div class="pc" data-p="passive" onclick="selPlat(this)" style="border-color:#06b6d4;background:rgba(6,182,212,.06)">
+        <div class="sm-pill" style="background:linear-gradient(135deg,#06b6d4,#0284c7)">Passive</div>
+        <div class="pc-ic" style="font-size:22px">🕵️</div>
+        <div class="pc-nm" style="color:#06b6d4">Passive Finder</div>
+        <div class="pc-tp">Hidden Candidates</div>
+        <div class="pc-tip"><strong>Passive Finder</strong>Find inactive LinkedIn profiles — no "Open to Work", long tenure, dormant 6-12 months. Highest response rates. Invisible to most recruiters.</div>
+      </div>
+      <!-- HIDDEN TALENT -->
+      <div class="pc" data-p="hidden" onclick="selPlat(this)" style="border-color:#d946ef;background:rgba(217,70,239,.06)">
+        <div class="sm-pill" style="background:linear-gradient(135deg,#d946ef,#9333ea)">AI</div>
+        <div class="pc-ic" style="font-size:22px">🔮</div>
+        <div class="pc-nm" style="color:#d946ef">Hidden Talent</div>
+        <div class="pc-tp">Title Expansion</div>
+        <div class="pc-tip"><strong>Hidden Talent Discovery</strong>Search "Java Developer" → AI expands to Backend Engineer, SDE-II, Platform Engineer, Application Developer. 5x bigger talent pool than LinkedIn.</div>
+      </div>
       <div class="pc xr" data-p="aws" onclick="selPlat(this)">
         <div class="sm-pill">Smart</div>
         <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="#ff9900"><path d="M6.763 10.036c0 .296.032.535.088.71.064.176.144.368.256.576.04.063.056.127.056.183 0 .08-.048.16-.152.24l-.503.335a.383.383 0 0 1-.208.072c-.08 0-.16-.04-.239-.112a2.47 2.47 0 0 1-.287-.375 6.18 6.18 0 0 1-.248-.471c-.622.734-1.405 1.101-2.347 1.101-.67 0-1.205-.191-1.596-.574-.391-.384-.59-.894-.59-1.533 0-.678.239-1.23.726-1.644.487-.415 1.133-.623 1.955-.623.272 0 .551.024.846.064.296.04.6.104.918.176v-.583c0-.607-.127-1.030-.375-1.277-.255-.248-.686-.367-1.3-.367-.28 0-.568.031-.863.103-.295.072-.583.16-.862.272a2.287 2.287 0 0 1-.28.104.488.488 0 0 1-.127.023c-.112 0-.168-.08-.168-.247v-.391c0-.128.016-.224.056-.28a.597.597 0 0 1 .224-.167c.279-.144.614-.264 1.005-.36a4.84 4.84 0 0 1 1.246-.151c.95 0 1.644.216 2.091.647.439.43.662 1.085.662 1.963v2.586zm3.24 1.214c.263 0 .534-.048.822-.144.287-.096.543-.271.758-.51.128-.152.224-.32.272-.512.047-.191.08-.423.08-.694v-.335a6.66 6.66 0 0 0-.735-.136 6.02 6.02 0 0 0-.75-.048c-.535 0-.926.104-1.19.32-.262.215-.39.518-.39.917 0 .375.095.655.295.846.191.2.47.296.838.296zm-3.24-1.214H6.5v2.586c0 .878-.222 1.532-.662 1.963-.447.431-1.14.647-2.091.647a4.84 4.84 0 0 1-1.246-.151c-.391-.096-.726-.216-1.005-.36a.597.597 0 0 1-.224-.167c-.04-.056-.056-.152-.056-.28v-.391c0-.167.056-.247.168-.247a.488.488 0 0 1 .127.023 2.287 2.287 0 0 1 .28.104c.279.112.567.2.862.272.295.072.583.103.863.103.614 0 1.045-.119 1.3-.367.248-.247.375-.67.375-1.277v-.583a6.18 6.18 0 0 1-.918.176c-.295.04-.574.064-.846.064-.822 0-1.468-.208-1.955-.623-.487-.414-.726-.966-.726-1.644 0-.639.199-1.149.59-1.533.391-.383.926-.574 1.596-.574.942 0 1.725.367 2.347 1.101a6.18 6.18 0 0 1 .248-.471.383.383 0 0 1 .208-.072z"/></svg></div>
@@ -1230,9 +1258,9 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
             <div style="font-size:9px;color:var(--t3);margin-top:2px">GitHub · SO · Dev.to</div>
           </div>
           <div style="background:var(--bg2);border:1px solid var(--ab);border-radius:8px;padding:10px;text-align:center">
-            <div style="font-size:16px;font-weight:800;color:var(--a)">8</div>
+            <div style="font-size:16px;font-weight:800;color:var(--a)">12</div>
             <div style="font-size:10px;color:var(--t3)">Smart Search</div>
-            <div style="font-size:9px;color:var(--t3);margin-top:2px">Reddit·Kaggle·LeetCode+5</div>
+            <div style="font-size:9px;color:var(--t3);margin-top:2px">+Passive+HiddenTalent+more</div>
           </div>
           <div style="background:var(--bg2);border:1px solid var(--amb);border-radius:8px;padding:10px;text-align:center">
             <div style="font-size:16px;font-weight:800;color:var(--am)">2</div>
@@ -1273,6 +1301,14 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
           <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:var(--bg2);border:1px solid var(--b1);border-radius:8px">
             <div style="width:6px;height:6px;border-radius:50%;background:var(--a);flex-shrink:0;margin-top:5px"></div>
             <div><div style="font-size:12px;font-weight:700;color:var(--t1)">📊 Deep Profile Score Card</div><div style="font-size:10px;color:var(--t3);margin-top:1px">Per-card score card with skill bars + community scores + insights</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:var(--bg2);border:1px solid rgba(6,182,212,.3);border-radius:8px">
+            <div style="width:6px;height:6px;border-radius:50%;background:#06b6d4;flex-shrink:0;margin-top:5px"></div>
+            <div><div style="font-size:12px;font-weight:700;color:var(--t1)">🕵️ Passive Finder</div><div style="font-size:10px;color:var(--t3);margin-top:1px">3 tiers: Dormant · Passive · Active — Google X-Ray with negative signals</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:var(--bg2);border:1px solid rgba(217,70,239,.3);border-radius:8px">
+            <div style="width:6px;height:6px;border-radius:50%;background:#d946ef;flex-shrink:0;margin-top:5px"></div>
+            <div><div style="font-size:12px;font-weight:700;color:var(--t1)">🔮 Hidden Talent Discovery</div><div style="font-size:10px;color:var(--t3);margin-top:1px">Title expansion map · 12 skill categories · 5x bigger talent pool</div></div>
           </div>
           <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:var(--bg2);border:1px solid var(--b1);border-radius:8px">
             <div style="width:6px;height:6px;border-radius:50%;background:var(--g);flex-shrink:0;margin-top:5px"></div>
@@ -1392,6 +1428,33 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
           </div>
         </div>
 
+        <!-- Passive Finder -->
+        <div style="background:var(--bg3);border:1px solid rgba(6,182,212,.3);border-radius:14px;padding:18px;margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <span style="font-size:24px">🕵️</span>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:#06b6d4">Passive Finder</div>
+              <div style="font-size:11px;color:var(--t3)">3 tiers · Dormant · Passive · Active — highest to lowest response rate</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.65;margin-bottom:10px">Uses Google X-Ray with negative keyword exclusions to surface LinkedIn profiles that are NOT actively job hunting. Dormant candidates (4-6yr tenure, no OTW) have the highest response rate.</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+            <div style="background:var(--gs);border:1px solid var(--gb);border-radius:8px;padding:10px;text-align:center"><div style="font-size:13px;font-weight:700;color:var(--g)">🟢 Dormant</div><div style="font-size:10px;color:var(--t3);margin-top:3px">4-6yr tenure · No OTW<br>Highest response</div></div>
+            <div style="background:var(--ams);border:1px solid var(--amb);border-radius:8px;padding:10px;text-align:center"><div style="font-size:13px;font-weight:700;color:var(--am)">🟡 Passive</div><div style="font-size:10px;color:var(--t3);margin-top:3px">No job signals<br>Medium response</div></div>
+            <div style="background:var(--rs);border:1px solid rgba(248,113,113,.3);border-radius:8px;padding:10px;text-align:center"><div style="font-size:13px;font-weight:700;color:var(--r)">🔴 Active</div><div style="font-size:10px;color:var(--t3);margin-top:3px">Open to Work<br>Low response</div></div>
+          </div>
+        </div>
+        <!-- Hidden Talent -->
+        <div style="background:var(--bg3);border:1px solid rgba(217,70,239,.3);border-radius:14px;padding:18px;margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <span style="font-size:24px">🔮</span>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:#d946ef">Hidden Talent Discovery</div>
+              <div style="font-size:11px;color:var(--t3)">AI title expansion · 12 skill categories · 5x bigger talent pool</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.65">Maps searched skill to all equivalent job titles using a built-in taxonomy. "Java Developer" expands to Backend Engineer, SDE-II, Platform Engineer, Application Developer and 9 more titles — giving access to candidates that standard LinkedIn search completely misses.</div>
+        </div>
         <!-- SEDE queries -->
         <div style="background:var(--bg3);border:1px solid var(--b1);border-radius:14px;padding:18px">
           <div style="font-size:13px;font-weight:700;color:var(--t1);margin-bottom:8px">📚 Stack Overflow SEDE</div>
@@ -1445,7 +1508,7 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
         <div class="pc-price" style="font-family:'Sora',sans-serif;font-size:38px;font-weight:800;color:var(--t1);margin-bottom:3px">₹499</div>
         <div style="font-size:12px;color:var(--t3);margin-bottom:14px">per 30 days</div>
         <ul class="pc-features">
-          <li class="pc-feat"><span class="pc-feat-i">✓</span>All 13 platforms incl. GCC Hunt + Tenure Target</li>
+          <li class="pc-feat"><span class="pc-feat-i">✓</span>All 15 platforms incl. GCC Hunt + Tenure + Passive + Hidden Talent</li>
           <li class="pc-feat"><span class="pc-feat-i">✓</span>Unlimited searches per day</li>
           <li class="pc-feat"><span class="pc-feat-i">✓</span>Export shortlist to CSV</li>
           <li class="pc-feat"><span class="pc-feat-i">✓</span>AI signal score on every profile</li>
@@ -1557,7 +1620,9 @@ const PM={
   gdg:{n:'GDG',ic:'🎤',d:'GDG speakers — Smart Search',xr:true},
   aws:{n:'AWS UG',ic:'☁️',d:'AWS community leaders — Smart Search',xr:true},
   gcc:{n:'GCC Hunt',ic:'🏢',d:'100+ GCC companies — LinkedIn X-Ray + GitHub',xr:true},
-  tenure:{n:'Tenure Target',ic:'⏳',d:'Passive candidates by company tenure',xr:true}
+  tenure:{n:'Tenure Target',ic:'⏳',d:'Passive candidates by company tenure',xr:true},
+  passive:{n:'Passive Finder',ic:'🕵️',d:'Inactive LinkedIn profiles — highest response rate',xr:true},
+  hidden:{n:'Hidden Talent',ic:'🔮',d:'AI title expansion — 5x bigger talent pool',xr:true}
 };
 
 
@@ -2266,6 +2331,303 @@ function exportScoreCard(name, overall, skillsStr){
   toast('Score card exported! ✓');
 }
 
+
+// ── PASSIVE FINDER ───────────────────────────────────
+// Finds inactive/dormant LinkedIn profiles — no OTW, long tenure
+
+const PASSIVE_NEGATIVE = [
+  '"Open to Work"','"open to opportunities"','"actively looking"',
+  '"seeking new role"','"seeking opportunities"','"looking for new"',
+  '"excited to announce my new"','"happy to share.*joined"',
+  '"just accepted"','"starting.*new position"'
+];
+
+const PASSIVE_TENURE_YEARS = () => {
+  const y = new Date().getFullYear();
+  // People who joined 2-6 years ago = likely ready to explore
+  return [y-2, y-3, y-4, y-5, y-6].map(String);
+};
+
+function getPassiveQueries(skill, city, exp) {
+  const s = skill || 'developer';
+  const c = city || 'India';
+  const negatives = PASSIVE_NEGATIVE.slice(0, 5).map(n => `-${n}`).join(' ');
+  const tenureYears = PASSIVE_TENURE_YEARS();
+  const yearStr = tenureYears.slice(0, 3).map(y => `"${y}"`).join(' OR ');
+  const queries = [];
+
+  // ── TIER 1: DORMANT — gold candidates ──
+  queries.push({
+    tier: 1,
+    label: '🟢 Dormant Profiles — Highest Response Rate',
+    desc: 'Long tenure (4-6 yrs), no job-seeking signals, likely not being approached',
+    items: [
+      {
+        l: `Dormant ${s} · ${c} · Long tenure · No OTW`,
+        desc: 'Exact match: skill + city + tenure year + no open to work language',
+        q: `site:linkedin.com/in "${s}" "${c}" (${yearStr}) ${negatives}`
+      },
+      {
+        l: `Silent ${s} at stable companies · ${c}`,
+        desc: 'Large stable employer employees with long tenure — not actively networking',
+        q: `site:linkedin.com/in "${s}" "${c}" ("TCS" OR "Infosys" OR "Wipro" OR "HCL" OR "Tech Mahindra") (${yearStr}) ${negatives}`
+      },
+      {
+        l: `Dormant GCC employee · ${s} · ${c}`,
+        desc: 'GCC employee, long tenure, no recent LinkedIn activity signals',
+        q: `site:linkedin.com/in "${s}" "${c}" ("GCC" OR "Global Capability" OR "JPMorgan" OR "Walmart" OR "Barclays") "${tenureYears[2]}" OR "${tenureYears[3]}" ${negatives}`
+      }
+    ]
+  });
+
+  // ── TIER 2: PASSIVE — good candidates ──
+  queries.push({
+    tier: 2,
+    label: '🟡 Passive Profiles — Medium Response Rate',
+    desc: 'No open-to-work badge, not actively posting, but potentially open to right opportunity',
+    items: [
+      {
+        l: `Passive ${s} · ${c} · No job-seeking signals`,
+        desc: 'Skill + city match, explicitly excluding any job-seeking language',
+        q: `site:linkedin.com/in "${s}" "${c}" ${negatives} -"career change" -"job search"`
+      },
+      {
+        l: `Passive ${s} at product companies · ${c}`,
+        desc: 'Product company employees — tend to be passive, well-paid, not actively looking',
+        q: `site:linkedin.com/in "${s}" "${c}" ("Google" OR "Microsoft" OR "Amazon" OR "Adobe" OR "Salesforce") ${negatives}`
+      },
+      {
+        l: `Passive ${s} · no recent posts · ${c}`,
+        desc: 'Profiles with no activity markers — last post likely 6+ months ago',
+        q: `site:linkedin.com/in "${s}" "${c}" -"I am excited" -"thrilled to share" -"proud to announce" -"just published" ${negatives}`
+      },
+      {
+        l: `Passive senior ${s} · ${c}`,
+        desc: 'Senior/lead level passive candidates — higher comp expectations, lower outreach volume',
+        q: `site:linkedin.com/in ("Senior ${s}" OR "Lead ${s}" OR "Principal ${s}") "${c}" ${negatives}`
+      }
+    ]
+  });
+
+  // ── TIER 3: ACTIVE — baseline comparison ──
+  queries.push({
+    tier: 3,
+    label: '🔴 Active Profiles — Low Response Rate (for reference)',
+    desc: 'Currently active/open — lower response as everyone is messaging them',
+    items: [
+      {
+        l: `Active ${s} · ${c} · Open to Work`,
+        desc: 'Standard search — same results everyone else gets',
+        q: `site:linkedin.com/in "${s}" "${c}" "Open to Work"`
+      },
+      {
+        l: `Active ${s} · recently posted · ${c}`,
+        desc: 'Recently active profiles — high competition from other recruiters',
+        q: `site:linkedin.com/in "${s}" "${c}" ("I am excited" OR "thrilled to announce" OR "just joined")`
+      }
+    ]
+  });
+
+  return queries;
+}
+
+function renderPassive(sk, ct, ex) {
+  const queries = getPassiveQueries(sk, ct, ex);
+  const rw = document.getElementById('rw');
+  const tierColors = {1:'var(--g)', 2:'var(--am)', 3:'var(--r)'};
+  const tierBg = {1:'var(--gs)', 2:'var(--ams)', 3:'var(--rs)'};
+  const tierBorder = {1:'var(--gb)', 2:'var(--amb)', 3:'rgba(248,113,113,.3)'};
+
+  rw.innerHTML = `
+    <div class="rbar"><div>
+      <div class="rtitle">🕵️ Passive Finder — ${sk||'Developer'} · ${ct||'India'}</div>
+      <div class="rmeta">${queries.reduce((a,q)=>a+q.items.length,0)} targeted queries across 3 candidate tiers</div>
+    </div></div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">
+      <div style="background:var(--gs);border:1px solid var(--gb);border-radius:12px;padding:14px;text-align:center">
+        <div style="font-size:22px;margin-bottom:6px">🟢</div>
+        <div style="font-size:13px;font-weight:700;color:var(--g)">Dormant</div>
+        <div style="font-size:10px;color:var(--t3);margin-top:3px">4-6yr tenure · No OTW<br>Highest response rate</div>
+      </div>
+      <div style="background:var(--ams);border:1px solid var(--amb);border-radius:12px;padding:14px;text-align:center">
+        <div style="font-size:22px;margin-bottom:6px">🟡</div>
+        <div style="font-size:13px;font-weight:700;color:var(--am)">Passive</div>
+        <div style="font-size:10px;color:var(--t3);margin-top:3px">No job-seeking signals<br>Medium response rate</div>
+      </div>
+      <div style="background:var(--rs);border:1px solid rgba(248,113,113,.3);border-radius:12px;padding:14px;text-align:center">
+        <div style="font-size:22px;margin-bottom:6px">🔴</div>
+        <div style="font-size:13px;font-weight:700;color:var(--r)">Active</div>
+        <div style="font-size:10px;color:var(--t3);margin-top:3px">Open to Work<br>Everyone messaging them</div>
+      </div>
+    </div>
+
+    <div style="background:rgba(6,182,212,.06);border:1px solid rgba(6,182,212,.2);border-radius:14px;padding:16px;margin-bottom:20px;display:flex;gap:12px">
+      <div style="font-size:22px;flex-shrink:0">💡</div>
+      <div style="font-size:12px;color:var(--t2);line-height:1.7">
+        <strong style="color:#06b6d4">How this works:</strong> Google X-Ray searches LinkedIn but <strong>excludes</strong> any profile mentioning "Open to Work", "seeking opportunities" or job-change signals. What remains are passive and dormant candidates — the ones your competitors aren't reaching.<br>
+        <strong style="color:var(--g)">Pro tip:</strong> Start with Dormant (🟢) — these profiles are 3-5x more likely to respond to a well-crafted outreach than active seekers.
+      </div>
+    </div>
+
+    ${queries.map(tier => `
+      <div style="margin-bottom:20px">
+        <div style="font-size:11px;font-weight:800;color:${tierColors[tier.tier]};text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">${tier.label}</div>
+        <div style="font-size:11px;color:var(--t3);margin-bottom:10px">${tier.desc}</div>
+        <div class="xql">
+          ${tier.items.map((q,i) => `
+            <div class="xqc">
+              <div class="xqn" style="background:${tierBg[tier.tier]};color:${tierColors[tier.tier]};border-color:${tierBorder[tier.tier]}">${i+1}</div>
+              <div class="xqi">
+                <div class="xql-t">${q.l}</div>
+                <div style="font-size:10px;color:var(--t3);margin-bottom:4px">${q.desc}</div>
+                <div class="xql-q">${q.q}</div>
+              </div>
+              <button class="bxo" style="background:${tierBg[tier.tier]};color:${tierColors[tier.tier]};border-color:${tierBorder[tier.tier]}"
+                onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(q.q)}','_blank')">🔍 Search</button>
+            </div>`).join('')}
+        </div>
+      </div>`).join('')}`;
+}
+
+// ── HIDDEN TALENT DISCOVERY ───────────────────────────
+// Expands job title to find candidates with equivalent skills
+// but different titles — 5x bigger talent pool
+
+const TITLE_EXPANSION_MAP = {
+  // Backend
+  'java':        ['Java Developer','Backend Engineer','Software Engineer','SDE','SDE-II','SDE-III','Platform Engineer','Application Developer','Full Stack Engineer','Java Programmer','Senior Developer','Tech Lead'],
+  'python':      ['Python Developer','Backend Engineer','Data Engineer','Software Engineer','ML Engineer','Platform Engineer','SDE','DevOps Engineer','Automation Engineer','Full Stack Developer'],
+  'node':        ['Node.js Developer','Backend Developer','Full Stack Engineer','JavaScript Developer','API Developer','Software Engineer','SDE','Web Developer'],
+  'nodejs':      ['Node.js Developer','Backend Developer','Full Stack Engineer','JavaScript Developer','API Developer','Software Engineer','SDE','Web Developer'],
+  // Frontend
+  'react':       ['React Developer','Frontend Developer','UI Developer','Frontend Engineer','JavaScript Developer','Full Stack Developer','SDE','Web Developer','UI Engineer'],
+  'angular':     ['Angular Developer','Frontend Developer','UI Developer','JavaScript Developer','Full Stack Developer','SDE','Frontend Engineer'],
+  'vue':         ['Vue Developer','Frontend Developer','UI Developer','JavaScript Developer','Full Stack Developer'],
+  // Mobile
+  'android':     ['Android Developer','Mobile Developer','Mobile Engineer','Kotlin Developer','Java Developer','SDE','App Developer'],
+  'ios':         ['iOS Developer','Mobile Developer','Swift Developer','Mobile Engineer','SDE','App Developer'],
+  'flutter':     ['Flutter Developer','Mobile Developer','Dart Developer','Cross-Platform Developer','App Developer'],
+  // Cloud/DevOps
+  'devops':      ['DevOps Engineer','Platform Engineer','SRE','Infrastructure Engineer','Cloud Engineer','Release Engineer','Build Engineer'],
+  'aws':         ['AWS Engineer','Cloud Engineer','DevOps Engineer','Platform Engineer','Infrastructure Engineer','Solutions Architect','Cloud Architect'],
+  'kubernetes':  ['Kubernetes Engineer','DevOps Engineer','Platform Engineer','SRE','Cloud Engineer','Infrastructure Engineer'],
+  // Data
+  'data science':['Data Scientist','ML Engineer','AI Engineer','Data Analyst','Research Engineer','Applied Scientist','Data Engineer'],
+  'machine learning':['ML Engineer','AI Engineer','Data Scientist','Research Engineer','Applied ML Engineer','NLP Engineer'],
+  // Full stack
+  'fullstack':   ['Full Stack Developer','Software Engineer','SDE','Web Developer','Application Developer','Product Engineer'],
+  'full stack':  ['Full Stack Developer','Software Engineer','SDE','Web Developer','Application Developer','Product Engineer'],
+  // Default
+  'default':     ['Software Engineer','SDE','SDE-II','Senior Developer','Tech Lead','Application Developer','Platform Engineer']
+};
+
+function getTitleExpansions(skill) {
+  const sl = skill.toLowerCase().trim();
+  // Find best match
+  for (const [key, titles] of Object.entries(TITLE_EXPANSION_MAP)) {
+    if (sl.includes(key) || key.includes(sl)) return {key, titles};
+  }
+  // Partial match
+  for (const [key, titles] of Object.entries(TITLE_EXPANSION_MAP)) {
+    if (sl.split(' ').some(w => key.includes(w) && w.length > 2)) return {key, titles};
+  }
+  return {key: skill, titles: TITLE_EXPANSION_MAP['default']};
+}
+
+function getHiddenTalentQueries(skill, city, exp) {
+  const s = skill || 'developer';
+  const c = city || 'India';
+  const expStr = exp ? `"${exp} years" OR "${parseInt(exp)+1} years"` : '';
+  const expansion = getTitleExpansions(s);
+  const titles = expansion.titles;
+  const queries = [];
+
+  // Group titles into batches of 3
+  const chunks = [];
+  for (let i = 0; i < titles.length; i += 3) chunks.push(titles.slice(i, i+3));
+
+  chunks.forEach((chunk, i) => {
+    const titleStr = chunk.map(t => `"${t}"`).join(' OR ');
+    queries.push({
+      l: `Hidden ${s} talent — ${chunk.join(' · ')}`,
+      desc: `Candidates with these equivalent titles who actually do ${s} work`,
+      q: `site:linkedin.com/in (${titleStr}) "${c}"${expStr ? ' ' + expStr : ''}`,
+      titles: chunk
+    });
+  });
+
+  // Cross-platform GitHub search with expanded titles
+  queries.push({
+    l: `GitHub — ${s} by skill (not title)`,
+    desc: 'GitHub search by actual skill in bio/repos — not just job title',
+    q: `location:"${c}" ${s} in:bio`,
+    isGH: true,
+    ghUrl: `https://github.com/search?q=location%3A"${encodeURIComponent(c)}"+${encodeURIComponent(s)}+in%3Abio&type=users`
+  });
+
+  return {expansion, queries};
+}
+
+function renderHiddenTalent(sk, ct, ex) {
+  const {expansion, queries} = getHiddenTalentQueries(sk, ct, ex);
+  const rw = document.getElementById('rw');
+  const titles = expansion.titles;
+
+  rw.innerHTML = `
+    <div class="rbar"><div>
+      <div class="rtitle">🔮 Hidden Talent — ${sk||'Developer'} · ${ct||'India'}</div>
+      <div class="rmeta">${queries.length} title-expanded queries · ${titles.length} equivalent job titles identified</div>
+    </div></div>
+
+    <div style="background:rgba(217,70,239,.06);border:1px solid rgba(217,70,239,.2);border-radius:14px;padding:18px;margin-bottom:20px;display:flex;gap:14px">
+      <div style="font-size:24px;flex-shrink:0">🔮</div>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#d946ef;margin-bottom:6px">Why "Hidden Talent" finds more candidates</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.7">
+          When you search <strong style="color:var(--t1)">"${sk||'Java Developer'}"</strong> on LinkedIn, you see the same profiles as every other recruiter.<br>
+          But the same skill appears under <strong style="color:#d946ef">${titles.length} different job titles</strong>. Hidden Talent searches all of them — giving you a talent pool <strong style="color:var(--t1)">5x larger</strong> than a standard search.
+        </div>
+      </div>
+    </div>
+
+    <div style="font-size:11px;font-weight:800;color:#d946ef;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">🏷️ Equivalent Titles for "${sk||'Developer'}"</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px">
+      ${titles.map(t => `<span style="padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(217,70,239,.1);color:#d946ef;border:1px solid rgba(217,70,239,.25)">${t}</span>`).join('')}
+    </div>
+
+    <div style="font-size:11px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">🔍 Title-Expanded LinkedIn Queries (${queries.filter(q=>!q.isGH).length})</div>
+    <div class="xql" style="margin-bottom:20px">
+      ${queries.filter(q=>!q.isGH).map((q,i) => `
+        <div class="xqc">
+          <div class="xqn" style="background:rgba(217,70,239,.1);color:#d946ef;border-color:rgba(217,70,239,.3)">${i+1}</div>
+          <div class="xqi">
+            <div class="xql-t">${q.l}</div>
+            <div style="font-size:10px;color:var(--t3);margin-bottom:4px">${q.desc}</div>
+            <div class="xql-q">${q.q}</div>
+          </div>
+          <button class="bxo" style="background:rgba(217,70,239,.1);color:#d946ef;border-color:rgba(217,70,239,.3)"
+            onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(q.q)}','_blank')">🔍 Search</button>
+        </div>`).join('')}
+    </div>
+
+    ${queries.filter(q=>q.isGH).length ? `
+    <div style="font-size:11px;font-weight:800;color:var(--g);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">🐙 GitHub Skill Search</div>
+    <div class="xql">
+      ${queries.filter(q=>q.isGH).map((q,i) => `
+        <div class="xqc">
+          <div class="xqn" style="background:var(--gs);color:var(--g);border-color:var(--gb)">${i+1}</div>
+          <div class="xqi">
+            <div class="xql-t">${q.l}</div>
+            <div style="font-size:10px;color:var(--t3);margin-bottom:4px">${q.desc}</div>
+            <div class="xql-q">${q.q}</div>
+          </div>
+          <button class="bxo" style="background:var(--gs);color:var(--g);border-color:var(--gb)"
+            onclick="window.open('${q.ghUrl}','_blank')">🐙 GitHub</button>
+        </div>`).join('')}
+    </div>` : ''}`;
+}
+
 // ── PLATFORM SELECT ───────────────────────────────────
 function selPlat(el){
   document.querySelectorAll('.pc').forEach(c=>c.classList.remove('on'));
@@ -2304,6 +2666,22 @@ async function runSearch(){
     btn.disabled=false;btn.innerHTML='🔍 Search';
     const tenureCo=document.getElementById('iTenureCo')?.value?.trim()||'';
     renderTenure(sk,ct,'product',tenureCo);
+    return;
+  }
+  // Passive Finder
+  if(pl==='passive'){
+    rw.innerHTML=`<div class="ls"><div class="spin"></div>Building Passive Finder queries for ${sk||'developer'} in ${ct||'India'}...</div>`;
+    await delay(500);
+    btn.disabled=false;btn.innerHTML='🔍 Search';
+    renderPassive(sk,ct,document.getElementById('iEx')?.value||'');
+    return;
+  }
+  // Hidden Talent
+  if(pl==='hidden'){
+    rw.innerHTML=`<div class="ls"><div class="spin"></div>Expanding talent pool for "${sk||'developer'}"...</div>`;
+    await delay(500);
+    btn.disabled=false;btn.innerHTML='🔍 Search';
+    renderHiddenTalent(sk,ct,document.getElementById('iEx')?.value||'');
     return;
   }
   // GCC Hunt
