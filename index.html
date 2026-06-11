@@ -6,7 +6,7 @@
 
 <!-- ── PRIMARY SEO ── -->
 <title>DevSourcing.in — Find Developers Where They Build | GitHub · Stack Overflow · Dev.to</title>
-<meta name="description" content="Search real developer profiles across GitHub, Stack Overflow, Dev.to, Kaggle, LeetCode, Reddit and 5 more platforms. Live APIs, AI signal scores, built for Indian recruiters. Start free trial.">
+<meta name="description" content="Search 15 developer platforms — GitHub, Stack Overflow, Dev.to, GCC Hunt, Passive Finder, Hidden Talent + 9 more. AI title expansion, passive candidates, built for Indian recruiters.">
 <meta name="keywords" content="developer sourcing india, find developers india, github talent search, stack overflow recruiter, tech talent sourcing, developer search tool, recruiter tools india, hire developers india, devsourcing, talent acquisition india, IT recruitment india">
 <meta name="author" content="DevSourcing.in">
 <meta name="robots" content="index, follow">
@@ -65,7 +65,7 @@
   "@type": "SoftwareApplication",
   "name": "DevSourcing.in",
   "url": "https://devsourcing.in",
-  "description": "Multi-platform developer talent sourcing tool for Indian recruiters. Search GitHub, Stack Overflow, Dev.to, Kaggle, LeetCode and 5 more platforms.",
+  "description": "15-platform developer sourcing for Indian recruiters. GitHub, Stack Overflow, Dev.to, GCC Hunt (100+ companies), Passive Finder, Hidden Talent AI expansion, Score Card Tool.",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "offers": {
@@ -84,8 +84,11 @@
     "GitHub developer search",
     "Stack Overflow talent search",
     "Dev.to author search",
-    "Kaggle data scientist search",
-    "LeetCode coder search",
+    "GCC Hunt — 100+ GCC companies",
+    "Tenure Targeting — passive candidates",
+    "Passive Finder — dormant profiles",
+    "Hidden Talent — AI title expansion",
+    "Score Card Tool",
     "AI signal scoring",
     "CSV export",
     "Indian city filtering"
@@ -421,13 +424,13 @@ a{text-decoration:none;color:inherit}
 @media(max-width:680px){.plt-grid{grid-template-columns:repeat(3,1fr);gap:6px}}
 @media(max-width:400px){.plt-grid{grid-template-columns:repeat(2,1fr)}}
 
-.pc{background:var(--bg2);border:1.5px solid var(--b1);border-radius:14px;padding:14px 8px 12px;cursor:pointer;transition:all .18s;position:relative;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:88px}
+.pc{background:var(--bg2);border:0.5px solid var(--b1);border-radius:12px;padding:12px 8px 10px;cursor:pointer;transition:all .15s;position:relative;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:82px}
 .pc:hover{border-color:var(--b3);background:var(--bg3);transform:translateY(-2px)}
 .pc.on{border-color:var(--a);background:var(--as);box-shadow:0 0 0 1px var(--a)}
 .pc.xr{border-style:dashed;border-color:var(--b2)}
 .pc.xr.on{border-color:var(--pu);background:var(--pus);border-style:dashed;box-shadow:0 0 0 1px var(--pu)}
 .pc.xr:hover:not(.on){border-color:var(--pu)}
-.pc-ic{font-size:22px;margin-bottom:7px;height:28px;display:flex;align-items:center;justify-content:center}
+.pc-ic{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:6px;flex-shrink:0}
 .pc-nm{font-size:11px;font-weight:700;color:var(--t2)}
 .pc-tp{font-size:9px;color:var(--t3);margin-top:3px}
 .pc.on .pc-nm{color:var(--a)}
@@ -602,6 +605,17 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 @media(max-width:600px){.nav-links{display:none}.hero-stats{flex-direction:column}.hstat{border-right:none;border-bottom:1px solid var(--b1)}}
 
 /* ── GLOBAL MOBILE FIXES ── */
+@media(max-width:480px){
+  /* Power features 2x2 on small mobile */
+  [style*="grid-template-columns:repeat(4,1fr)"].power-grid,
+  .plt-grid ~ div[style*="grid-template-columns:repeat(4,1fr)"]{
+    grid-template-columns:repeat(2,1fr)!important
+  }
+  /* Live APIs 3-col stays on mobile */
+  [style*="grid-template-columns:repeat(3,1fr)"]{
+    grid-template-columns:repeat(3,1fr)!important
+  }
+}
 /* Critical: prevent horizontal scroll on ALL elements */
 @media(max-width:768px){
   *{max-width:100%;box-sizing:border-box}
@@ -643,6 +657,47 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 @media(max-width:400px){
   .plt-grid{grid-template-columns:repeat(2,1fr)!important}
   .hero-stats .hstat-n{font-size:13px!important}
+}
+
+/* ── MOBILE — platform sections ── */
+@media(max-width:540px){
+  /* Power features 2x2 */
+  .power-grid{grid-template-columns:repeat(2,1fr)!important}
+  /* Smart search 3-col → 2-col */
+  .plt-grid{grid-template-columns:repeat(2,1fr)!important;gap:6px!important}
+  /* Live APIs 3-col stays */
+  .live-grid{grid-template-columns:repeat(3,1fr)!important}
+  /* Section labels readable */
+  .plt-sec-label{font-size:9px!important}
+  /* Score card tabs */
+  .sct-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .sct-tab{min-width:70px;flex-shrink:0}
+  /* XRay queries — prevent overflow */
+  .xqc{flex-wrap:wrap;gap:8px}
+  .bxo{width:100%;margin-top:4px}
+  /* Homepage platform strip */
+  .plat-row{grid-template-columns:repeat(2,1fr)!important}
+  /* Deep profile grid */
+  .dp-comm-grid{grid-template-columns:repeat(3,1fr)!important}
+  /* Admin tabs */
+  .admin-tabs{flex-wrap:wrap}
+  .atb{font-size:10px!important;padding:5px 8px!important;flex:1;min-width:60px}
+}
+@media(max-width:380px){
+  .plt-grid{grid-template-columns:repeat(2,1fr)!important}
+  .hero h1{font-size:22px!important;letter-spacing:-0.5px!important}
+  .hero-stats .hstat-n{font-size:13px!important}
+  .hstat-l{font-size:7px!important}
+}
+/* Fix xql-q text wrapping on all mobile */
+@media(max-width:768px){
+  .xql-q{white-space:normal!important;word-break:break-all!important;font-size:10px!important}
+  .xql-t{font-size:11px!important}
+  .xqc{padding:10px!important}
+  .rbar{flex-direction:column;gap:8px}
+  .rtitle{font-size:14px!important}
+  /* Ensure no element bleeds outside viewport */
+  .cgrid,.ccard,.pcard,.xql,.sct-wrap{max-width:100%;overflow:hidden}
 }
 </style>
 </head>
@@ -703,7 +758,7 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
     <div class="hero-stats">
       <div class="hstat"><div class="hstat-n">15</div><div class="hstat-l">Platforms</div></div>
       <div class="hstat"><div class="hstat-n">3</div><div class="hstat-l">Live APIs</div></div>
-      <div class="hstat"><div class="hstat-n">10</div><div class="hstat-l">Smart Search</div></div>
+      <div class="hstat"><div class="hstat-n">12</div><div class="hstat-l">Smart Search</div></div>
       <div class="hstat"><div class="hstat-n">Real</div><div class="hstat-l">Profiles</div></div>
     </div>
   </section>
@@ -791,7 +846,19 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
         <div class="smart-badge" style="background:linear-gradient(135deg,#6366f1,#a78bfa)">Tenure</div>
         <div class="pcard-ic" style="background:#f5f3ff;border-radius:6px;font-size:16px;display:flex;align-items:center;justify-content:center">⏳</div>
         <div><div class="pcard-nm">Tenure Target</div><div class="pcard-tp">Passive Candidates</div></div>
-        <div class="pcard-tip"><strong>Tenure Targeting</strong>Find engineers at 2-3yr startups, 3-5yr product cos, 4-6yr GCCs. 70% higher response rate than active seekers.</div>
+        <div class="pcard-tip"><strong>Tenure Targeting</strong>2-3yr startups, 3-5yr product, 4-6yr GCCs. 70% higher response rate.</div>
+      </div>
+      <div class="pcard" style="border-color:rgba(6,182,212,.35)">
+        <div class="smart-badge" style="background:rgba(6,182,212,.15);color:#0369a1;border:1px solid rgba(6,182,212,.3)">Passive</div>
+        <div class="pcard-ic" style="background:#ecfeff;border-radius:6px;font-size:16px;display:flex;align-items:center;justify-content:center">🕵️</div>
+        <div><div class="pcard-nm">Passive Finder</div><div class="pcard-tp">Hidden Candidates</div></div>
+        <div class="pcard-tip"><strong>Passive Finder</strong>Dormant profiles — no OTW, long tenure. Highest response rates. Invisible to most recruiters.</div>
+      </div>
+      <div class="pcard" style="border-color:rgba(168,85,247,.35)">
+        <div class="smart-badge" style="background:rgba(168,85,247,.12);color:#7e22ce;border:1px solid rgba(168,85,247,.3)">AI</div>
+        <div class="pcard-ic" style="background:#faf5ff;border-radius:6px;font-size:16px;display:flex;align-items:center;justify-content:center">🔮</div>
+        <div><div class="pcard-nm">Hidden Talent</div><div class="pcard-tp">Title Expansion</div></div>
+        <div class="pcard-tip"><strong>Hidden Talent</strong>"Java Developer" expands to SDE-II, Platform Engineer, Backend Eng + 9 more. 5x bigger pool.</div>
       </div>
       <div class="pcard" style="border-color:rgba(6,182,212,.4)">
         <div class="smart-badge" style="background:linear-gradient(135deg,#06b6d4,#0284c7)">Passive</div>
@@ -873,12 +940,14 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
       <div class="pc-price">₹499</div>
       <div class="pc-period">per 30 days</div>
       <ul class="pc-features">
-        <li class="pc-feat"><span class="pc-feat-i">✓</span>All 13 platforms — GitHub, SO, Dev.to + 10 Smart Search</li>
-        <li class="pc-feat"><span class="pc-feat-i">✓</span>GCC Hunt — 100+ companies (Walmart, JPMorgan, Google...)</li>
-        <li class="pc-feat"><span class="pc-feat-i">✓</span>Tenure Targeting — passive candidates at 2–6 yr tenure</li>
-        <li class="pc-feat"><span class="pc-feat-i">✓</span>Unlimited searches per day</li>
-        <li class="pc-feat"><span class="pc-feat-i">✓</span>Real profiles — GitHub, Stack Overflow, Dev.to</li>
-        <li class="pc-feat"><span class="pc-feat-i">✓</span>AI signal score on every developer</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>All 15 platforms — GitHub, SO, Dev.to + 12 Smart Search</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>🏢 GCC Hunt — 100+ companies (Walmart, JPMorgan, Google...)</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>⏳ Tenure Targeting — 2-6yr passive candidates</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>🕵️ Passive Finder — dormant profiles, highest response rate</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>🔮 Hidden Talent — AI title expansion, 5x bigger pool</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>🎯 Score Card — JD match, LinkedIn URL, PDF, bulk upload</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>AI signal score on every profile · Unlimited searches</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>Export shortlist to CSV · 1-day free trial</li><li class="pc-feat"><span class="pc-feat-i">✓</span>AI signal score on every developer</li>
         <li class="pc-feat"><span class="pc-feat-i">✓</span>Export shortlist to CSV</li>
         <li class="pc-feat"><span class="pc-feat-i">✓</span>1-day free trial to start</li>
       </ul>
@@ -984,13 +1053,30 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 <div class="page-app" id="pageApp">
   <div class="app-wrap">
     <div class="sec-label">Select a platform to search</div>
-    <div class="plt-grid">
+    <!-- Platform section labels -->
+    <div style="font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:2px">Live APIs</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px">
       <div class="pc" data-p="github" onclick="selPlat(this)">
-        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="var(--t2)"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></div>
+        <div class="pc-ic" style="background:#f0f0f0"><svg width="18" height="18" viewBox="0 0 24 24" fill="#1a1a1a"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.44 9.8 8.21 11.39.6.11.82-.26.82-.57v-2.24c-3.34.73-4.04-1.41-4.04-1.41-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.34-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.11-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.3-1.55 3.3-1.23 3.3-1.23.65 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.69.82.57A12.02 12.02 0 0 0 24 12C24 5.37 18.63 0 12 0z"/></svg></div>
         <div class="pc-nm"><span class="live-dot"></span>GitHub</div>
         <div class="pc-tp">Live API</div>
-        <div class="pc-tip"><strong>GitHub</strong>Backend devs, OSS contributors. Real repos, stars, commit history.</div>
+        <div class="pc-tip"><strong>GitHub</strong>Real repos, commits, followers. Strongest skill proof signal.</div>
       </div>
+      <div class="pc" data-p="stackoverflow" onclick="selPlat(this)">
+        <div class="pc-ic" style="background:#fff4ed"><svg width="18" height="18" viewBox="0 0 32 32" fill="#f48024"><path d="M22 28v-5h2v7H4v-7h2v5zm-13-6l.4-2 10 2-.4 2zm1-5l.7-1.9 9.3 3.9-.7 1.9zm2-5l1.2-1.7 8.3 5.5-1.2 1.7zm4-5l1.6-1.4 6.5 7-1.6 1.4zm5-4V1h2v4z"/></svg></div>
+        <div class="pc-nm"><span class="live-dot"></span>Stack Overflow</div>
+        <div class="pc-tp">Live API</div>
+        <div class="pc-tip"><strong>Stack Overflow</strong>Reputation built over years. Impossible to fake.</div>
+      </div>
+      <div class="pc" data-p="devto" onclick="selPlat(this)">
+        <div class="pc-ic" style="background:#eef0ff"><svg width="18" height="18" viewBox="0 0 24 24" fill="#3b49df"><path d="M7.42 10.05c-.18-.16-.46-.23-.84-.23H6l.02 2.44.04 2.45.56-.02c.41 0 .63-.07.83-.26.24-.24.26-.36.26-2.2 0-1.91-.02-1.96-.29-2.18zM0 4.94v14.12h24V4.94H0zM8.56 15.3c-.44.58-1.06.77-2.53.77H4.71V8.53h1.4c1.67 0 2.16.18 2.6.9.27.43.29.6.32 2.57.05 2.23-.02 2.73-.47 3.3zm5.09-5.47h-2.47v1.77h1.52v1.28l-.72.04-.75.03v1.77l1.22.03 1.2.04v1.28h-1.6c-1.53 0-1.6-.01-1.87-.3l-.3-.28v-3.16c0-3.02.01-3.18.25-3.48.23-.31.25-.31 1.88-.31h1.64v1.29zm4.68 5.45c-.17.43-.64.79-1 .79-.18 0-.45-.15-.67-.39-.32-.32-.45-.63-.82-2.08l-.9-3.39-.45-1.67h.76c.4 0 .75.02.75.05 0 .06 1.16 4.54 1.26 4.83.04.15.32-.7.73-2.3l.66-2.52.74-.04c.4-.02.73 0 .73.04 0 .14-1.67 6.38-1.8 6.68z"/></svg></div>
+        <div class="pc-nm"><span class="live-dot"></span>Dev.to</div>
+        <div class="pc-tp">Live API</div>
+        <div class="pc-tip"><strong>Dev.to</strong>Articles + reactions = domain expertise proof.</div>
+      </div>
+    </div>
+    <div style="font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:2px">Smart Search</div>
+    <div class="plt-grid">
       <div class="pc" data-p="stackoverflow" onclick="selPlat(this)">
         <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 32 32" fill="#f48024"><path d="M22.438 27.938v-5.5h1.875V29.5H4.438v-7.063h1.875v5.5zm-13.375-6.875.375-1.875 9.5 2-.375 1.875zm1.25-4.75.688-1.75 8.875 3.5-.688 1.75zm2.062-4.5 1-1.625 7.75 4.75-1 1.625zm3.875-4.375 1.438-1.313 6.125 6.688-1.438 1.312zm5.188-4.063V5.5h1.875V9.625z"/></svg></div>
         <div class="pc-nm"><span class="live-dot"></span>Stack Overflow</div>
@@ -1003,44 +1089,44 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
         <div class="pc-tp">Live API</div>
         <div class="pc-tip"><strong>Dev.to</strong>Technical writers, frontend/backend devs. Articles + reactions = depth signal.</div>
       </div>
-      <div class="pc xr" data-p="reddit" onclick="selPlat(this)">
+      <div class="pc" data-p="reddit" onclick="selPlat(this)">
         <div class="sm-pill">Smart</div>
-        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="#ff4500"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg></div>
+        <div class="pc-ic" style="background:#fff0ee"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ff4500"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg></div>
         <div class="pc-nm">Reddit</div>
         <div class="pc-tp">Smart Search</div>
         <div class="pc-tip"><strong>Reddit</strong>r/python, r/reactjs top contributors. Community-active devs hard to find elsewhere.</div>
       </div>
-      <div class="pc xr" data-p="kaggle" onclick="selPlat(this)">
+      <div class="pc" data-p="kaggle" onclick="selPlat(this)">
         <div class="sm-pill">Smart</div>
-        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="#20beff"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 2c5.514 0 10 4.486 10 10s-4.486 10-10 10S2 17.514 2 12 6.486 2 12 2zm0 3a7 7 0 1 0 0 14A7 7 0 0 0 12 5zm0 2a5 5 0 1 1 0 10A5 5 0 0 1 12 7zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg></div>
+        <div class="pc-ic" style="background:#e8f9ff"><svg width="18" height="18" viewBox="0 0 24 24" fill="#20beff"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 2c5.514 0 10 4.486 10 10s-4.486 10-10 10S2 17.514 2 12 6.486 2 12 2zm0 3a7 7 0 1 0 0 14A7 7 0 0 0 12 5zm0 2a5 5 0 1 1 0 10A5 5 0 0 1 12 7zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg></div>
         <div class="pc-nm">Kaggle</div>
         <div class="pc-tp">Smart Search</div>
         <div class="pc-tip"><strong>Kaggle</strong>Data Scientists, ML Engineers, AI researchers. Competition ranking = verified skill.</div>
       </div>
-      <div class="pc xr" data-p="leetcode" onclick="selPlat(this)">
+      <div class="pc" data-p="leetcode" onclick="selPlat(this)">
         <div class="sm-pill">Smart</div>
-        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="#ffa116"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/></svg></div>
+        <div class="pc-ic" style="background:#fffbee"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ffa116"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/></svg></div>
         <div class="pc-nm">LeetCode</div>
         <div class="pc-tp">Smart Search</div>
         <div class="pc-tip"><strong>LeetCode</strong>Strong DSA-focused engineers. 500+ solved = top-tier. Great for product companies.</div>
       </div>
-      <div class="pc xr" data-p="medium" onclick="selPlat(this)">
+      <div class="pc" data-p="medium" onclick="selPlat(this)">
         <div class="sm-pill">Smart</div>
-        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="var(--t2)"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg></div>
+        <div class="pc-ic" style="background:#f5f5f5"><svg width="18" height="18" viewBox="0 0 24 24" fill="#555"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg></div>
         <div class="pc-nm">Medium</div>
         <div class="pc-tp">Smart Search</div>
         <div class="pc-tip"><strong>Medium</strong>Technical writers, thought leaders. Published articles = domain expertise proof.</div>
       </div>
-      <div class="pc xr" data-p="meetup" onclick="selPlat(this)">
+      <div class="pc" data-p="meetup" onclick="selPlat(this)">
         <div class="sm-pill">Smart</div>
-        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="#f64060"><path d="M19.24 12.59c.08-.29.12-.6.12-.91 0-1.83-1.48-3.31-3.31-3.31-.34 0-.67.05-.98.14C14.44 7.38 13.1 6.5 11.6 6.5c-2.14 0-3.87 1.73-3.87 3.87v.28c-1.48.28-2.6 1.59-2.6 3.15 0 1.77 1.44 3.21 3.21 3.21h10.11c1.47 0 2.66-1.19 2.66-2.66 0-1.08-.65-2.01-1.87-1.76z"/></svg></div>
+        <div class="pc-ic" style="background:#fff0f2"><svg width="18" height="18" viewBox="0 0 24 24" fill="#f64060"><path d="M19.24 12.59c.08-.29.12-.6.12-.91 0-1.83-1.48-3.31-3.31-3.31-.34 0-.67.05-.98.14C14.44 7.38 13.1 6.5 11.6 6.5c-2.14 0-3.87 1.73-3.87 3.87v.28c-1.48.28-2.6 1.59-2.6 3.15 0 1.77 1.44 3.21 3.21 3.21h10.11c1.47 0 2.66-1.19 2.66-2.66 0-1.08-.65-2.01-1.87-1.76z"/></svg></div>
         <div class="pc-nm">Meetup</div>
         <div class="pc-tp">Smart Search</div>
         <div class="pc-tip"><strong>Meetup</strong>Community organisers and speakers. Active in tech events = well-networked senior devs.</div>
       </div>
-      <div class="pc xr" data-p="gdg" onclick="selPlat(this)">
+      <div class="pc" data-p="gdg" onclick="selPlat(this)">
         <div class="sm-pill">Smart</div>
-        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 48 48"><path fill="#ea4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285f4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#fbbc05" d="M10.53 28.59c-.48-1.37-.76-2.83-.76-4.59s.27-3.22.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34a853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.91 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></div>
+        <div class="pc-ic" style="background:#fff0ee"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#ea4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285f4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#fbbc05" d="M10.53 28.59c-.48-1.37-.76-2.83-.76-4.59s.27-3.22.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34a853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.91 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></div>
         <div class="pc-nm">GDG</div>
         <div class="pc-tp">Smart Search</div>
         <div class="pc-tip"><strong>GDG / DevFest</strong>Google ecosystem devs (Android, Flutter, Firebase). Speakers = deep expertise.</div>
@@ -1075,16 +1161,50 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
         <div class="pc-tp">Title Expansion</div>
         <div class="pc-tip"><strong>Hidden Talent Discovery</strong>Search "Java Developer" → AI expands to Backend Engineer, SDE-II, Platform Engineer, Application Developer. 5x bigger talent pool than LinkedIn.</div>
       </div>
-      <div class="pc xr" data-p="aws" onclick="selPlat(this)">
+      <div class="pc" data-p="aws" onclick="selPlat(this)">
         <div class="sm-pill">Smart</div>
-        <div class="pc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="#ff9900"><path d="M6.763 10.036c0 .296.032.535.088.71.064.176.144.368.256.576.04.063.056.127.056.183 0 .08-.048.16-.152.24l-.503.335a.383.383 0 0 1-.208.072c-.08 0-.16-.04-.239-.112a2.47 2.47 0 0 1-.287-.375 6.18 6.18 0 0 1-.248-.471c-.622.734-1.405 1.101-2.347 1.101-.67 0-1.205-.191-1.596-.574-.391-.384-.59-.894-.59-1.533 0-.678.239-1.23.726-1.644.487-.415 1.133-.623 1.955-.623.272 0 .551.024.846.064.296.04.6.104.918.176v-.583c0-.607-.127-1.030-.375-1.277-.255-.248-.686-.367-1.3-.367-.28 0-.568.031-.863.103-.295.072-.583.16-.862.272a2.287 2.287 0 0 1-.28.104.488.488 0 0 1-.127.023c-.112 0-.168-.08-.168-.247v-.391c0-.128.016-.224.056-.28a.597.597 0 0 1 .224-.167c.279-.144.614-.264 1.005-.36a4.84 4.84 0 0 1 1.246-.151c.95 0 1.644.216 2.091.647.439.43.662 1.085.662 1.963v2.586zm3.24 1.214c.263 0 .534-.048.822-.144.287-.096.543-.271.758-.51.128-.152.224-.32.272-.512.047-.191.08-.423.08-.694v-.335a6.66 6.66 0 0 0-.735-.136 6.02 6.02 0 0 0-.75-.048c-.535 0-.926.104-1.19.32-.262.215-.39.518-.39.917 0 .375.095.655.295.846.191.2.47.296.838.296zm-3.24-1.214H6.5v2.586c0 .878-.222 1.532-.662 1.963-.447.431-1.14.647-2.091.647a4.84 4.84 0 0 1-1.246-.151c-.391-.096-.726-.216-1.005-.36a.597.597 0 0 1-.224-.167c-.04-.056-.056-.152-.056-.28v-.391c0-.167.056-.247.168-.247a.488.488 0 0 1 .127.023 2.287 2.287 0 0 1 .28.104c.279.112.567.2.862.272.295.072.583.103.863.103.614 0 1.045-.119 1.3-.367.248-.247.375-.67.375-1.277v-.583a6.18 6.18 0 0 1-.918.176c-.295.04-.574.064-.846.064-.822 0-1.468-.208-1.955-.623-.487-.414-.726-.966-.726-1.644 0-.639.199-1.149.59-1.533.391-.383.926-.574 1.596-.574.942 0 1.725.367 2.347 1.101a6.18 6.18 0 0 1 .248-.471.383.383 0 0 1 .208-.072z"/></svg></div>
+        <div class="pc-ic" style="background:#fff8ee"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ff9900"><path d="M6.763 10.036c0 .296.032.535.088.71.064.176.144.368.256.576.04.063.056.127.056.183 0 .08-.048.16-.152.24l-.503.335a.383.383 0 0 1-.208.072c-.08 0-.16-.04-.239-.112a2.47 2.47 0 0 1-.287-.375 6.18 6.18 0 0 1-.248-.471c-.622.734-1.405 1.101-2.347 1.101-.67 0-1.205-.191-1.596-.574-.391-.384-.59-.894-.59-1.533 0-.678.239-1.23.726-1.644.487-.415 1.133-.623 1.955-.623.272 0 .551.024.846.064.296.04.6.104.918.176v-.583c0-.607-.127-1.030-.375-1.277-.255-.248-.686-.367-1.3-.367-.28 0-.568.031-.863.103-.295.072-.583.16-.862.272a2.287 2.287 0 0 1-.28.104.488.488 0 0 1-.127.023c-.112 0-.168-.08-.168-.247v-.391c0-.128.016-.224.056-.28a.597.597 0 0 1 .224-.167c.279-.144.614-.264 1.005-.36a4.84 4.84 0 0 1 1.246-.151c.95 0 1.644.216 2.091.647.439.43.662 1.085.662 1.963v2.586zm3.24 1.214c.263 0 .534-.048.822-.144.287-.096.543-.271.758-.51.128-.152.224-.32.272-.512.047-.191.08-.423.08-.694v-.335a6.66 6.66 0 0 0-.735-.136 6.02 6.02 0 0 0-.75-.048c-.535 0-.926.104-1.19.32-.262.215-.39.518-.39.917 0 .375.095.655.295.846.191.2.47.296.838.296zm-3.24-1.214H6.5v2.586c0 .878-.222 1.532-.662 1.963-.447.431-1.14.647-2.091.647a4.84 4.84 0 0 1-1.246-.151c-.391-.096-.726-.216-1.005-.36a.597.597 0 0 1-.224-.167c-.04-.056-.056-.152-.056-.28v-.391c0-.167.056-.247.168-.247a.488.488 0 0 1 .127.023 2.287 2.287 0 0 1 .28.104c.279.112.567.2.862.272.295.072.583.103.863.103.614 0 1.045-.119 1.3-.367.248-.247.375-.67.375-1.277v-.583a6.18 6.18 0 0 1-.918.176c-.295.04-.574.064-.846.064-.822 0-1.468-.208-1.955-.623-.487-.414-.726-.966-.726-1.644 0-.639.199-1.149.59-1.533.391-.383.926-.574 1.596-.574.942 0 1.725.367 2.347 1.101a6.18 6.18 0 0 1 .248-.471.383.383 0 0 1 .208-.072z"/></svg></div>
         <div class="pc-nm">AWS UG</div>
         <div class="pc-tp">Smart Search</div>
         <div class="pc-tip"><strong>AWS User Group</strong>Cloud architects, DevOps engineers. UG leaders = community-recognized AWS experts.</div>
       </div>
     </div>
+    <div style="font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;margin-top:16px;padding-left:2px">Power Features</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px">
+      <!-- GCC Hunt -->
+      <div class="pc" data-p="gcc" onclick="selPlat(this)" style="border-color:rgba(245,158,11,.4)">
+        <div class="sm-pill" style="background:rgba(245,158,11,.12);color:#b45309;border-color:rgba(245,158,11,.3)">GCC</div>
+        <div class="pc-ic" style="background:#fffbeb"><svg width="18" height="18" viewBox="0 0 24 24" fill="#b45309"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22" stroke="#b45309" stroke-width="2" fill="none"/></svg></div>
+        <div class="pc-nm">GCC Hunt</div>
+        <div class="pc-tp">100+ companies</div>
+        <div class="pc-tip"><strong>GCC Hunt</strong>100+ Global Capability Centres. LinkedIn X-Ray + GitHub combined.</div>
+      </div>
+      <!-- Tenure Target -->
+      <div class="pc" data-p="tenure" onclick="selPlat(this)" style="border-color:rgba(99,102,241,.4)">
+        <div class="sm-pill" style="background:rgba(99,102,241,.1);color:#4338ca;border-color:rgba(99,102,241,.3)">Tenure</div>
+        <div class="pc-ic" style="background:#eef2ff"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4338ca" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg></div>
+        <div class="pc-nm">Tenure Target</div>
+        <div class="pc-tp">Passive candidates</div>
+        <div class="pc-tip"><strong>Tenure Targeting</strong>2-3yr startups, 3-5yr product, 4-6yr GCCs. 70% higher response rate.</div>
+      </div>
+      <!-- Passive Finder -->
+      <div class="pc" data-p="passive" onclick="selPlat(this)" style="border-color:rgba(6,182,212,.4)">
+        <div class="sm-pill" style="background:rgba(6,182,212,.1);color:#0369a1;border-color:rgba(6,182,212,.3)">Passive</div>
+        <div class="pc-ic" style="background:#ecfeff"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0369a1" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg></div>
+        <div class="pc-nm">Passive Finder</div>
+        <div class="pc-tp">Dormant profiles</div>
+        <div class="pc-tip"><strong>Passive Finder</strong>Inactive profiles — no Open to Work, long tenure. Highest response rates.</div>
+      </div>
+      <!-- Hidden Talent -->
+      <div class="pc" data-p="hidden" onclick="selPlat(this)" style="border-color:rgba(168,85,247,.4)">
+        <div class="sm-pill" style="background:rgba(168,85,247,.1);color:#7e22ce;border-color:rgba(168,85,247,.3)">AI</div>
+        <div class="pc-ic" style="background:#faf5ff"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7e22ce" stroke-width="2"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></div>
+        <div class="pc-nm">Hidden Talent</div>
+        <div class="pc-tp">Title expansion</div>
+        <div class="pc-tip"><strong>Hidden Talent</strong>AI title expansion. 5x bigger talent pool than standard search.</div>
+      </div>
+    </div>
 
-    
     <!-- ── SCORE CARD TOOL ── -->
     <div style="margin-bottom:20px">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;cursor:pointer" onclick="toggleScoreTool()">
@@ -1263,9 +1383,9 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
             <div style="font-size:9px;color:var(--t3);margin-top:2px">+Passive+HiddenTalent+more</div>
           </div>
           <div style="background:var(--bg2);border:1px solid var(--amb);border-radius:8px;padding:10px;text-align:center">
-            <div style="font-size:16px;font-weight:800;color:var(--am)">2</div>
+            <div style="font-size:16px;font-weight:800;color:var(--am)">4</div>
             <div style="font-size:10px;color:var(--t3)">Power Features</div>
-            <div style="font-size:9px;color:var(--t3);margin-top:2px">GCC Hunt · Tenure Target</div>
+            <div style="font-size:9px;color:var(--t3);margin-top:2px">GCC · Tenure · Passive · Hidden</div>
           </div>
         </div>
       </div>
@@ -1574,11 +1694,10 @@ function showPage(id){
   document.documentElement.scrollTop=0;document.body.scrollTop=0;
 }
 function goHome(){
-  // Clear any hash from URL when going home (fixes #admin showing after logout)
-  if(window.location.hash&&!adminPageActive){
-    history.replaceState(null,'',window.location.pathname);
-  }
-  showPage('pageHome');updateNavLinks(false);
+  adminPageActive=false;
+  history.replaceState(null,'',window.location.pathname);
+  showPage('pageHome');
+  updateNavLinks(false);
 }
 function showAuth(){showPage('pageAuth');updateNavLinks(false);}
 function showApp(){showPage('pageApp');updateNavLinks(true);}
@@ -3007,22 +3126,14 @@ function renderNav(){
   updateNavLinks(true);
 }
 function doSignOut(){
-  const wasAdmin=S.isAdmin;
   localStorage.removeItem('ds_adm');
   S.user=null;S.plan=null;S.isAdmin=false;S.sk='';S.ct='';
+  adminPageActive=false;
   auth.signOut().catch(()=>{});
+  history.replaceState(null,'',window.location.pathname);
   document.getElementById('navUser').innerHTML=`<button class="nav-cta" onclick="showAuth()">Start Free Trial →</button>`;
   updateNavLinks(false);
-  if(wasAdmin){
-    adminPageActive=true;
-    // Use history.replaceState so URL shows /admin path cleanly without polluting history
-    history.replaceState(null,'',window.location.pathname+'#admin');
-    showPage('pageAdmin404');
-  } else {
-    adminPageActive=false;
-    history.replaceState(null,'',window.location.pathname);
-    goHome();
-  }
+  goHome();
 }
 function canSearch(){
   if(!S.user)return false;
