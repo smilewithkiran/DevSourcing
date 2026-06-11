@@ -1394,7 +1394,7 @@ a{text-decoration:none;color:inherit}
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
 // ── FIREBASE ─────────────────────────────────────────
-const FBC={apiKey:"AIzaSyBKl8993C4uNJ_ZN3gxMUwHoQVvIsd99Po",authDomain:"devsourcing.in",databaseURL:"https://devsourcing-50631-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"devsourcing-50631",storageBucket:"devsourcing-50631.firebasestorage.app",messagingSenderId:"903367845391",appId:"1:903367845391:web:deca21962dcd0cffeee57a"};
+const FBC={apiKey:"AIzaSyBKl8993C4uNJ_ZN3gxMUwHoQVvIsd99Po",authDomain:"devsourcing-50631.firebaseapp.com",databaseURL:"https://devsourcing-50631-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"devsourcing-50631",storageBucket:"devsourcing-50631.firebasestorage.app",messagingSenderId:"903367845391",appId:"1:903367845391:web:deca21962dcd0cffeee57a"};
 let auth,db;
 try{firebase.initializeApp(FBC);auth=firebase.auth();db=firebase.database();}
 catch(e){console.warn('Firebase unavailable.');auth={signInWithPopup:()=>Promise.reject({code:'auth/operation-not-supported-in-this-environment',message:'Deploy to a real domain for Google login.'}),signInWithRedirect:()=>{},getRedirectResult:()=>Promise.resolve(null),signOut:()=>Promise.resolve(),onAuthStateChanged:()=>{}};db={ref:()=>({once:()=>Promise.resolve({exists:()=>false,val:()=>null,forEach:()=>{}}),set:()=>Promise.resolve(),update:()=>Promise.resolve(),transaction:f=>{const r=f(0);return Promise.resolve({snapshot:{val:()=>r}})}})};}
@@ -2504,15 +2504,17 @@ function doAdminLogin(){
 }
 function handleGoogleLogin(){
   const b=document.querySelector('.bgoog');
-  b.disabled=true;b.innerHTML='<div class="spin" style="width:16px;height:16px;border-width:2px;margin-right:8px"></div>Signing in...';
+  if(b){b.disabled=true;b.innerHTML='<div class="spin" style="width:16px;height:16px;border-width:2px;margin-right:8px;display:inline-block"></div>Redirecting...';}
   const pr=new firebase.auth.GoogleAuthProvider();
-  pr.setCustomParameters({hd:'',prompt:'select_account'});
+  pr.setCustomParameters({prompt:'select_account'});
   auth.signInWithPopup(pr).then(r=>onGoogOK(r.user)).catch(err=>{
-    if(err.code==='auth/operation-not-supported-in-this-environment'){
-      toast('🔄 Redirecting to Google...',2000);auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
+    const popupErr=['auth/popup-blocked','auth/popup-closed-by-user','auth/cancelled-popup-request','auth/operation-not-supported-in-this-environment'];
+    if(popupErr.includes(err.code)){
+      // Redirect fallback
+      auth.signInWithRedirect(pr);
     } else {
-      b.disabled=false;b.innerHTML='<svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/><path fill="#34A853" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2.04c-.72.48-1.63.77-2.7.77-2.08 0-3.84-1.41-4.47-3.29H1.83v2.07A8 8 0 0 0 8.98 17z"/><path fill="#FBBC05" d="M4.51 10.5A4.78 4.78 0 0 1 4.27 9c0-.52.09-1.03.24-1.5V5.43H1.83A8.01 8.01 0 0 0 .98 9c0 1.29.31 2.51.85 3.57l2.68-2.07z"/><path fill="#EA4335" d="M8.98 3.21c1.17 0 2.22.4 3.05 1.2l2.28-2.28A8 8 0 0 0 1.83 5.43L4.5 7.5C5.14 5.62 6.9 3.21 8.98 3.21z"/></svg> Continue with Google';
-      toast('⚠️ '+(err.message||'Login failed'),4000);
+      if(b){b.disabled=false;b.innerHTML='<svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/><path fill="#34A853" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2.04c-.72.48-1.63.77-2.7.77-2.08 0-3.84-1.41-4.47-3.29H1.83v2.07A8 8 0 0 0 8.98 17z"/><path fill="#FBBC05" d="M4.51 10.5A4.78 4.78 0 0 1 4.27 9c0-.52.09-1.03.24-1.5V5.43H1.83A8.01 8.01 0 0 0 .98 9c0 1.29.31 2.51.85 3.57l2.68-2.07z"/><path fill="#EA4335" d="M8.98 3.21c1.17 0 2.22.4 3.05 1.2l2.28-2.28A8 8 0 0 0 1.83 5.43L4.5 7.5C5.14 5.62 6.9 3.21 8.98 3.21z"/></svg> Continue with Google';}
+      toast('❌ '+(err.message||'Login failed. Try again.'),4000);
     }
   });
 }
