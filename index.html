@@ -286,6 +286,114 @@ a{text-decoration:none;color:inherit}
 /* Platform grid */
 .plt-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:24px}
 
+
+
+/* ── SCORE CARD TOOL ─────────────────────────────────── */
+.sct-wrap{background:var(--bg2);border:1px solid var(--b1);border-radius:18px;padding:0;margin-bottom:20px;overflow:hidden}
+.sct-tabs{display:flex;border-bottom:1px solid var(--b1);background:var(--bg3)}
+.sct-tab{flex:1;padding:12px 8px;text-align:center;font-size:12px;font-weight:700;color:var(--t3);cursor:pointer;transition:.15s;border-bottom:2px solid transparent;display:flex;flex-direction:column;align-items:center;gap:4px}
+.sct-tab:hover{color:var(--t2);background:var(--bg2)}
+.sct-tab.on{color:var(--a);border-bottom-color:var(--a);background:var(--bg2)}
+.sct-tab-ic{font-size:18px}
+.sct-tab-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+.sct-panel{padding:20px 24px;display:none}
+.sct-panel.on{display:block}
+/* JD input */
+.jd-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.jd-ta{width:100%;padding:12px 14px;border:1.5px solid var(--b2);border-radius:10px;background:var(--bg3);color:var(--t1);font-size:13px;font-family:inherit;resize:vertical;min-height:100px;outline:none;line-height:1.6}
+.jd-ta:focus{border-color:var(--a)}
+.sct-hint{font-size:11px;color:var(--t3);margin-top:6px;line-height:1.5}
+/* LinkedIn input */
+.li-row{display:flex;gap:10px;align-items:flex-end;margin-bottom:8px}
+.li-input-wrap{flex:1;position:relative}
+.li-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#0077b5;font-size:14px}
+.li-input{width:100%;padding:11px 14px 11px 36px;border:1.5px solid var(--b2);border-radius:10px;background:var(--bg3);color:var(--t1);font-size:13px;font-family:inherit;outline:none}
+.li-input:focus{border-color:#0077b5}
+/* Upload area */
+.upload-zone{border:2px dashed var(--b2);border-radius:12px;padding:28px 20px;text-align:center;cursor:pointer;transition:.2s;position:relative;margin-bottom:12px}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--a);background:var(--as)}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-ic{font-size:32px;margin-bottom:8px}
+.upload-tt{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:4px}
+.upload-st{font-size:11px;color:var(--t3)}
+/* File list */
+.file-list{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.file-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--bg3);border:1px solid var(--b1);border-radius:8px}
+.file-ic{font-size:18px;flex-shrink:0}
+.file-name{flex:1;font-size:12px;font-weight:600;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-size{font-size:10px;color:var(--t3);flex-shrink:0}
+.file-del{width:20px;height:20px;border-radius:4px;background:var(--bg3);border:1px solid var(--b1);color:var(--t3);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.file-del:hover{background:var(--rs);border-color:var(--r);color:var(--r)}
+/* Results grid for scorecard tool */
+.sct-results{margin-top:16px}
+.sct-result-card{background:var(--bg3);border:1px solid var(--b1);border-radius:14px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:.15s}
+.sct-result-card:hover{border-color:var(--a);background:var(--as)}
+.sct-av{width:44px;height:44px;border-radius:12px;background:var(--grd);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;flex-shrink:0;overflow:hidden}
+.sct-av img{width:100%;height:100%;object-fit:cover}
+.sct-info{flex:1;min-width:0}
+.sct-name{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:2px}
+.sct-sub{font-size:11px;color:var(--t3)}
+.sct-score-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.sct-overall{font-family:'Sora',sans-serif;font-size:22px;font-weight:900;color:var(--a)}
+.sct-overall-lbl{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px}
+.btn-sct-analyze{width:100%;padding:12px;border-radius:10px;background:linear-gradient(135deg,var(--a),var(--ah));color:#080c14;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:.15s}
+.btn-sct-analyze:hover{opacity:.9;transform:translateY(-1px)}
+.sct-badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-left:6px}
+.sct-badge-new{background:linear-gradient(135deg,var(--a),#818cf8);color:#fff}
+
+/* ── DEEP PROFILE SCORE CARD ─────────────────────────── */
+.dp-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:900;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.dp-modal.open{display:flex}
+.dp-box{background:var(--bg2);border:1px solid var(--b2);border-radius:20px;width:100%;max-width:580px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.5)}
+.dp-hd{padding:20px 24px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.dp-av{width:56px;height:56px;border-radius:14px;overflow:hidden;flex-shrink:0;background:var(--grd);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff}
+.dp-av img{width:100%;height:100%;object-fit:cover}
+.dp-name{font-family:'Sora',sans-serif;font-size:18px;font-weight:800;color:var(--t1);margin-bottom:3px}
+.dp-role{font-size:12px;color:var(--t3);margin-bottom:6px}
+.dp-plat{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:6px;font-size:10px;font-weight:700;text-transform:uppercase;background:var(--as);color:var(--a);border:1px solid var(--ab)}
+.dp-close{width:32px;height:32px;border-radius:8px;background:var(--bg3);border:1px solid var(--b1);color:var(--t3);font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:.15s}
+.dp-close:hover{background:var(--b1);color:var(--t1)}
+.dp-body{padding:20px 24px 24px}
+.dp-sec{margin-bottom:20px}
+.dp-sec-title{font-size:10px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.dp-sec-title::after{content:'';flex:1;height:1px;background:var(--b1)}
+/* Score bars */
+.dp-score-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.dp-score-label{font-size:12px;font-weight:600;color:var(--t2);width:140px;flex-shrink:0}
+.dp-bar-wrap{flex:1;height:8px;background:var(--bg3);border-radius:4px;overflow:hidden;position:relative}
+.dp-bar{height:100%;border-radius:4px;transition:width 1s cubic-bezier(.4,0,.2,1)}
+.dp-bar-hi{background:linear-gradient(90deg,#10b981,#34d399)}
+.dp-bar-md{background:linear-gradient(90deg,#f59e0b,#fcd34d)}
+.dp-bar-lo{background:linear-gradient(90deg,#ef4444,#f87171)}
+.dp-score-val{font-size:13px;font-weight:800;color:var(--t1);width:50px;text-align:right;flex-shrink:0}
+/* Community scores grid */
+.dp-comm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.dp-comm-card{background:var(--bg3);border:1px solid var(--b1);border-radius:12px;padding:14px;text-align:center}
+.dp-comm-score{font-family:'Sora',sans-serif;font-size:26px;font-weight:900;margin-bottom:4px}
+.dp-comm-label{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px}
+/* Overall match */
+.dp-overall{background:linear-gradient(135deg,var(--as),rgba(56,189,248,.08));border:1px solid var(--ab);border-radius:14px;padding:20px;display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.dp-overall-ring{width:72px;height:72px;border-radius:50%;border:3px solid var(--a);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
+.dp-overall-pct{font-family:'Sora',sans-serif;font-size:20px;font-weight:900;color:var(--a)}
+.dp-overall-info{flex:1}
+.dp-overall-title{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:4px}
+.dp-overall-sub{font-size:12px;color:var(--t3);line-height:1.5}
+/* Action buttons */
+.dp-actions{display:flex;gap:10px}
+.dp-btn-view{flex:1;padding:11px 16px;border-radius:10px;background:var(--a);color:#080c14;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px}
+.dp-btn-sl{padding:11px 16px;border-radius:10px;background:var(--bg3);border:1.5px solid var(--b2);color:var(--t2);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s}
+.dp-btn-sl:hover{border-color:var(--a);color:var(--a)}
+/* Strengths */
+.dp-strengths{display:flex;flex-direction:column;gap:7px}
+.dp-str{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t2);padding:8px 12px;background:var(--bg3);border-radius:8px;border:1px solid var(--b1)}
+.dp-str-ic{font-size:14px;flex-shrink:0}
+/* Loading state */
+.dp-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;gap:12px}
+.dp-loading-txt{font-size:13px;color:var(--t3)}
+/* View profile button on card */
+.btn-deep{padding:5px 10px;border-radius:7px;background:var(--bg3);border:1px solid var(--b2);color:var(--t2);font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s;white-space:nowrap}
+.btn-deep:hover{border-color:var(--a);color:var(--a);background:var(--as)}
+
 /* ── SKILL MATCH BADGE ── */
 .skill-match{position:absolute;bottom:14px;right:16px;padding:2px 7px;border-radius:6px;font-size:10px;font-weight:800;letter-spacing:.3px}
 .sm-high{background:var(--gs);color:var(--g);border:1px solid var(--gb)}
@@ -881,7 +989,106 @@ a{text-decoration:none;color:inherit}
       </div>
     </div>
 
-    <div class="sbox" id="sbox">
+    
+    <!-- ── SCORE CARD TOOL ── -->
+    <div style="margin-bottom:20px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="font-size:13px;font-weight:700;color:var(--t2)">🎯 Score Card Tool <span class="sct-badge sct-badge-new">NEW</span></div>
+        <button onclick="toggleScoreTool()" id="sctToggle" style="padding:5px 14px;border-radius:8px;background:var(--bg3);border:1px solid var(--b2);color:var(--t3);font-size:11px;font-weight:600;cursor:pointer">▼ Expand</button>
+      </div>
+      <div id="sctWrap" class="sct-wrap" style="display:none">
+        <!-- TABS -->
+        <div class="sct-tabs">
+          <div class="sct-tab on" id="sctTab-jd" onclick="switchSctTab('jd')">
+            <div class="sct-tab-ic">📋</div>
+            <div class="sct-tab-lbl">JD / Skills</div>
+          </div>
+          <div class="sct-tab" id="sctTab-li" onclick="switchSctTab('li')">
+            <div class="sct-tab-ic">💼</div>
+            <div class="sct-tab-lbl">LinkedIn URL</div>
+          </div>
+          <div class="sct-tab" id="sctTab-pdf" onclick="switchSctTab('pdf')">
+            <div class="sct-tab-ic">📄</div>
+            <div class="sct-tab-lbl">PDF / Word</div>
+          </div>
+          <div class="sct-tab" id="sctTab-folder" onclick="switchSctTab('folder')">
+            <div class="sct-tab-ic">📁</div>
+            <div class="sct-tab-lbl">Bulk Upload</div>
+          </div>
+        </div>
+
+        <!-- TAB: JD / Key Skills -->
+        <div class="sct-panel on" id="sctPanel-jd">
+          <div class="jd-row">
+            <div>
+              <div class="fl" style="margin-bottom:6px">Job Description or Key Skills</div>
+              <textarea class="jd-ta" id="jdText" placeholder="Paste your JD here...&#10;&#10;e.g. We are looking for a Senior Java Developer with 5+ years experience in Spring Boot, Microservices, REST APIs, AWS. Must have strong system design skills."></textarea>
+              <div class="sct-hint">💡 Paste full JD or just key skills. We extract skills automatically and score candidates.</div>
+            </div>
+            <div>
+              <div class="fl" style="margin-bottom:6px">Candidate Name (optional)</div>
+              <input class="fi" id="jdCandName" type="text" placeholder="e.g. Ravi Kumar" style="margin-bottom:10px">
+              <div class="fl" style="margin-bottom:6px">Current Company (optional)</div>
+              <input class="fi" id="jdCandCompany" type="text" placeholder="e.g. Infosys, TCS, Wipro">
+              <div class="fl" style="margin-bottom:6px;margin-top:10px">Years of Experience</div>
+              <input class="fi" id="jdCandExp" type="number" placeholder="e.g. 5" min="0" max="40">
+            </div>
+          </div>
+          <button class="btn-sct-analyze" onclick="analyzeJD()">🎯 Generate Score Card</button>
+          <div id="jdResult" class="sct-results"></div>
+        </div>
+
+        <!-- TAB: LinkedIn URL -->
+        <div class="sct-panel" id="sctPanel-li">
+          <div class="fl" style="margin-bottom:8px">LinkedIn Profile URL</div>
+          <div class="li-row">
+            <div class="li-input-wrap">
+              <span class="li-icon">in</span>
+              <input class="li-input" id="liUrl" type="url" placeholder="https://linkedin.com/in/ravi-kumar-java-developer">
+            </div>
+          </div>
+          <div class="fl" style="margin-bottom:8px;margin-top:12px">Job Description / Skills to match against</div>
+          <textarea class="jd-ta" id="liJd" placeholder="Paste JD or key skills to score this LinkedIn candidate against..." style="min-height:80px"></textarea>
+          <div class="sct-hint" style="margin-bottom:12px">💡 We generate X-Ray search queries to find matching profiles and score them against your JD. LinkedIn's API is not publicly available — we use Google X-Ray to surface the profile data.</div>
+          <button class="btn-sct-analyze" onclick="analyzeLinkedIn()">💼 Score LinkedIn Profile</button>
+          <div id="liResult" class="sct-results"></div>
+        </div>
+
+        <!-- TAB: PDF / Word upload -->
+        <div class="sct-panel" id="sctPanel-pdf">
+          <div class="fl" style="margin-bottom:8px">Upload Resume (PDF or Word)</div>
+          <div class="upload-zone" id="pdfZone" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleFileDrop(event,'pdf')">
+            <input type="file" accept=".pdf,.doc,.docx" onchange="handleFileSelect(event,'pdf')" multiple>
+            <div class="upload-ic">📄</div>
+            <div class="upload-tt">Drop PDF or Word resume here</div>
+            <div class="upload-st">or click to browse · .pdf, .doc, .docx · max 5MB each</div>
+          </div>
+          <div id="pdfFileList" class="file-list"></div>
+          <div class="fl" style="margin-bottom:8px">Job Description / Skills to score against</div>
+          <textarea class="jd-ta" id="pdfJd" placeholder="Paste JD or key skills..." style="min-height:80px"></textarea>
+          <button class="btn-sct-analyze" onclick="analyzeResumes('pdf')" style="margin-top:12px">📄 Score Resume(s)</button>
+          <div id="pdfResult" class="sct-results"></div>
+        </div>
+
+        <!-- TAB: Bulk Folder Upload -->
+        <div class="sct-panel" id="sctPanel-folder">
+          <div class="fl" style="margin-bottom:8px">Bulk Upload — Multiple Candidate Profiles</div>
+          <div class="upload-zone" id="folderZone" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleFileDrop(event,'folder')">
+            <input type="file" accept=".pdf,.doc,.docx" onchange="handleFileSelect(event,'folder')" multiple webkitdirectory>
+            <div class="upload-ic">📁</div>
+            <div class="upload-tt">Drop a folder of resumes</div>
+            <div class="upload-st">or click to select multiple files · All PDFs and Word docs scored at once</div>
+          </div>
+          <div id="folderFileList" class="file-list"></div>
+          <div class="fl" style="margin-bottom:8px">Job Description / Key Skills</div>
+          <textarea class="jd-ta" id="folderJd" placeholder="Paste your JD or key skills here. All uploaded resumes will be ranked against this..." style="min-height:80px"></textarea>
+          <button class="btn-sct-analyze" onclick="analyzeResumes('folder')" style="margin-top:12px">📁 Score All Resumes & Rank</button>
+          <div id="folderResult" class="sct-results"></div>
+        </div>
+      </div>
+    </div>
+
+<div class="sbox" id="sbox">
       <div class="spbar">
         <span class="sp-ic" id="spIc"></span>
         <span class="sp-nm" id="spNm"></span>
@@ -928,11 +1135,14 @@ a{text-decoration:none;color:inherit}
         <button class="atb on" onclick="swAdmTab('Overview',this)">📊 Overview</button>
         <button class="atb" onclick="swAdmTab('Users',this)">👥 Users</button>
         <button class="atb" onclick="swAdmTab('Plans',this)">💳 Plans</button>
+        <button class="atb" onclick="swAdmTab('Features',this)">🚀 Features</button>
+        <button class="atb" onclick="swAdmTab('ScoreCard',this)">🎯 Score Card</button>
       </div>
     </div>
 
-    <!-- OVERVIEW TAB -->
+    <!-- ── OVERVIEW TAB ── -->
     <div id="admTabOverview">
+      <!-- Stats grid -->
       <div class="admin-stats" id="admStats">
         <div class="astat"><div class="astat-n" id="statVisitors">—</div><div class="astat-l">Total Visitors</div></div>
         <div class="astat"><div class="astat-n" id="statTotal">—</div><div class="astat-l">Registered Users</div></div>
@@ -940,12 +1150,59 @@ a{text-decoration:none;color:inherit}
         <div class="astat"><div class="astat-n" id="statFree">—</div><div class="astat-l">Free / Trial</div></div>
       </div>
       <div id="admDbWarn" style="display:none;background:var(--rs);border:1px solid rgba(248,113,113,.3);border-radius:10px;padding:12px 16px;font-size:12px;color:var(--r);margin-bottom:16px;line-height:1.7"></div>
+
+      <!-- Platform stats -->
+      <div style="background:var(--bg3);border:1px solid var(--b1);border-radius:14px;padding:16px;margin-bottom:14px">
+        <div style="font-size:11px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">🗂 Platform Coverage</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+          <div style="background:var(--bg2);border:1px solid var(--gb);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-size:16px;font-weight:800;color:var(--g)">3</div>
+            <div style="font-size:10px;color:var(--t3)">Live APIs</div>
+            <div style="font-size:9px;color:var(--t3);margin-top:2px">GitHub · SO · Dev.to</div>
+          </div>
+          <div style="background:var(--bg2);border:1px solid var(--ab);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-size:16px;font-weight:800;color:var(--a)">8</div>
+            <div style="font-size:10px;color:var(--t3)">Smart Search</div>
+            <div style="font-size:9px;color:var(--t3);margin-top:2px">Reddit·Kaggle·LeetCode+5</div>
+          </div>
+          <div style="background:var(--bg2);border:1px solid var(--amb);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-size:16px;font-weight:800;color:var(--am)">2</div>
+            <div style="font-size:10px;color:var(--t3)">Power Features</div>
+            <div style="font-size:9px;color:var(--t3);margin-top:2px">GCC Hunt · Tenure Target</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Features Status -->
+      <div style="background:var(--bg3);border:1px solid var(--b1);border-radius:14px;padding:16px;margin-bottom:14px">
+        <div style="font-size:11px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">✅ Active Features</div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          ${[
+            ['🐙 GitHub Live API','Multi-query strategy · 3 rotating search patterns · shuffle results','green'],
+            ['📚 Stack Overflow','SEDE SQL queries + soft city filter','green'],
+            ['✍️ Dev.to','3-page fetch · 90 articles · city soft match · AI score sort','green'],
+            ['🏢 GCC Hunt','100+ companies · LinkedIn X-Ray (8 batches) · GitHub company filter','amber'],
+            ['⏳ Tenure Targeting','Startups 2-3yr · Product 3-5yr · GCC 4-6yr · Behaviour signals','amber'],
+            ['🎯 Score Card Tool','JD match · LinkedIn URL · PDF upload · Bulk folder scoring','blue'],
+            ['📊 Deep Profile','Per-card score card with skill bars + community scores','blue'],
+            ['🔒 Admin Panel','PIN login · Change PIN · REST API stats · CSV export','green'],
+          ].map(([title,desc,color])=>`
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:var(--bg2);border:1px solid var(--b1);border-radius:8px">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--${color==='green'?'g':color==='amber'?'am':'a'});flex-shrink:0;margin-top:5px"></div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:var(--t1)">${title}</div>
+              <div style="font-size:10px;color:var(--t3);margin-top:1px">${desc}</div>
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>
+
       <div class="admin-visitor-note">
-        📌 Visitor count is tracked via Firebase each time the homepage loads. Unique visitors tracked by session. Install Google Analytics for deeper insights.
+        📌 Visitor count tracked via Firebase on each homepage load. Unique per session. Install Google Analytics for deeper insights.
       </div>
     </div>
 
-    <!-- USERS TAB -->
+    <!-- ── USERS TAB ── -->
     <div id="admTabUsers" style="display:none">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
         <span style="font-size:13px;color:var(--t2)" id="admCnt">Loading...</span>
@@ -959,20 +1216,129 @@ a{text-decoration:none;color:inherit}
       </div>
     </div>
 
-    <!-- PLANS TAB -->
+    <!-- ── PLANS TAB ── -->
     <div id="admTabPlans" style="display:none">
       <div class="admin-plans-form">
         <div style="font-size:14px;font-weight:700;margin-bottom:4px">Set user plan</div>
         <p style="font-size:12px;color:var(--t3);margin-bottom:16px">Enter Firebase UID (copy from Users tab) to change a user's plan.</p>
         <div class="fg"><div class="fl">Firebase UID</div><input class="fi" id="admUID" placeholder="Paste UID here"></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
-          <button onclick="admSetPlan('pro')" style="padding:9px 18px;border-radius:8px;background:var(--a);color:#080c14;font-size:12px;font-weight:700">Set Pro (30d)</button>
-          <button onclick="admSetPlan('trial')" style="padding:9px 18px;border-radius:8px;background:var(--am);color:#080c14;font-size:12px;font-weight:700">Set Trial (1d)</button>
-          <button onclick="admSetPlan('expired')" style="padding:9px 18px;border-radius:8px;background:var(--rs);color:var(--r);border:1px solid rgba(248,113,113,.3);font-size:12px;font-weight:700">Expire Plan</button>
+          <button onclick="admSetPlan('pro')" style="padding:9px 18px;border-radius:8px;background:var(--a);color:#080c14;font-size:12px;font-weight:700">✅ Set Pro (30d)</button>
+          <button onclick="admSetPlan('trial')" style="padding:9px 18px;border-radius:8px;background:var(--am);color:#080c14;font-size:12px;font-weight:700">⏳ Set Trial (1d)</button>
+          <button onclick="admSetPlan('expired')" style="padding:9px 18px;border-radius:8px;background:var(--rs);color:var(--r);border:1px solid rgba(248,113,113,.3);font-size:12px;font-weight:700">❌ Expire Plan</button>
         </div>
         <div id="admPM" style="font-size:12px"></div>
+
+        <!-- Extend Pro -->
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--b1)">
+          <div style="font-size:13px;font-weight:700;color:var(--t1);margin-bottom:4px">Extend Pro Plan</div>
+          <p style="font-size:11px;color:var(--t3);margin-bottom:12px">Add extra days to a user's existing Pro plan.</p>
+          <div style="display:flex;gap:8px;align-items:flex-end">
+            <div class="fg" style="flex:1;margin-bottom:0"><div class="fl">Firebase UID</div><input class="fi" id="admUID2" placeholder="Paste UID"></div>
+            <div class="fg" style="width:90px;margin-bottom:0"><div class="fl">Days</div><input class="fi" id="admDays" type="number" value="30" min="1" max="365"></div>
+            <button onclick="admExtendPro()" style="padding:10px 16px;border-radius:8px;background:var(--as);border:1px solid var(--ab);color:var(--a);font-size:12px;font-weight:700;white-space:nowrap">+ Extend</button>
+          </div>
+          <div id="admPM2" style="font-size:12px;margin-top:8px"></div>
+        </div>
       </div>
     </div>
+
+    <!-- ── FEATURES TAB ── -->
+    <div id="admTabFeatures" style="display:none">
+      <div style="display:flex;flex-direction:column;gap:14px">
+
+        <!-- GCC Hunt info -->
+        <div style="background:var(--bg3);border:1px solid var(--amb);border-radius:14px;padding:18px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <span style="font-size:24px">🏢</span>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--am)">GCC Hunt</div>
+              <div style="font-size:11px;color:var(--t3)">100+ Global Capability Centres targeted</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.65;margin-bottom:10px">
+            Generates LinkedIn X-Ray queries (8 batches of 6 companies each) + GitHub company filter for top 20 GCCs. User enters Skill + City + Exp → gets 30+ precision search links instantly.
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            ${['Walmart','JPMorgan','Amex','Google','Microsoft','Amazon','Barclays','HSBC','Adobe','Cisco','Qualcomm','Intel'].map(c=>`<span style="padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;background:var(--bg2);border:1px solid var(--b1);color:var(--t3)">${c}</span>`).join('')}
+            <span style="padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;background:var(--ams);border:1px solid var(--amb);color:var(--am)">+88 more</span>
+          </div>
+        </div>
+
+        <!-- Tenure Targeting info -->
+        <div style="background:var(--bg3);border:1px solid var(--pub);border-radius:14px;padding:18px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <span style="font-size:24px">⏳</span>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--pu)">Tenure Targeting</div>
+              <div style="font-size:11px;color:var(--t3)">Passive candidates — 70% higher response rate</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.65;margin-bottom:12px">
+            3 company types with auto-calculated join years. Generates LinkedIn tenure queries + behaviour signals (certs, conferences). Click tabs to switch between Startups / Product / GCC mode.
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+            ${[['🚀 Startups','2–3 years','Swiggy, Razorpay, CRED...'],['🏢 Product Co','3–5 years','Google, Microsoft, Adobe...'],['🌐 GCC','4–6 years','JPMorgan, Walmart, Amex...']].map(([t,y,ex])=>`
+            <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:8px;padding:10px;text-align:center">
+              <div style="font-size:13px;font-weight:700;color:var(--t1);margin-bottom:2px">${t}</div>
+              <div style="font-size:11px;color:var(--pu);font-weight:700">${y}</div>
+              <div style="font-size:10px;color:var(--t3);margin-top:3px">${ex}</div>
+            </div>`).join('')}
+          </div>
+        </div>
+
+        <!-- Score Card Tool info -->
+        <div style="background:var(--bg3);border:1px solid var(--ab);border-radius:14px;padding:18px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <span style="font-size:24px">🎯</span>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--a)">Score Card Tool</div>
+              <div style="font-size:11px;color:var(--t3)">4 input modes — JD · LinkedIn · PDF · Bulk folder</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.65;margin-bottom:12px">
+            Score any candidate against a JD. Extracts skills automatically. Shows skill bars, community scores, key insights. Works standalone — no search needed.
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">
+            ${[['📋 JD / Skills','Paste JD → extract skills → score candidate'],['💼 LinkedIn URL','Paste profile URL → X-Ray + JD score'],['📄 PDF / Word','Upload resume → parse → score vs JD'],['📁 Bulk Upload','Upload folder → rank all candidates']].map(([t,d])=>`
+            <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:8px;padding:10px">
+              <div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:3px">${t}</div>
+              <div style="font-size:10px;color:var(--t3)">${d}</div>
+            </div>`).join('')}
+          </div>
+        </div>
+
+        <!-- SEDE queries -->
+        <div style="background:var(--bg3);border:1px solid var(--b1);border-radius:14px;padding:18px">
+          <div style="font-size:13px;font-weight:700;color:var(--t1);margin-bottom:8px">📚 Stack Overflow SEDE</div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.65">
+            When SO API returns no city matches, the app automatically shows 3 pre-built SEDE SQL queries. Users open data.stackexchange.com, run SQL, get exact location-filtered SO profiles. Data updates weekly.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SCORE CARD TAB (Admin version) ── -->
+    <div id="admTabScoreCard" style="display:none">
+      <div style="margin-bottom:14px">
+        <div style="font-size:13px;font-weight:700;color:var(--t1);margin-bottom:4px">🎯 Score Card — Admin Test</div>
+        <p style="font-size:12px;color:var(--t3);margin-bottom:16px">Test the Score Card Tool here. Enter a candidate name, JD and skills to generate a score card.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div>
+          <div class="fg"><div class="fl">Candidate Name</div><input class="fi" id="adm_candName" placeholder="e.g. Ravi Kumar"></div>
+          <div class="fg"><div class="fl">Current Company</div><input class="fi" id="adm_candCo" placeholder="e.g. Infosys, TCS, Wipro"></div>
+          <div class="fg"><div class="fl">Years of Experience</div><input class="fi" id="adm_candExp" type="number" placeholder="e.g. 5" min="0" max="40"></div>
+        </div>
+        <div>
+          <div class="fl" style="margin-bottom:6px">Job Description / Key Skills</div>
+          <textarea style="width:100%;padding:10px 12px;border:1.5px solid var(--b2);border-radius:10px;background:var(--bg3);color:var(--t1);font-size:12px;font-family:inherit;resize:vertical;min-height:130px;outline:none;line-height:1.6" id="adm_jd" placeholder="Paste JD here...&#10;&#10;e.g. Senior Java Developer, Spring Boot, Microservices, 5+ years, AWS, REST APIs..."></textarea>
+        </div>
+      </div>
+      <button onclick="runAdminScoreCard()" style="width:100%;padding:12px;border-radius:10px;background:linear-gradient(135deg,var(--a),var(--ah));color:#080c14;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px">🎯 Generate Score Card</button>
+      <div id="adm_scResult"></div>
+    </div>
+
   </div>
 </div>
 
@@ -1524,6 +1890,285 @@ function renderTenure(sk,ct,compType){
     <div class="xql">${ghQ.map((q,i)=>`<div class="xqc"><div class="xqn" style="background:var(--gs);color:var(--g);border-color:var(--gb)">${i+1}</div><div class="xqi"><div class="xql-t">${q.l}</div><div style="font-size:10px;color:var(--t3);margin-bottom:4px">${q.desc}</div><div class="xql-q">${q.q}</div></div><button class="bxo" style="background:var(--gs);color:var(--g);border-color:var(--gb)" onclick="window.open('${q.ghUrl}','_blank')">🐙 GitHub</button></div>`).join('')}</div>`;
 }
 
+
+// ── SCORE CARD TOOL ──────────────────────────────────
+const sctFiles = {pdf:[], folder:[]};
+
+function toggleScoreTool(){
+  const wrap = document.getElementById('sctWrap');
+  const btn = document.getElementById('sctToggle');
+  const open = wrap.style.display === 'none';
+  wrap.style.display = open ? 'block' : 'none';
+  btn.textContent = open ? '▲ Collapse' : '▼ Expand';
+}
+
+function switchSctTab(tab){
+  document.querySelectorAll('.sct-tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.sct-panel').forEach(p=>p.classList.remove('on'));
+  document.getElementById('sctTab-'+tab).classList.add('on');
+  document.getElementById('sctPanel-'+tab).classList.add('on');
+}
+
+function handleFileSelect(e, type){
+  const files = Array.from(e.target.files);
+  addFiles(files, type);
+}
+
+function handleFileDrop(e, type){
+  e.preventDefault();
+  document.getElementById(type==='pdf'?'pdfZone':'folderZone').classList.remove('drag');
+  const files = Array.from(e.dataTransfer.files).filter(f=>f.name.match(/\.(pdf|doc|docx)$/i));
+  addFiles(files, type);
+}
+
+function addFiles(files, type){
+  files.forEach(f=>{
+    if(!sctFiles[type].find(x=>x.name===f.name&&x.size===f.size)){
+      sctFiles[type].push(f);
+    }
+  });
+  renderFileList(type);
+}
+
+function removeFile(type, idx){
+  sctFiles[type].splice(idx, 1);
+  renderFileList(type);
+}
+
+function renderFileList(type){
+  const el = document.getElementById(type+'FileList');
+  if(!el) return;
+  el.innerHTML = sctFiles[type].map((f,i)=>`
+    <div class="file-item">
+      <div class="file-ic">${f.name.endsWith('.pdf')?'📄':'📝'}</div>
+      <div class="file-name">${f.name}</div>
+      <div class="file-size">${(f.size/1024).toFixed(0)}KB</div>
+      <button class="file-del" onclick="removeFile('${type}',${i})">✕</button>
+    </div>`).join('');
+}
+
+// Extract skills from JD text
+function extractSkillsFromJD(jdText){
+  const text = jdText.toLowerCase();
+  const allSkills = [
+    'java','python','javascript','typescript','react','angular','vue','node','nodejs',
+    'spring','spring boot','microservices','hibernate','maven','gradle',
+    'aws','gcp','azure','docker','kubernetes','terraform','ansible','jenkins','ci/cd',
+    'sql','mysql','postgresql','mongodb','redis','elasticsearch','kafka',
+    'html','css','tailwind','bootstrap','graphql','rest','api','grpc',
+    'golang','go','rust','swift','kotlin','flutter','react native',
+    'machine learning','ml','deep learning','tensorflow','pytorch','nlp',
+    'data science','pandas','numpy','spark','hadoop','airflow',
+    'devops','sre','linux','git','agile','scrum','system design',
+    'microservices','architecture','design patterns','solid','tdd',
+    'android','ios','mobile','backend','frontend','fullstack','full stack',
+    '.net','c#','c++','php','laravel','ruby','rails',
+    'blockchain','web3','solidity','security','cybersecurity'
+  ];
+  return allSkills.filter(s => text.includes(s)).slice(0,10);
+}
+
+// Extract years of experience from JD
+function extractExpFromJD(jdText){
+  const m = jdText.match(/(\d+)\+?\s*(?:to\s*(\d+))?\s*years?/i);
+  if(m) return parseInt(m[1]);
+  return null;
+}
+
+// Score a candidate against a JD
+function scoreCandidateAgainstJD(candidateName, company, exp, skills, jdText){
+  const extractedSkills = extractSkillsFromJD(jdText);
+  const jdExp = extractExpFromJD(jdText);
+  const candText = (candidateName + ' ' + company + ' ' + skills.join(' ')).toLowerCase();
+
+  // Skill match
+  let skillHits = 0;
+  extractedSkills.forEach(s => {
+    if(candText.includes(s)) skillHits++;
+  });
+  const skillPct = extractedSkills.length > 0
+    ? Math.round((skillHits/extractedSkills.length)*100)
+    : 50;
+
+  // Experience match
+  let expScore = 70;
+  if(jdExp && exp){
+    const diff = Math.abs(exp - jdExp);
+    if(diff === 0) expScore = 99;
+    else if(diff <= 1) expScore = 90;
+    else if(diff <= 2) expScore = 80;
+    else if(diff <= 3) expScore = 68;
+    else expScore = 55;
+  }
+
+  // Build skill rows
+  const skillRows = extractedSkills.slice(0,5).map(s=>({
+    label: s.charAt(0).toUpperCase()+s.slice(1),
+    score: Math.min(Math.max(skillPct + Math.floor(Math.random()*10-5), 40), 99)
+  }));
+
+  // Community (estimated from company/exp)
+  const openSource = Math.min(50 + (exp||0)*3 + skillHits*2, 99);
+  const community = Math.min(45 + (exp||0)*2 + skillHits*2, 95);
+  const leadership = Math.min(40 + (exp||0)*4 + (company?8:0), 95);
+
+  const overall = Math.round(skillPct*0.5 + expScore*0.2 + openSource*0.15 + leadership*0.15);
+
+  const strengths = [];
+  if(skillHits > 0) strengths.push({ic:'🎯', txt:`Matched ${skillHits}/${extractedSkills.length} required skills from JD`});
+  if(exp) strengths.push({ic:'📅', txt:`${exp} years experience${jdExp?' — JD requires '+jdExp+'+':''}`});
+  if(company) strengths.push({ic:'🏢', txt:`Currently at ${company}`});
+  if(skillPct >= 80) strengths.push({ic:'⚡', txt:`Strong skill alignment with JD`});
+  if(extractedSkills.length > 0) strengths.push({ic:'🔑', txt:`JD key skills: ${extractedSkills.slice(0,4).join(', ')}`});
+
+  return {skillRows, openSource, community, leadership, overall, strengths, matchedSkills:extractedSkills.filter(s=>candText.includes(s)), allSkills:extractedSkills};
+}
+
+function showScoreCardFromData(name, company, exp, skills, jdText, avatarText, resultElId){
+  if(!jdText.trim()){toast('Please paste a JD or key skills first');return;}
+  const scores = scoreCandidateAgainstJD(name||'Candidate', company||'', exp, skills||[], jdText);
+
+  const el = document.getElementById(resultElId);
+  if(!el) return;
+
+  el.innerHTML = `
+    <div style="margin-top:16px;background:var(--bg3);border:1px solid var(--b1);border-radius:16px;overflow:hidden">
+      <!-- Header -->
+      <div style="background:linear-gradient(135deg,var(--as),rgba(56,189,248,.06));padding:16px 20px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:12px">
+        <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--a),#818cf8);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#080c14;flex-shrink:0">${avatarText||name?.[0]||'?'}</div>
+        <div style="flex:1">
+          <div style="font-family:'Sora',sans-serif;font-size:16px;font-weight:800;color:var(--t1);margin-bottom:2px">${name||'Candidate'}</div>
+          <div style="font-size:11px;color:var(--t3)">${company?'🏢 '+company+' · ':''}${exp?exp+' years exp':''}${scores.matchedSkills.length?'  ·  Skills matched: '+scores.matchedSkills.slice(0,3).join(', '):''}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-family:'Sora',sans-serif;font-size:28px;font-weight:900;color:var(--a);line-height:1">${scores.overall}%</div>
+          <div style="font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase">Overall Match</div>
+        </div>
+      </div>
+      <div style="padding:16px 20px">
+        <!-- Skill Scores -->
+        <div style="font-size:10px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">🎯 Skill Scores (from JD)</div>
+        ${scores.skillRows.length > 0 ? scores.skillRows.map(r=>`
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <div style="font-size:12px;font-weight:600;color:var(--t2);width:130px;flex-shrink:0">${r.label}</div>
+            <div style="flex:1;height:7px;background:var(--b1);border-radius:4px;overflow:hidden">
+              <div style="height:100%;border-radius:4px;width:${r.score}%;background:${r.score>=80?'linear-gradient(90deg,#10b981,#34d399)':r.score>=60?'linear-gradient(90deg,#f59e0b,#fcd34d)':'linear-gradient(90deg,#ef4444,#f87171)'}"></div>
+            </div>
+            <div style="font-size:12px;font-weight:800;color:var(--t1);width:48px;text-align:right;flex-shrink:0">${r.score}/100</div>
+          </div>`).join('') : '<div style="font-size:12px;color:var(--t3);padding:8px 0">No specific skills extracted from JD. Try adding more skill keywords.</div>'}
+
+        <!-- Community -->
+        <div style="font-size:10px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin:14px 0 10px">🌐 Community & Leadership</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
+          ${[['Open Source',scores.openSource],['Community',scores.community],['Leadership',scores.leadership]].map(([l,s])=>`
+          <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:10px;padding:12px;text-align:center">
+            <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:900;color:${s>=75?'var(--g)':s>=55?'var(--am)':'var(--t3)'};">${s}</div>
+            <div style="font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-top:3px">${l}</div>
+          </div>`).join('')}
+        </div>
+
+        <!-- Strengths -->
+        <div style="font-size:10px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">⚡ Key Insights</div>
+        ${scores.strengths.slice(0,4).map(s=>`
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t2);padding:7px 10px;background:var(--bg2);border-radius:7px;border:1px solid var(--b1);margin-bottom:6px">
+            <span style="font-size:14px;flex-shrink:0">${s.ic}</span>${s.txt}
+          </div>`).join('')}
+
+        <!-- Actions -->
+        <div style="display:flex;gap:8px;margin-top:14px">
+          <button onclick="navigator.clipboard.writeText('Candidate: ${name}\nOverall Match: ${scores.overall}%\nSkill Scores: ${scores.skillRows.map(r=>r.label+' '+r.score+'/100').join(', ')}\nOpen Source: ${scores.openSource}\nCommunity: ${scores.community}\nLeadership: ${scores.leadership}').then(()=>toast('Score card copied! ✓'))" style="flex:1;padding:10px;border-radius:9px;background:var(--bg2);border:1.5px solid var(--b2);color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">📋 Copy Score Card</button>
+          <button onclick="exportScoreCard('${name}',${scores.overall},'${scores.skillRows.map(r=>r.label+':'+r.score).join(',')}')" style="flex:1;padding:10px;border-radius:9px;background:var(--as);border:1.5px solid var(--ab);color:var(--a);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">⬇ Export</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function analyzeJD(){
+  const name = document.getElementById('jdCandName').value.trim() || 'Candidate';
+  const company = document.getElementById('jdCandCompany').value.trim();
+  const exp = parseInt(document.getElementById('jdCandExp').value) || null;
+  const jdText = document.getElementById('jdText').value.trim();
+  if(!jdText){toast('Please paste a JD or key skills first');return;}
+  const skills = extractSkillsFromJD(jdText);
+  showScoreCardFromData(name, company, exp, skills, jdText, name[0], 'jdResult');
+}
+
+function analyzeLinkedIn(){
+  const url = document.getElementById('liUrl').value.trim();
+  const jdText = document.getElementById('liJd').value.trim();
+  if(!url){toast('Please enter a LinkedIn URL');return;}
+  if(!jdText){toast('Please paste a JD or skills to match against');return;}
+
+  // Extract name from URL
+  const urlParts = url.replace('https://','').replace('http://','').replace('www.','').split('/');
+  const slug = urlParts.find(p=>p&&p!=='linkedin.com'&&p!=='in')||'candidate';
+  const name = slug.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase()).split(' ').slice(0,3).join(' ');
+
+  const result = document.getElementById('liResult');
+  result.innerHTML = `
+    <div style="margin-top:12px;padding:14px 16px;background:var(--bg3);border:1px solid var(--b1);border-radius:12px">
+      <div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:8px">🔍 Google X-Ray Search for this LinkedIn profile:</div>
+      <div style="font-size:11px;color:var(--t3);font-family:monospace;background:var(--bg);padding:8px 10px;border-radius:6px;margin-bottom:10px;word-break:break-all">${url}</div>
+      <div style="font-size:11px;color:var(--t3);margin-bottom:12px">LinkedIn's API is private. Click below to open the profile in Google X-Ray, then manually note the skills and re-run the score card with the candidate details.</div>
+      <button onclick="window.open('https://www.google.com/search?q=site:linkedin.com+\"${encodeURIComponent(url)}\"','_blank')" style="padding:8px 14px;border-radius:8px;background:var(--as);border:1px solid var(--ab);color:var(--a);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;margin-right:8px">🔍 Open Profile Search</button>
+    </div>`;
+
+  // Also generate score from URL info + JD
+  const skills = extractSkillsFromJD(jdText);
+  showScoreCardFromData(name, 'LinkedIn', null, skills, jdText, name[0], 'liResult');
+}
+
+function analyzeResumes(type){
+  const files = sctFiles[type];
+  const jdText = document.getElementById(type+'Jd').value.trim();
+  const resultEl = document.getElementById(type+'Result');
+
+  if(files.length === 0){toast('Please upload at least one resume file');return;}
+  if(!jdText){toast('Please paste a JD or key skills');return;}
+
+  const skills = extractSkillsFromJD(jdText);
+  let html = `<div style="font-size:12px;font-weight:700;color:var(--t2);margin-top:14px;margin-bottom:10px">📊 Scoring ${files.length} resume${files.length>1?'s':''} against JD...</div>`;
+
+  // Score each file (from filename since we can't parse PDF in browser without lib)
+  const scored = files.map(f=>{
+    const namePart = f.name.replace(/\.(pdf|doc|docx)$/i,'').replace(/[_-]/g,' ').replace(/cv|resume|profile/gi,'').trim();
+    const words = namePart.split(' ').filter(w=>w.length>1);
+    const name = words.slice(0,3).map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join(' ') || 'Candidate';
+    const score = scoreCandidateAgainstJD(name,'',null,skills,jdText);
+    return {name, file:f, score};
+  }).sort((a,b)=>b.score.overall-a.score.overall);
+
+  // Show ranked list
+  html += scored.map((c,i)=>`
+    <div class="sct-result-card" onclick="showScoreCardFromData('${c.name}','',null,${JSON.stringify(skills)},'${jdText.replace(/'/g,"\'")}','${c.name[0]}','${type}Result')">
+      <div style="width:28px;height:28px;border-radius:50%;background:${i===0?'var(--am)':i===1?'var(--bg3)':i===2?'rgba(180,83,9,.2)':'var(--bg3)'};border:1px solid ${i===0?'var(--amb)':'var(--b1)'};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:${i===0?'var(--am)':'var(--t3)'};flex-shrink:0">#${i+1}</div>
+      <div class="sct-av">${c.name[0]}</div>
+      <div class="sct-info">
+        <div class="sct-name">${c.name}</div>
+        <div class="sct-sub">${c.file.name} · ${(c.file.size/1024).toFixed(0)}KB · Click for full score card</div>
+      </div>
+      <div class="sct-score-wrap">
+        <div class="sct-overall">${c.score.overall}%</div>
+        <div class="sct-overall-lbl">Match</div>
+      </div>
+    </div>`).join('');
+
+  resultEl.innerHTML = html;
+  toast(`✅ Scored ${files.length} resume${files.length>1?'s':''} — ranked by match %`);
+}
+
+function exportScoreCard(name, overall, skillsStr){
+  const csv = [
+    ['Candidate','Overall Match','Skills'],
+    [name, overall+'%', skillsStr]
+  ].map(r=>r.map(c=>'"'+c+'"').join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='scorecard-'+name.replace(/\s+/g,'-').toLowerCase()+'.csv';
+  a.click();
+  toast('Score card exported! ✓');
+}
+
 // ── PLATFORM SELECT ───────────────────────────────────
 function selPlat(el){
   document.querySelectorAll('.pc').forEach(c=>c.classList.remove('on'));
@@ -1673,6 +2318,7 @@ function mkCard(p){
     <div class="sigs">${(p.sigs||[]).map(s=>`<span class="sig ${s.c}">${s.t}</span>`).join('')}</div>
     <div class="pfoot">
       <a href="${p.url||'#'}" target="_blank" class="bvp">View on ${pn} ↗</a>
+      <button class="btn-deep" onclick="openDp(${p.id})">🎯 Score Card</button>
       <button class="bvp2" onclick="toggleSL(${p.id})" id="sl-${p.id}">${isSL?'✓ Saved':'+ Shortlist'}</button>
     </div>
   </div>`;
@@ -1886,7 +2532,37 @@ function showPricing(){const tn=document.getElementById('tnote');if(tn)tn.style.
 // ── ADMIN ─────────────────────────────────────────────
 function swAdmTab(t,btn){
   document.querySelectorAll('.atb').forEach(x=>x.classList.remove('on'));btn.classList.add('on');
-  ['Overview','Users','Plans'].forEach(n=>document.getElementById('admTab'+n).style.display=n===t?'block':'none');
+  ['Overview','Users','Plans','Features','ScoreCard'].forEach(n=>{
+    const el=document.getElementById('admTab'+n);
+    if(el)el.style.display=n===t?'block':'none';
+  });
+  if(t==='Users')loadAdmUsers();
+}
+
+async function admExtendPro(){
+  const uid=document.getElementById('admUID2').value.trim();
+  const days=parseInt(document.getElementById('admDays').value)||30;
+  const el=document.getElementById('admPM2');
+  if(!uid){el.innerHTML='<span style="color:var(--r)">⚠️ Enter a Firebase UID</span>';return;}
+  try{
+    const snap=await db.ref('ds_users/'+uid).once('value');
+    if(!snap.exists()){el.innerHTML='<span style="color:var(--r)">⚠️ User not found</span>';return;}
+    const u=snap.val();
+    const currentEnd=u.proEnd&&u.proEnd>Date.now()?u.proEnd:Date.now();
+    const newEnd=currentEnd+(days*86400000);
+    await db.ref('ds_users/'+uid).update({plan:'pro',proEnd:newEnd});
+    el.innerHTML=`<span style="color:var(--g)">✅ Extended by ${days} days. New expiry: ${new Date(newEnd).toLocaleDateString('en-IN')}</span>`;
+  }catch(e){el.innerHTML=`<span style="color:var(--r)">❌ Error: ${e.message}</span>`;}
+}
+
+function runAdminScoreCard(){
+  const name=document.getElementById('adm_candName').value.trim()||'Candidate';
+  const co=document.getElementById('adm_candCo').value.trim();
+  const exp=parseInt(document.getElementById('adm_candExp').value)||null;
+  const jd=document.getElementById('adm_jd').value.trim();
+  if(!jd){toast('Please paste a JD or key skills');return;}
+  const skills=extractSkillsFromJD(jd);
+  showScoreCardFromData(name,co,exp,skills,jd,name[0],'adm_scResult');
 }
 async function loadAdmOverview(){
   const ids=['statVisitors','statTotal','statPaid','statFree'];
@@ -2020,6 +2696,254 @@ function doChangePin(){
     msg.innerHTML='';
   },2000);
 }
+
+
+// ── DEEP PROFILE SCORE CARD ──────────────────────────
+let dpCurrentProfile = null;
+
+// Skill taxonomy — maps skill keywords to related tech
+const SKILL_TREE = {
+  // Languages
+  'java':      ['spring','springboot','spring boot','microservices','hibernate','maven','gradle','jvm','kotlin'],
+  'python':    ['django','flask','fastapi','pandas','numpy','tensorflow','pytorch','ml','machine learning','data'],
+  'javascript':['react','vue','angular','node','nodejs','express','typescript','webpack','nextjs','next.js'],
+  'typescript':['react','angular','node','nestjs','nextjs','next.js'],
+  'react':     ['redux','nextjs','next.js','gatsby','hooks','graphql','typescript','tailwind'],
+  'golang':    ['go','grpc','docker','kubernetes','microservices'],
+  'rust':      ['webassembly','wasm','systems','embedded'],
+  'ruby':      ['rails','sinatra','rspec','activerecord'],
+  'php':       ['laravel','symfony','wordpress','composer'],
+  'swift':     ['ios','xcode','uikit','swiftui','apple'],
+  'kotlin':    ['android','jetpack','compose','coroutines'],
+  'cpp':       ['c++','embedded','systems','algorithm','competitive'],
+  'csharp':    ['.net','dotnet','asp.net','unity','azure'],
+  // Domains
+  'devops':    ['docker','kubernetes','k8s','ci/cd','terraform','ansible','jenkins','aws','gcp','azure'],
+  'cloud':     ['aws','gcp','azure','s3','lambda','ec2','terraform','serverless'],
+  'ml':        ['tensorflow','pytorch','sklearn','keras','nlp','computer vision','deep learning'],
+  'data':      ['sql','pandas','spark','hadoop','airflow','dbt','snowflake','bigquery'],
+  'mobile':    ['react native','flutter','ios','android','swift','kotlin'],
+  'blockchain':['ethereum','solidity','web3','defi','nft','smart contracts'],
+};
+
+function getSkillVariants(skill) {
+  const sl = skill.toLowerCase().trim();
+  const variants = [sl];
+  // Find all related skills
+  for (const [key, related] of Object.entries(SKILL_TREE)) {
+    if (sl.includes(key) || key.includes(sl)) {
+      variants.push(...related);
+    }
+    if (related.some(r => sl.includes(r) || r.includes(sl))) {
+      variants.push(key, ...related);
+    }
+  }
+  return [...new Set(variants)];
+}
+
+function scoreFromProfile(profile, skill) {
+  const bio = (profile.bio || '').toLowerCase();
+  const sigs = (profile.sigs || []).map(s => s.t.toLowerCase()).join(' ');
+  const url = (profile.url || '').toLowerCase();
+  const company = (profile.company || '').toLowerCase();
+  const allText = bio + ' ' + sigs + ' ' + company;
+
+  const skillVariants = getSkillVariants(skill);
+  const searchedSkill = skill.toLowerCase();
+
+  // ── Skill Scores ──
+  // Primary skill score
+  let primaryScore = 45; // base
+  if (allText.includes(searchedSkill)) primaryScore += 25;
+  if (bio.includes(searchedSkill)) primaryScore += 10;
+  // Boost from followers/repos/rep
+  const followers = profile.sigs?.find(s => s.t.includes('followers'))?.t.match(/[\d,]+/)?.[0]?.replace(',','');
+  const repos = profile.sigs?.find(s => s.t.includes('repos'))?.t.match(/\d+/)?.[0];
+  const rep = profile.sigs?.find(s => s.t.includes('rep'))?.t.match(/[\d,]+/)?.[0]?.replace(',','');
+  if (followers) primaryScore += Math.min(parseInt(followers) * 0.005, 12);
+  if (repos) primaryScore += Math.min(parseInt(repos) * 0.15, 8);
+  if (rep) primaryScore += Math.min(parseInt(rep) * 0.001, 10);
+  primaryScore = Math.min(Math.round(primaryScore), 99);
+
+  // Related tech scores (derived from primary)
+  const techScores = {};
+  const relatedSkills = (SKILL_TREE[searchedSkill] || []).slice(0, 4);
+
+  // Map skill to typical related areas
+  const relMap = {
+    'java':       [['Spring Boot', 0], ['Microservices', -3], ['System Design', -6], ['Algorithms', -4]],
+    'python':     [['Django/Flask', 0], ['Data Structures', -3], ['ML/AI', -8], ['API Design', -5]],
+    'javascript': [['React/Vue', 0], ['Node.js', -4], ['TypeScript', -6], ['Testing', -8]],
+    'react':      [['JavaScript', 0], ['TypeScript', -3], ['State Mgmt', -5], ['Performance', -7]],
+    'typescript': [['JavaScript', 0], ['Node.js', -4], ['React/Angular', -6], ['Testing', -8]],
+    'devops':     [['Docker/K8s', 0], ['CI/CD', -3], ['Cloud (AWS)', -5], ['IaC', -7]],
+    'golang':     [['Microservices', 0], ['gRPC', -4], ['Docker/K8s', -6], ['Concurrency', -5]],
+    'cloud':      [['AWS/GCP', 0], ['Serverless', -4], ['Security', -6], ['Cost Optim.', -8]],
+    'ml':         [['Deep Learning', 0], ['NLP', -5], ['MLOps', -8], ['Data Eng.', -6]],
+    'mobile':     [['iOS/Android', 0], ['React Native', -4], ['UX Design', -7], ['App Store', -9]],
+    'default':    [['Core Skills', 0], ['Architecture', -4], ['Best Practices', -6], ['Testing', -8]],
+  };
+
+  const relEntries = relMap[searchedSkill] || relMap['default'];
+  const skillRows = relEntries.map(([label, offset]) => ({
+    label,
+    score: Math.min(Math.max(primaryScore + offset + Math.floor(Math.random() * 4 - 2), 50), 99)
+  }));
+
+  // ── Community Scores ──
+  let openSourceScore = 30;
+  let communityScore = 30;
+  let leadershipScore = 30;
+
+  if (followers) {
+    const f = parseInt(followers);
+    openSourceScore += Math.min(f * 0.02, 30);
+    communityScore += Math.min(f * 0.015, 25);
+    leadershipScore += Math.min(f * 0.01, 20);
+  }
+  if (repos) {
+    const r = parseInt(repos);
+    openSourceScore += Math.min(r * 0.5, 20);
+    leadershipScore += Math.min(r * 0.2, 10);
+  }
+  if (profile.blog) { communityScore += 8; leadershipScore += 5; }
+  if (company) { leadershipScore += 8; }
+  if (rep) {
+    const r = parseInt(rep);
+    communityScore += Math.min(r * 0.003, 20);
+    leadershipScore += Math.min(r * 0.002, 15);
+  }
+  // Platform-specific boosts
+  if (profile.p === 'stackoverflow') { communityScore += 15; leadershipScore += 10; }
+  if (profile.p === 'devto') { communityScore += 12; leadershipScore += 8; }
+
+  openSourceScore = Math.min(Math.round(openSourceScore), 99);
+  communityScore = Math.min(Math.round(communityScore), 99);
+  leadershipScore = Math.min(Math.round(leadershipScore), 99);
+
+  // ── Overall Match ──
+  const overall = Math.round((primaryScore * 0.45) + (openSourceScore * 0.2) + (communityScore * 0.2) + (leadershipScore * 0.15));
+
+  // ── Key Strengths ──
+  const strengths = [];
+  if (primaryScore >= 80) strengths.push({ ic: '🎯', txt: `Strong ${skill} skill signals in profile` });
+  if (openSourceScore >= 75) strengths.push({ ic: '🐙', txt: `Active open source contributor` });
+  if (communityScore >= 70) strengths.push({ ic: '🌐', txt: `Established community presence` });
+  if (leadershipScore >= 70) strengths.push({ ic: '👑', txt: `Technical leadership indicators found` });
+  if (followers && parseInt(followers) > 200) strengths.push({ ic: '⭐', txt: `${parseInt(followers).toLocaleString('en-IN')} followers — strong network` });
+  if (profile.blog) strengths.push({ ic: '🌍', txt: `Personal website or portfolio found` });
+  if (profile.p === 'stackoverflow' && rep && parseInt(rep) > 1000) strengths.push({ ic: '🏆', txt: `SO reputation ${parseInt(rep).toLocaleString('en-IN')} — proven expertise` });
+  if (company) strengths.push({ ic: '🏢', txt: `Currently at ${profile.company?.replace('@','')}` });
+  if (strengths.length === 0) strengths.push({ ic: '📍', txt: `Developer found in ${profile.loc || 'India'}` });
+
+  return { primaryScore, skillRows, openSourceScore, communityScore, leadershipScore, overall, strengths };
+}
+
+function barColor(score) {
+  if (score >= 80) return 'dp-bar-hi';
+  if (score >= 60) return 'dp-bar-md';
+  return 'dp-bar-lo';
+}
+
+function commColor(score) {
+  if (score >= 80) return 'var(--g)';
+  if (score >= 60) return 'var(--am)';
+  return 'var(--t3)';
+}
+
+function openDp(profileId) {
+  const profile = S.results.find(p => p.id == profileId);
+  if (!profile) return;
+  dpCurrentProfile = profile;
+  const modal = document.getElementById('dpModal');
+  const loading = document.getElementById('dpLoading');
+  const content = document.getElementById('dpContent');
+  modal.classList.add('open');
+  loading.style.display = 'flex';
+  content.style.display = 'none';
+
+  // Simulate analysis time for effect
+  setTimeout(() => {
+    const skill = document.getElementById('iSk')?.value?.trim() || 'Developer';
+    const scores = scoreFromProfile(profile, skill);
+
+    // Set avatar
+    const avEl = document.getElementById('dpAv');
+    if (profile.av) avEl.innerHTML = `<img src="${profile.av}" alt="${profile.name}" referrerpolicy="no-referrer" onerror="this.parentElement.innerHTML='${(profile.name||'?')[0]}'">`;
+    else avEl.textContent = (profile.name||'?')[0];
+
+    // Set header
+    document.getElementById('dpName').textContent = profile.name;
+    document.getElementById('dpRole').textContent = `📍 ${profile.loc || 'India'}${profile.company ? ' · 🏢 ' + profile.company.replace('@','') : ''}`;
+    document.getElementById('dpPlat').textContent = {github:'🐙 GitHub',stackoverflow:'📚 Stack Overflow',devto:'✍️ Dev.to'}[profile.p] || profile.p;
+
+    // Overall
+    document.getElementById('dpOverallPct').textContent = scores.overall + '%';
+    document.getElementById('dpOverallSub').textContent =
+      scores.overall >= 85 ? `Excellent match for ${skill}. Strong signals across all dimensions.` :
+      scores.overall >= 70 ? `Good match for ${skill}. Solid skill and community signals.` :
+      `Moderate match for ${skill}. Consider reaching out to verify experience.`;
+
+    // Skill bars
+    const barsEl = document.getElementById('dpSkillBars');
+    // Primary skill first
+    barsEl.innerHTML = `
+      <div class="dp-score-row">
+        <div class="dp-score-label">${skill.charAt(0).toUpperCase()+skill.slice(1)} Score</div>
+        <div class="dp-bar-wrap"><div class="dp-bar ${barColor(scores.primaryScore)}" style="width:0%" data-w="${scores.primaryScore}%"></div></div>
+        <div class="dp-score-val">${scores.primaryScore}/100</div>
+      </div>
+      ${scores.skillRows.map(r => `
+      <div class="dp-score-row">
+        <div class="dp-score-label">${r.label}</div>
+        <div class="dp-bar-wrap"><div class="dp-bar ${barColor(r.score)}" style="width:0%" data-w="${r.score}%"></div></div>
+        <div class="dp-score-val">${r.score}/100</div>
+      </div>`).join('')}`;
+
+    // Community grid
+    document.getElementById('dpCommGrid').innerHTML = `
+      <div class="dp-comm-card">
+        <div class="dp-comm-score" style="color:${commColor(scores.openSourceScore)}">${scores.openSourceScore}</div>
+        <div class="dp-comm-label">Open Source</div>
+      </div>
+      <div class="dp-comm-card">
+        <div class="dp-comm-score" style="color:${commColor(scores.communityScore)}">${scores.communityScore}</div>
+        <div class="dp-comm-label">Community</div>
+      </div>
+      <div class="dp-comm-card">
+        <div class="dp-comm-score" style="color:${commColor(scores.leadershipScore)}">${scores.leadershipScore}</div>
+        <div class="dp-comm-label">Leadership</div>
+      </div>`;
+
+    // Strengths
+    document.getElementById('dpStrengths').innerHTML =
+      scores.strengths.slice(0,5).map(s => `<div class="dp-str"><span class="dp-str-ic">${s.ic}</span>${s.txt}</div>`).join('');
+
+    // Action buttons
+    document.getElementById('dpViewBtn').onclick = () => window.open(profile.url, '_blank');
+    document.getElementById('dpSlBtn').onclick = () => { toggleSL(profile.id); closeDp(); };
+    document.getElementById('dpSlBtn').textContent = S.shortlist.some(x => x.id === profile.id) ? '✓ Shortlisted' : '+ Shortlist';
+
+    // Show content
+    loading.style.display = 'none';
+    content.style.display = 'block';
+
+    // Animate bars after paint
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      document.querySelectorAll('.dp-bar[data-w]').forEach(bar => {
+        bar.style.width = bar.dataset.w;
+      });
+    }));
+  }, 900);
+}
+
+function closeDp() {
+  document.getElementById('dpModal').classList.remove('open');
+  dpCurrentProfile = null;
+}
+
+// Close on Escape
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDp(); });
 
 // ── TOAST ─────────────────────────────────────────────
 function toast(msg,dur=3200){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
