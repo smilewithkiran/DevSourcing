@@ -133,6 +133,8 @@
   --grd:linear-gradient(135deg,#38bdf8,#818cf8);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden;width:100%}
+img,svg{max-width:100%;height:auto}
 html{scroll-behavior:smooth}
 body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t1);font-size:14px;line-height:1.6;min-height:100vh;transition:background .2s,color .2s}
 button{cursor:pointer;border:none;background:none;font-family:inherit;font-size:inherit}
@@ -188,7 +190,7 @@ a{text-decoration:none;color:inherit}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--as);color:var(--a);border:1px solid var(--ab);border-radius:20px;padding:5px 15px;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:24px}
 .hero-eyebrow span{width:6px;height:6px;border-radius:50%;background:var(--g);animation:blink 2s infinite;flex-shrink:0}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-.hero h1{font-family:'Sora',sans-serif;font-size:clamp(30px,4.5vw,52px);font-weight:800;line-height:1.1;letter-spacing:-2px;margin-bottom:10px;color:var(--t1)}
+.hero h1{font-family:'Sora',sans-serif;font-size:clamp(26px,4.5vw,52px);font-weight:800;line-height:1.1;letter-spacing:-1.5px;margin-bottom:10px;color:var(--t1);overflow-wrap:break-word;word-break:break-word}
 .hero h1 em{font-style:normal;color:var(--a)}
 .hero-tagline{font-size:15px;color:var(--t2);margin-bottom:10px;font-weight:500}
 .hero-sub{font-size:13px;color:var(--t3);max-width:500px;margin:0 auto 36px;line-height:1.75}
@@ -295,7 +297,7 @@ a{text-decoration:none;color:inherit}
 .footer-link:hover{color:var(--a)}
 
 /* ── APP PAGE ── */
-.app-wrap{max-width:1280px;margin:0 auto;padding:28px 24px 100px}
+.app-wrap{max-width:1280px;margin:0 auto;padding:28px 16px 100px;overflow-x:hidden}
 .sec-label{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
 /* Platform grid */
 .plt-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:24px}
@@ -508,7 +510,7 @@ a{text-decoration:none;color:inherit}
 .xqn{width:28px;height:28px;border-radius:8px;background:var(--pus);color:var(--pu);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--pub)}
 .xqi{flex:1;min-width:0}
 .xql-t{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:4px}
-.xql-q{font-size:11px;color:var(--t3);font-family:monospace;background:var(--bg3);padding:4px 8px;border-radius:5px;border:1px solid var(--b1);display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.xql-q{font-size:11px;color:var(--t3);font-family:monospace;background:var(--bg3);padding:4px 8px;border-radius:5px;border:1px solid var(--b1);display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:break-all}
 .bxo{padding:8px 16px;border-radius:8px;background:var(--pus);color:var(--pu);border:1px solid var(--pub);font-size:12px;font-weight:700;white-space:nowrap;flex-shrink:0;transition:.15s}
 .bxo:hover{background:var(--pu);color:#fff}
 /* Loader / empty / error */
@@ -591,8 +593,8 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 .admin-visitor-note{background:var(--as);border:1px solid var(--ab);border-radius:10px;padding:12px 16px;font-size:12px;color:var(--a);margin-bottom:16px}
 
 /* ── TOAST ── */
-.toast{position:fixed;bottom:24px;right:24px;background:var(--bg3);border:1px solid var(--b2);color:var(--t1);padding:12px 18px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.5);z-index:9999;transform:translateY(60px);opacity:0;transition:.25s;max-width:340px}
-.toast.show{transform:translateY(0);opacity:1}
+.toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,80px);background:var(--bg3);border:1px solid var(--b2);color:var(--t1);padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,.5);z-index:9999;opacity:0;transition:.25s;max-width:min(360px,90vw);text-align:center;white-space:nowrap}
+.toast.show{transform:translate(-50%,0);opacity:1}
 
 /* Pricing modal */
 .tnote{background:var(--ams);border:1px solid var(--amb);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--am);font-weight:600;display:flex;align-items:center;gap:7px;margin-bottom:14px}
@@ -600,6 +602,14 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 @media(max-width:600px){.nav-links{display:none}.hero-stats{flex-direction:column}.hstat{border-right:none;border-bottom:1px solid var(--b1)}}
 
 /* ── GLOBAL MOBILE FIXES ── */
+/* Critical: prevent horizontal scroll on ALL elements */
+@media(max-width:768px){
+  *{max-width:100%;box-sizing:border-box}
+  .xql,.xqc,.xql-q,.xql-t{overflow:hidden;word-break:break-word}
+  .cgrid{min-width:0}
+  .sct-wrap,.sct-panel,.jd-row{overflow:hidden}
+  pre,code{overflow-x:auto;max-width:100%}
+}
 @media(max-width:680px){
   /* App wrap padding */
   .app-wrap{padding:12px 14px!important}
@@ -875,8 +885,8 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
       </div>
       <div class="footer-tag">Go beyond LinkedIn. Find developers where they build.</div>
       <div class="footer-links">
-        <span class="footer-link">Privacy</span>
-        <span class="footer-link">Terms</span>
+        <span class="footer-link" onclick="openLegal('privacy')">Privacy Policy</span>
+        <span class="footer-link" onclick="openLegal('terms')">Terms of Use</span>
         <span class="footer-link" onclick="showAuth()">Login</span>
       </div>
     </div>
@@ -2603,7 +2613,7 @@ async function onGoogOK(fu){
       toast('⏰ Your free trial has ended. Upgrade to continue.',4000);
       return;
     }
-    toast('👋 Welcome back, '+name.split(' ')[0]+'!');
+    setTimeout(()=>toast('👋 Welcome back, '+name.split(' ')[0]+'!'), 500);
   }
   enterApp(ud);
 }
