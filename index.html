@@ -197,28 +197,31 @@ a{text-decoration:none;color:inherit}
 .btn-hero:hover{background:var(--ah);transform:translateY(-1px);box-shadow:0 6px 28px rgba(56,189,248,.35)}
 .btn-hero-sec{padding:13px 28px;border-radius:10px;background:var(--bg3);color:var(--t2);font-size:14px;font-weight:600;border:1px solid var(--b2);transition:.15s}
 .btn-hero-sec:hover{border-color:var(--a);color:var(--a)}
-.hero-stats{display:flex;flex-wrap:nowrap;background:var(--bg3);border:1px solid var(--b1);border-radius:16px;overflow:hidden;width:100%}
-.hstat{flex:1;padding:10px 8px;border-right:1px solid var(--b1);text-align:center;min-width:0}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);background:var(--bg3);border:1px solid var(--b1);border-radius:14px;overflow:hidden;width:100%;max-width:600px;margin:0 auto}
+.hstat{padding:12px 6px;border-right:1px solid var(--b1);text-align:center;min-width:0}
 .hstat:last-child{border-right:none}
-.hstat-n{font-family:'Sora',sans-serif;font-size:18px;font-weight:800;color:var(--a);white-space:nowrap}
-.hstat-l{font-size:8px;color:var(--t3);margin-top:1px;font-weight:500;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hstat-n{font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:var(--a)}
+.hstat-l{font-size:8px;color:var(--t3);margin-top:2px;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
 @media(max-width:480px){
-  .hstat{padding:8px 4px}
-  .hstat-n{font-size:15px}
-  .hstat-l{font-size:7px;letter-spacing:0}
+  .hero-stats{border-radius:12px}
+  .hstat{padding:10px 4px}
+  .hstat-n{font-size:14px}
+  .hstat-l{font-size:7px}
 }
 
 /* PLATFORM STRIP */
-.plat-strip{padding:36px 24px;border-bottom:1px solid var(--b1);background:var(--bg2)}
-.strip-lbl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;text-align:center;margin-bottom:18px}
-.plat-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;max-width:900px;margin:0 auto}
-.pcard{background:var(--bg3);border:1.5px solid var(--b1);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:all .18s;position:relative}
-.pcard:hover{border-color:var(--a);background:var(--as);transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.12)}
-.pcard.live{border-color:var(--gb)}
+.plat-strip{padding:36px 20px;border-bottom:1px solid var(--b1);background:var(--bg2)}
+.strip-lbl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;text-align:center;margin-bottom:16px}
+.plat-row{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;max-width:960px;margin:0 auto}
+@media(max-width:860px){.plat-row{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:540px){.plat-row{grid-template-columns:repeat(3,1fr);gap:6px}}
+.pcard{background:var(--bg3);border:1.5px solid var(--b1);border-radius:12px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:all .18s;position:relative;text-align:center;min-height:76px;justify-content:center}
+.pcard:hover{border-color:var(--a);background:var(--as);transform:translateY(-2px)}
+.pcard.live{border-color:rgba(16,185,129,.3)}
 .pcard.live:hover{border-color:var(--g);background:var(--gs)}
 .pcard-ic{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
-.pcard-nm{font-size:11px;font-weight:700;color:var(--t1)}
-.pcard-tp{font-size:9px;color:var(--t3);margin-top:1px}
+.pcard-nm{font-size:11px;font-weight:700;color:var(--t1);line-height:1.2}
+.pcard-tp{font-size:9px;color:var(--t3)}
 .live-badge{position:absolute;top:-7px;right:6px;background:var(--g);color:#fff;font-size:7px;font-weight:800;padding:1px 6px;border-radius:6px;letter-spacing:.4px}
 .smart-badge{position:absolute;top:-7px;right:6px;background:var(--pu);color:#fff;font-size:7px;font-weight:800;padding:1px 6px;border-radius:6px}
 /* Tooltip */
@@ -526,12 +529,14 @@ a{text-decoration:none;color:inherit}
 .sl-clear{padding:6px 14px;border-radius:7px;background:var(--bg3);border:1px solid var(--b2);color:var(--t3);font-size:12px;font-weight:600}
 
 /* ── MODAL ── */
-.ov{position:fixed;inset:0;background:rgba(3,6,15,.8);display:flex;align-items:center;justify-content:center;z-index:500;padding:16px;opacity:0;pointer-events:none;transition:opacity .2s;backdrop-filter:blur(4px);-webkit-overflow-scrolling:touch}
+.ov{position:fixed;inset:0;background:rgba(3,6,15,.88);display:flex;align-items:center;justify-content:center;z-index:500;padding:16px;opacity:0;pointer-events:none;transition:opacity .2s;backdrop-filter:blur(8px)}
 .ov.open{opacity:1;pointer-events:all}
-.modal{background:var(--bg2);border:1px solid var(--b1);border-radius:20px;width:100%;max-width:440px;max-height:calc(100vh - 32px);overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.6);overscroll-behavior:contain;position:relative}
+/* Prevent body scroll when modal open */
+body.modal-open{overflow:hidden;position:fixed;width:100%}
+.modal{background:var(--bg2);border:1px solid var(--b2);border-radius:20px;width:100%;max-width:420px;max-height:calc(100dvh - 32px);overflow-y:auto;overflow-x:hidden;box-shadow:0 24px 80px rgba(0,0,0,.7);overscroll-behavior:contain;position:relative}
 @media(max-width:480px){
-  .ov{padding:12px;align-items:flex-end}
-  .modal{border-radius:20px 20px 16px 16px;max-height:92vh}
+  .ov{padding:0;align-items:flex-end}
+  .modal{border-radius:24px 24px 0 0;max-height:94dvh;max-width:100%}
 }
 .ov.open .modal{transform:translateY(0)}
 .mhd{padding:20px 24px 16px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2);z-index:1}
@@ -1044,9 +1049,9 @@ a{text-decoration:none;color:inherit}
     
     <!-- ── SCORE CARD TOOL ── -->
     <div style="margin-bottom:20px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;cursor:pointer" onclick="toggleScoreTool()">
         <div style="font-size:13px;font-weight:700;color:var(--t2)">🎯 Score Card Tool <span class="sct-badge sct-badge-new">NEW</span></div>
-        <button onclick="toggleScoreTool()" id="sctToggle" style="padding:5px 14px;border-radius:8px;background:var(--bg3);border:1px solid var(--b2);color:var(--t3);font-size:11px;font-weight:600;cursor:pointer">▼ Expand</button>
+        <button id="sctToggle" style="padding:4px 12px;border-radius:8px;background:var(--bg3);border:1px solid var(--b2);color:var(--t3);font-size:11px;font-weight:600;cursor:pointer;flex-shrink:0">▼ Expand</button>
       </div>
       <div id="sctWrap" class="sct-wrap" style="display:none">
         <!-- TABS -->
@@ -1154,6 +1159,7 @@ a{text-decoration:none;color:inherit}
         <div><div class="fl">Skill / Language / Role</div><input class="fi" id="iSk" type="text" placeholder="e.g. React, Python, DevOps, Java" onkeydown="if(event.key==='Enter')runSearch()"></div>
         <div><div class="fl">City (India)</div><input class="fi" id="iCt" type="text" placeholder="e.g. Bengaluru, Hyderabad, Pune" onkeydown="if(event.key==='Enter')runSearch()"></div>
         <div id="tenureCoWrap" style="display:none"><div class="fl">Target Company (optional)</div><input class="fi" id="iTenureCo" type="text" placeholder="e.g. Infosys, TCS, Wipro, JPMorgan"></div>
+        <div id="gccCoWrap" style="display:none"><div class="fl">Specific Company (optional)</div><input class="fi" id="iGccCo" type="text" placeholder="e.g. JPMorgan, Walmart, Google GCC"></div>
         <div><div class="fl">Experience</div>
           <select class="fi" id="iEx">
             <option value="">Any level</option>
@@ -2254,9 +2260,11 @@ function exportScoreCard(name, overall, skillsStr){
 function selPlat(el){
   document.querySelectorAll('.pc').forEach(c=>c.classList.remove('on'));
   el.classList.add('on');S.plat=el.dataset.p;
-  // Show tenure company field only for tenure platform
+  // Show company fields for relevant platforms
   const tenureWrap=document.getElementById('tenureCoWrap');
   if(tenureWrap)tenureWrap.style.display=el.dataset.p==='tenure'?'block':'none';
+  const gccWrap=document.getElementById('gccCoWrap');
+  if(gccWrap)gccWrap.style.display=el.dataset.p==='gcc'?'block':'none';
   const m=PM[S.plat];
   document.getElementById('spIc').textContent=m.ic;
   document.getElementById('spNm').textContent=m.n;
@@ -2293,7 +2301,8 @@ async function runSearch(){
     rw.innerHTML=`<div class="ls"><div class="spin"></div>Building GCC Hunt queries for ${sk||'developer'} in ${ct||'India'}...</div>`;
     await delay(600);
     btn.disabled=false;btn.innerHTML='🔍 Search';
-    renderGCC(sk,ct,document.getElementById('iEx').value);
+    const gccCo=document.getElementById('iGccCo')?.value?.trim()||'';
+    renderGCC(sk,ct,document.getElementById('iEx').value,gccCo);
     // Also fetch GitHub results for top GCCs in parallel
     try{
       const ghRes=await searchGitHub(sk||'developer',ct||'India');
@@ -2635,8 +2644,14 @@ function canSearch(){
 }
 
 // ── MODALS ────────────────────────────────────────────
-function openMod(id){document.getElementById(id).classList.add('open');}
-function closeMod(id){document.getElementById(id).classList.remove('open');}
+function openMod(id){
+  document.getElementById(id).classList.add('open');
+  if(id==='prMod')document.body.classList.add('modal-open');
+}
+function closeMod(id){
+  document.getElementById(id).classList.remove('open');
+  document.body.classList.remove('modal-open');
+}
 document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
 function showPricing(){const tn=document.getElementById('tnote');if(tn)tn.style.display=S.plan==='expired'?'flex':'none';openMod('prMod');}
 
@@ -3056,6 +3071,58 @@ function closeDp() {
 // Close on Escape
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDp(); });
 
+
+// ── LEGAL PAGES ────────────────────────────────────
+const LEGAL = {
+  privacy: {
+    title: 'Privacy Policy',
+    body: `
+      <p style="color:var(--t3);font-size:11px;margin-bottom:16px">Last updated: June 2026</p>
+      <h3 style="color:var(--t1);font-size:14px;font-weight:700;margin-bottom:8px">1. Information We Collect</h3>
+      <p>When you sign in with Google, we collect your name, email address, and profile photo. We store this in Firebase to manage your account and subscription plan.</p>
+      <h3 style="color:var(--t1);font-size:14px;font-weight:700;margin:14px 0 8px">2. How We Use Your Information</h3>
+      <p>Your information is used solely to provide the DevSourcing.in service — managing your trial/pro plan, personalising your experience, and sending account-related notifications.</p>
+      <h3 style="color:var(--t1);font-size:14px;font-weight:700;margin:14px 0 8px">3. Third-Party Services</h3>
+      <p>We use <strong>Firebase</strong> (Google) for authentication and database, <strong>Razorpay</strong> for payments, and public APIs (GitHub, Stack Overflow, Dev.to) for search. We do not sell your data to any third party.</p>
+      <h3 style="color:var(--t1);font-size:14px;font-weight:700;margin:14px 0 8px">4. Data Retention</h3>
+      <p>Your account data is retained as long as your account is active. You may request deletion by contacting us at support@devsourcing.in.</p>
+      <h3 style="color:var(--t1);font-size:14px;font-weight:700;margin:14px 0 8px">5. Cookies</h3>
+      <p>We use browser localStorage to store your session and preferences. No tracking cookies are used.</p>
+      <h3 style="color:var(--t1);font-size:14px;font-weight:700;margin:14px 0 8px">6. Contact</h3>
+      <p>For privacy concerns: <a href="mailto:support@devsourcing.in" style="color:var(--a)">support@devsourcing.in</a></p>
+    `
+  },
+  terms: {
+    title: 'Terms of Use',
+    body: `
+      <p style="color:var(--t3);font-size:11px;margin-bottom:16px">Last updated: June 2026</p>
+      <h3 style="color:var(--t1);font-size:14px;font-weight:700;margin-bottom:8px">1. Acceptance</h3>
+      <p>By using DevSourcing.in you agree to these terms. If you do not agree, please do not use the service.</p>
+      <h3 style="color:var(--t1);font-size:14px;font-weight:700;margin:14px 0 8px">2. Service Description</h3>
+      <p>DevSourcing.in is a developer talent sourcing tool for Indian recruiters. It searches publicly available developer profiles across GitHub, Stack Overflow, Dev.to and other platforms.</p>
+      <h3 style="color:var(--t1);font-size:14px;font-weight:700;margin:14px 0 8px">3. Subscription & Payments</h3>
+      <p>Free trial: 1 day. Pro plan: ₹499 per 30 days, processed via Razorpay. Plans do not auto-renew. No refunds after a search has been performed.</p>
+      <h3 style="color:var(--t1);font-size:14px;font-weight:700;margin:14px 0 8px">4. Acceptable Use</h3>
+      <p>DevSourcing.in is for legitimate recruiting purposes only. You may not use the service to spam, harass, or mass-contact developers without consent. Automated scraping is prohibited.</p>
+      <h3 style="color:var(--t1);font-size:14px;font-weight:700;margin:14px 0 8px">5. Data Accuracy</h3>
+      <p>Developer profiles are sourced from public APIs and may not always be current or accurate. DevSourcing.in does not guarantee the accuracy of any profile data.</p>
+      <h3 style="color:var(--t1);font-size:14px;font-weight:700;margin:14px 0 8px">6. Limitation of Liability</h3>
+      <p>DevSourcing.in is provided "as is". We are not liable for any damages arising from use of the service.</p>
+      <h3 style="color:var(--t1);font-size:14px;font-weight:700;margin:14px 0 8px">7. Governing Law</h3>
+      <p>These terms are governed by the laws of India. Disputes shall be resolved in courts of Hyderabad, Telangana.</p>
+      <h3 style="color:var(--t1);font-size:14px;font-weight:700;margin:14px 0 8px">8. Contact</h3>
+      <p>For queries: <a href="mailto:support@devsourcing.in" style="color:var(--a)">support@devsourcing.in</a></p>
+    `
+  }
+};
+
+function openLegal(type){
+  const l=LEGAL[type];
+  document.getElementById('legalTitle').textContent=l.title;
+  document.getElementById('legalBody').innerHTML=l.body;
+  openMod('legalMod');
+}
+
 // ── TOAST ─────────────────────────────────────────────
 function toast(msg,dur=3200){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
 
@@ -3119,5 +3186,14 @@ window.addEventListener('hashchange',()=>{
   }
 });
 </script>
+
+<!-- ════ LEGAL MODAL ════ -->
+<div class="ov" id="legalMod" onclick="if(event.target===this)closeMod('legalMod')">
+  <div class="modal" style="max-width:560px">
+    <div class="mhd"><div class="mtt" id="legalTitle">Privacy Policy</div><button class="mcl" onclick="closeMod('legalMod')">✕</button></div>
+    <div class="mbd" id="legalBody" style="font-size:13px;color:var(--t2);line-height:1.8"></div>
+  </div>
+</div>
+
 </body>
 </html>
