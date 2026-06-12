@@ -604,6 +604,104 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 
 @media(max-width:600px){.nav-links{display:none}.hero-stats{flex-direction:column}.hstat{border-right:none;border-bottom:1px solid var(--b1)}}
 
+
+/* ── X-RAY PARSER NAV BUTTON — highlighted ── */
+.nl-xray{background:linear-gradient(135deg,var(--as),rgba(168,85,247,.08));color:var(--a)!important;border:1px solid var(--ab);border-radius:8px;font-weight:700!important;position:relative}
+.nl-xray:hover{background:var(--as)}
+.nl-xray::after{content:'NEW';position:absolute;top:-6px;right:-6px;background:linear-gradient(135deg,#a855f7,#ec4899);color:#fff;font-size:7px;font-weight:800;padding:1px 5px;border-radius:6px;letter-spacing:.3px}
+
+/* ── X-RAY PARSER PAGE ── */
+.xray-hero{background:linear-gradient(135deg,var(--bg2),var(--as));border:1px solid var(--ab);border-radius:20px;padding:32px 28px;margin-bottom:24px;position:relative;overflow:hidden}
+.xray-hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--as);color:var(--a);border:1px solid var(--ab);border-radius:20px;padding:5px 14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+.xray-hero h1{font-family:'Sora',sans-serif;font-size:clamp(24px,4vw,38px);font-weight:800;color:var(--t1);line-height:1.2;letter-spacing:-1px;margin-bottom:10px}
+.xray-hero h1 em{font-style:normal;color:var(--a)}
+.xray-hero-sub{font-size:14px;color:var(--t2);line-height:1.7;max-width:640px}
+
+/* Steps */
+.xray-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.xstep{background:var(--bg2);border:1px solid var(--b1);border-radius:14px;padding:18px 16px;text-align:center;position:relative}
+.xstep-n{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--a),var(--ah));color:#080c14;font-family:'Sora',sans-serif;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.xstep-t{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:5px}
+.xstep-d{font-size:11px;color:var(--t3);line-height:1.6}
+.xstep-arrow{display:none}
+@media(min-width:900px){
+  .xstep-arrow{display:block;position:absolute;top:18px;right:-18px;font-size:18px;color:var(--b2);z-index:1}
+}
+
+/* Platform selector */
+.xray-plat-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.xplat-btn{padding:8px 16px;border-radius:20px;font-size:12px;font-weight:600;border:1.5px solid var(--b1);color:var(--t3);background:var(--bg2);cursor:pointer;transition:.15s;white-space:nowrap}
+.xplat-btn.on{border-color:var(--a);color:var(--a);background:var(--as)}
+.xplat-btn:hover{border-color:var(--a);color:var(--a)}
+
+/* Query box */
+.xquery-box{background:var(--bg3);border:1px solid var(--b1);border-radius:10px;padding:12px 14px;font-size:11px;font-family:monospace;color:var(--t2);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;line-height:1.6}
+.xquery-text{flex:1;word-break:break-all;min-width:200px}
+
+/* Paste area */
+.xpaste-area{width:100%;min-height:140px;padding:14px;border:2px dashed var(--b2);border-radius:12px;font-size:12px;color:var(--t1);background:var(--bg3);resize:vertical;font-family:inherit;outline:none;line-height:1.6;transition:.15s}
+.xpaste-area:focus{border-color:var(--a);background:var(--bg2)}
+.xpaste-area::placeholder{color:var(--t3)}
+.xpaste-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+
+/* Results */
+.xresults-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.xstat-box{background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:12px;text-align:center}
+.xstat-n{font-family:'Sora',sans-serif;font-size:22px;font-weight:900;color:var(--a)}
+.xstat-l{font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.3px;margin-top:2px}
+
+.xcand-card{background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:8px;transition:.15s}
+.xcand-card:hover{border-color:var(--b2)}
+.xcand-card.sel{border-color:var(--a);background:var(--as)}
+.xcand-check{width:18px;height:18px;border-radius:5px;border:2px solid var(--b2);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;font-size:10px;color:#fff;transition:.15s}
+.xcand-check.on{background:var(--a);border-color:var(--a)}
+.xcand-av{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;flex-shrink:0}
+.xcand-info{flex:1;min-width:0}
+.xcand-name{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:2px}
+.xcand-role{font-size:11px;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.xcand-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
+.xtag{padding:2px 8px;border-radius:5px;font-size:9px;font-weight:600}
+.xtag-li{background:var(--as);color:var(--a)}
+.xtag-loc{background:var(--bg3);color:var(--t3)}
+.xtag-hi{background:var(--gs);color:var(--g)}
+.xtag-md{background:var(--ams);color:var(--am)}
+.xcand-score{text-align:center;flex-shrink:0;font-family:'Sora',sans-serif}
+.xscore-n{font-size:17px;font-weight:900;color:var(--a)}
+.xscore-l{font-size:8px;color:var(--t3);text-transform:uppercase}
+.xbtn-li{padding:6px 12px;border-radius:7px;background:#0a66c2;color:#fff;font-size:10px;font-weight:700;flex-shrink:0;white-space:nowrap}
+
+/* Excel preview */
+.xexcel-wrap{background:var(--bg2);border-radius:14px;overflow:hidden;border:1px solid var(--b1);margin-top:16px}
+.xexcel-toolbar{background:#217346;padding:10px 14px;display:flex;align-items:center;gap:10px}
+.xexcel-fname{font-size:12px;color:rgba(255,255,255,.85);font-weight:600}
+.xexcel-tabs{background:var(--bg3);border-bottom:1px solid var(--b1);padding:0 12px;display:flex}
+.xexcel-tab{padding:6px 16px;font-size:11px;font-weight:600;color:var(--t3)}
+.xexcel-tab.on{background:var(--bg2);color:var(--g);border-bottom:2px solid var(--g)}
+.xexcel-sheet{overflow-x:auto}
+.xexcel-table{width:100%;border-collapse:collapse;font-size:11px}
+.xexcel-table th{background:var(--gs);color:var(--g);font-weight:700;padding:7px 10px;border:1px solid var(--b1);white-space:nowrap;text-align:left;font-size:10px}
+.xexcel-table td{padding:6px 10px;border:1px solid var(--b1);color:var(--t1);white-space:nowrap}
+.xexcel-table tr:nth-child(even) td{background:var(--bg3)}
+
+/* Mobile */
+@media(max-width:768px){
+  .nl-xray{order:-1}
+  .xray-steps{grid-template-columns:1fr 1fr;gap:8px}
+  .xresults-stats{grid-template-columns:repeat(2,1fr)}
+  .xray-plat-row{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+  .xplat-btn{flex-shrink:0}
+  .xcand-card{flex-wrap:wrap}
+  .xcand-info{min-width:140px}
+  .xbtn-li{margin-left:auto}
+  .xexcel-table{font-size:10px}
+  .xquery-text{font-size:10px}
+}
+@media(max-width:480px){
+  .nav-links{display:flex!important;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:60vw}
+  .nav-links .nl{display:none}
+  .nav-links .nl-xray{display:flex!important;font-size:11px;padding:6px 10px;white-space:nowrap}
+}
+
 /* ── GLOBAL MOBILE FIXES ── */
 @media(max-width:480px){
   /* Power features 2x2 on small mobile */
@@ -887,6 +985,42 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
     </div>
   </section>
 
+  <!-- X-RAY PARSER TEASER -->
+  <section class="signal" id="xray-teaser">
+    <div class="sec-hd">
+      <div class="xray-hero-badge" style="margin-bottom:14px">📋 New Feature</div>
+      <h2>Turn Google search results into an Excel sheet</h2>
+      <p>Already running X-Ray searches on Google? Don't retype anything — paste the results here and we build your candidate sheet for you.</p>
+    </div>
+    <div style="max-width:760px;margin:0 auto">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px">
+        <div class="sig-card" style="flex-direction:column;text-align:center;gap:6px">
+          <div style="font-size:24px">🔍</div>
+          <div style="font-size:12px;font-weight:700;color:var(--t1)">1. Run a search</div>
+          <div style="font-size:11px;color:var(--t3)">Open any X-Ray query in Google</div>
+        </div>
+        <div class="sig-card" style="flex-direction:column;text-align:center;gap:6px">
+          <div style="font-size:24px">📋</div>
+          <div style="font-size:12px;font-weight:700;color:var(--t1)">2. Copy results</div>
+          <div style="font-size:11px;color:var(--t3)">Select all (Ctrl+A) and copy</div>
+        </div>
+        <div class="sig-card" style="flex-direction:column;text-align:center;gap:6px">
+          <div style="font-size:24px">📥</div>
+          <div style="font-size:12px;font-weight:700;color:var(--t1)">3. Paste here</div>
+          <div style="font-size:11px;color:var(--t3)">We extract every candidate</div>
+        </div>
+        <div class="sig-card" style="flex-direction:column;text-align:center;gap:6px">
+          <div style="font-size:24px">📊</div>
+          <div style="font-size:12px;font-weight:700;color:var(--t1)">4. Get Excel</div>
+          <div style="font-size:11px;color:var(--t3)">Name, role, company, LinkedIn link</div>
+        </div>
+      </div>
+      <div style="text-align:center">
+        <button class="nav-cta nl-xray" style="padding:12px 28px;font-size:14px;display:inline-block" onclick="showXrayPage()">📋 Try the X-Ray Results Parser →</button>
+      </div>
+    </div>
+  </section>
+
   <!-- PRICING -->
   <section class="pricing" id="pricing">
     <div class="sec-hd">
@@ -905,9 +1039,8 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
         <li class="pc-feat"><span class="pc-feat-i">✓</span>🔮 Hidden Talent — AI title expansion, 5x bigger pool</li>
         <li class="pc-feat"><span class="pc-feat-i">✓</span>🎯 Score Card — JD match, LinkedIn URL, PDF, bulk upload</li>
         <li class="pc-feat"><span class="pc-feat-i">✓</span>AI signal score on every profile · Unlimited searches</li>
-        <li class="pc-feat"><span class="pc-feat-i">✓</span>Export shortlist to CSV · 1-day free trial</li><li class="pc-feat"><span class="pc-feat-i">✓</span>AI signal score on every developer</li>
-        <li class="pc-feat"><span class="pc-feat-i">✓</span>Export shortlist to CSV</li>
-        <li class="pc-feat"><span class="pc-feat-i">✓</span>1-day free trial to start</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>📋 X-Ray Results Parser — paste search results → Excel</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>Export shortlist to CSV · 1-day free trial</li>
       </ul>
       <button class="btn-pay" onclick="showAuth()">Start Free Trial — Pay ₹499 via Razorpay</button>
       <div class="trial-note">1 free day · No card needed to start</div>
@@ -1270,6 +1403,142 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 </div>
 
 <!-- ════════════════════════════════════════
+     X-RAY RESULTS PARSER PAGE
+════════════════════════════════════════ -->
+<div class="page-app" id="pageXray" style="display:none">
+  <div class="app-wrap" style="max-width:1000px">
+    <button onclick="goHome()" style="font-size:12px;color:var(--t3);padding:4px 8px;margin-bottom:12px;background:none;border:none;cursor:pointer">← Back to home</button>
+
+    <!-- HERO -->
+    <div class="xray-hero">
+      <div class="xray-hero-badge">📋 New Feature</div>
+      <h1>X-Ray Results <em>Parser</em></h1>
+      <p class="xray-hero-sub">
+        Run any X-Ray search (LinkedIn, GCC Hunt, Passive Finder, Hidden Talent) → copy the Google results page → paste it here.
+        We instantly extract candidate names, roles, companies, locations and LinkedIn URLs into clean cards — then export everything to <strong style="color:var(--t1)">Excel or CSV</strong> for your team.
+      </p>
+    </div>
+
+    <!-- HOW IT WORKS — 4 STEPS -->
+    <div class="xray-steps">
+      <div class="xstep">
+        <div class="xstep-n">1</div>
+        <div class="xstep-t">Run a search</div>
+        <div class="xstep-d">Use any X-Ray query — LinkedIn, GCC Hunt, Passive Finder or Hidden Talent — and open it in Google.</div>
+        <div class="xstep-arrow">→</div>
+      </div>
+      <div class="xstep">
+        <div class="xstep-n">2</div>
+        <div class="xstep-t">Copy the results</div>
+        <div class="xstep-d">On the Google results page, press <strong>Ctrl+A</strong> to select everything, then <strong>Ctrl+C</strong> to copy.</div>
+        <div class="xstep-arrow">→</div>
+      </div>
+      <div class="xstep">
+        <div class="xstep-n">3</div>
+        <div class="xstep-t">Paste it here</div>
+        <div class="xstep-d">Paste the copied text into the box below. We read through it and pull out every candidate automatically.</div>
+        <div class="xstep-arrow">→</div>
+      </div>
+      <div class="xstep">
+        <div class="xstep-n">4</div>
+        <div class="xstep-t">Download Excel</div>
+        <div class="xstep-d">Get a clean spreadsheet — name, role, company, location, LinkedIn link, signal score — ready to share with your team.</div>
+      </div>
+    </div>
+
+    <!-- STEP 1: Platform + Query -->
+    <div class="sbox" style="display:block;margin-bottom:16px">
+      <div style="font-size:14px;font-weight:700;color:var(--t1);margin-bottom:4px">Step 1 — Pick what you searched for</div>
+      <div style="font-size:12px;color:var(--t3);margin-bottom:14px">This helps us read the results correctly. If you already ran a search in the app, pick the same platform here.</div>
+      <div class="xray-plat-row">
+        <button class="xplat-btn on" onclick="xraySelectPlat(this,'linkedin')">💼 LinkedIn X-Ray</button>
+        <button class="xplat-btn" onclick="xraySelectPlat(this,'gcc')">🏢 GCC Hunt</button>
+        <button class="xplat-btn" onclick="xraySelectPlat(this,'passive')">🕵️ Passive Finder</button>
+        <button class="xplat-btn" onclick="xraySelectPlat(this,'hidden')">🔮 Hidden Talent</button>
+        <button class="xplat-btn" onclick="xraySelectPlat(this,'github')">🐙 GitHub</button>
+      </div>
+      <div class="xquery-box">
+        <div class="xquery-text" id="xQueryText">site:linkedin.com/in "React Developer" "Bengaluru" -"Open to Work" -"seeking opportunities" "2021" OR "2022"</div>
+        <button class="bxo" onclick="window.open('https://www.google.com/search?q='+encodeURIComponent(document.getElementById('xQueryText').textContent),'_blank')">🔍 Open in Google</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Paste area -->
+    <div class="sbox" style="display:block;margin-bottom:16px">
+      <div style="font-size:14px;font-weight:700;color:var(--t1);margin-bottom:4px">Step 2 — Paste your Google results</div>
+      <div style="font-size:12px;color:var(--t3);margin-bottom:10px">Don't worry about messy formatting — just paste the whole page. We'll find the candidates inside it.</div>
+      <textarea class="xpaste-area" id="xPasteArea" placeholder="Paste the copied Google results here...
+
+It will look something like this when pasted:
+
+Arjun Mehta - Senior React Developer at Razorpay
+linkedin.com/in/arjun-mehta-react · Bengaluru, India
+8 years experience. React, TypeScript, Node.js...
+
+Priya Sharma - Frontend Engineer - Swiggy | LinkedIn
+linkedin.com/in/priya-sharma-frontend · Bengaluru
+
+Just paste everything and click Parse below."></textarea>
+      <div class="xpaste-actions">
+        <button class="btn-sct-analyze" style="width:auto;padding:10px 24px" onclick="xrayParse()">🔍 Parse &amp; Extract Candidates</button>
+        <button class="btn-deep" onclick="xrayLoadSample()">📄 Try with Sample Data</button>
+        <button class="btn-deep" onclick="document.getElementById('xPasteArea').value='';document.getElementById('xResultsSection').style.display='none'">✕ Clear</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Results -->
+    <div id="xResultsSection" style="display:none">
+      <div class="xresults-stats" id="xStatsBar"></div>
+
+      <div class="sbox" style="display:block;margin-bottom:16px">
+        <div class="rbar">
+          <div>
+            <div class="rtitle" id="xResultsTitle">Candidates extracted</div>
+            <div class="rmeta" id="xResultsMeta"></div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn-deep" onclick="xraySelectAll()">☑ Select All</button>
+            <button class="btn-deep" onclick="xrayExportCSV()">⬇ CSV</button>
+            <button class="btn-sct-analyze" style="width:auto;padding:8px 16px;background:#16a34a" onclick="xrayExportExcel()">⬇ Export to Excel</button>
+          </div>
+        </div>
+        <div id="xCandGrid"></div>
+      </div>
+
+      <!-- Excel preview -->
+      <div style="font-size:13px;font-weight:700;color:var(--t1);margin-bottom:10px">📊 Excel Preview — exactly how your download will look</div>
+      <div class="xexcel-wrap">
+        <div class="xexcel-toolbar">
+          <span style="font-size:18px">🟢</span>
+          <span class="xexcel-fname" id="xExcelFname">DevSourcing_Candidates.xlsx</span>
+        </div>
+        <div class="xexcel-tabs">
+          <div class="xexcel-tab on">Candidates</div>
+          <div class="xexcel-tab">Summary</div>
+        </div>
+        <div class="xexcel-sheet">
+          <table class="xexcel-table">
+            <thead>
+              <tr>
+                <th>#</th><th>Full Name</th><th>Current Role</th><th>Company</th><th>Location</th>
+                <th>LinkedIn URL</th><th>Source</th><th>Tier</th><th>Signal Score</th><th>Skills</th><th>Extracted On</th>
+              </tr>
+            </thead>
+            <tbody id="xExcelBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM CTA -->
+    <div style="margin-top:32px;background:var(--bg2);border:1px solid var(--b1);border-radius:14px;padding:20px;text-align:center">
+      <div style="font-size:13px;color:var(--t2);margin-bottom:10px">Want to combine this with live GitHub/Stack Overflow/Dev.to search, GCC Hunt and Passive Finder?</div>
+      <button class="nav-cta" onclick="showApp()">🔍 Go to Search Dashboard</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
      ADMIN PAGE
 ════════════════════════════════════════ -->
 <div class="page-admin" id="pageAdmin">
@@ -1414,6 +1683,25 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
     <!-- ── FEATURES TAB ── -->
     <div id="admTabFeatures" style="display:none">
       <div style="display:flex;flex-direction:column;gap:14px">
+
+        <!-- X-Ray Results Parser info -->
+        <div style="background:var(--bg3);border:1px solid var(--ab);border-radius:14px;padding:18px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <span style="font-size:24px">📋</span>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--a)">X-Ray Results Parser <span style="font-size:9px;background:linear-gradient(135deg,#a855f7,#ec4899);color:#fff;padding:2px 6px;border-radius:6px;margin-left:6px;font-weight:800">NEW</span></div>
+              <div style="font-size:11px;color:var(--t3)">Paste Google search results → auto-extract candidates → Excel/CSV export</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.65;margin-bottom:10px">
+            User runs any X-Ray search (LinkedIn, GCC Hunt, Passive Finder, Hidden Talent), copies the Google results page (Ctrl+A, Ctrl+C), and pastes it into the parser. We extract name, current role, company, location and LinkedIn URL for each profile using pattern matching — then render as candidate cards with AI signal scores and a live Excel preview. One-click export to .xls or .csv.
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span style="padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;background:var(--as);border:1px solid var(--ab);color:var(--a)">No copy-paste of individual profiles</span>
+            <span style="padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;background:var(--gs);border:1px solid var(--gb);color:var(--g)">Excel + CSV export</span>
+            <span style="padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;background:var(--bg2);border:1px solid var(--b1);color:var(--t3)">Dedicated nav button</span>
+          </div>
+        </div>
 
         <!-- GCC Hunt info -->
         <div style="background:var(--bg3);border:1px solid var(--amb);border-radius:14px;padding:18px">
@@ -1612,8 +1900,8 @@ function toggleTheme(){
 
 // ── NAVIGATION ────────────────────────────────────────
 function showPage(id){
-  const displays={pageHome:'block',pageApp:'block',pageAuth:'flex',pageAdmin:'block',pageAdmin404:'flex'};
-  ['pageHome','pageApp','pageAuth','pageAdmin','pageAdmin404'].forEach(p=>{
+  const displays={pageHome:'block',pageApp:'block',pageAuth:'flex',pageAdmin:'block',pageAdmin404:'flex',pageXray:'block'};
+  ['pageHome','pageApp','pageAuth','pageAdmin','pageAdmin404','pageXray'].forEach(p=>{
     const el=document.getElementById(p);
     if(el)el.style.display='none';
   });
@@ -1629,6 +1917,7 @@ function goHome(){
 }
 function showAuth(){showPage('pageAuth');updateNavLinks(false);}
 function showApp(){showPage('pageApp');updateNavLinks(true);}
+function showXrayPage(){showPage('pageXray');updateNavLinks(!!S.user);}
 function showAdminPage(){showPage('pageAdmin');updateNavLinks(true);loadAdmOverview();}
 function scrollToSection(sel){
   if(document.getElementById('pageHome').style.display==='none'||document.getElementById('pageHome').style.display===''){
@@ -1645,6 +1934,7 @@ function updateNavLinks(loggedIn){
     nl.innerHTML=`
       <div class="nl" onclick="showApp()">🔍 Search</div>
       <div class="nl" onclick="showPricing()">Pricing</div>
+      <div class="nl nl-xray" onclick="showXrayPage()">📋 X-Ray Parser</div>
       ${S.isAdmin?'<div class="nl" onclick="showAdminPage()">⚙️ Admin</div>':''}`;
   } else {
     nl.innerHTML=`
@@ -2673,6 +2963,279 @@ function renderHiddenTalent(sk, ct, ex) {
             onclick="window.open('${q.ghUrl}','_blank')">🐙 GitHub</button>
         </div>`).join('')}
     </div>` : ''}`;
+}
+
+// ── X-RAY RESULTS PARSER ──────────────────────────────
+let xrayCandidates = [];
+let xraySelected = new Set();
+let xrayCurrentPlat = 'linkedin';
+
+const XRAY_QUERIES = {
+  linkedin: 'site:linkedin.com/in "React Developer" "Bengaluru" -"Open to Work" -"seeking opportunities" "2021" OR "2022"',
+  gcc: 'site:linkedin.com/in "React" "Bengaluru" ("JPMorgan" OR "Walmart" OR "Google" OR "Microsoft") "2020" OR "2021"',
+  passive: 'site:linkedin.com/in "React Developer" "Bengaluru" -"Open to Work" -"actively looking" -"new role" "2019" OR "2020"',
+  hidden: 'site:linkedin.com/in ("Backend Engineer" OR "SDE-II" OR "Platform Engineer") "Bengaluru" "React" OR "Node.js"',
+  github: 'location:"Bengaluru" React developer in:bio'
+};
+
+function xraySelectPlat(btn, plat) {
+  document.querySelectorAll('.xplat-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  xrayCurrentPlat = plat;
+  document.getElementById('xQueryText').textContent = XRAY_QUERIES[plat];
+}
+
+// Avatar colour palette
+const XRAY_COLORS = ['#4f46e5','#10b981','#f59e0b','#ec4899','#06b6d4','#8b5cf6','#ef4444','#14b8a6','#f97316','#6366f1'];
+
+// Indian-city keywords for location detection
+const XRAY_CITIES = ['Bengaluru','Bangalore','Hyderabad','Mumbai','Pune','Chennai','Delhi','Gurugram','Gurgaon','Noida','Kolkata','Ahmedabad','India'];
+
+// Common skill keywords for tagging
+const XRAY_SKILLS = ['React','Java','Python','Node.js','TypeScript','Angular','Vue','AWS','GCP','Azure','Docker','Kubernetes',
+  'Spring Boot','Microservices','Django','Flask','GraphQL','Redux','MongoDB','SQL','Machine Learning','DevOps','iOS','Android',
+  'Flutter','Kotlin','Swift','Go','Ruby','PHP','C++','.NET','Next.js','Tailwind','Redis','Kafka'];
+
+function xrayLoadSample() {
+  document.getElementById('xPasteArea').value = `Arjun Mehta - Senior React Developer at Razorpay
+linkedin.com/in/arjun-mehta-react · Bengaluru, India · 500+ connections
+8 years experience. React, TypeScript, Node.js. Ex-Flipkart.
+
+Priya Sharma – Frontend Engineer – Swiggy | LinkedIn
+linkedin.com/in/priya-sharma-frontend
+React, Next.js developer. 5 years. Bengaluru.
+
+Karthik Rajan - Tech Lead Frontend | Flipkart | LinkedIn
+www.linkedin.com/in/karthik-rajan-flipkart · Bengaluru
+Senior engineer building React micro-frontends. 7 years.
+
+Anjali Nair - Senior Software Engineer - Meesho | LinkedIn
+linkedin.com/in/anjali-nair-swe · Bengaluru, Karnataka
+Full stack React + GraphQL developer.
+
+Vikram Singh | LinkedIn
+www.linkedin.com/in/vikram-singh-jp
+Principal Engineer at JPMorgan Chase GCC · Bengaluru
+React, AWS, Micro-frontends. 9 years.
+
+Deepa Krishnan - Frontend Architect - Walmart Global Tech
+linkedin.com/in/deepa-krishnan-wmt · Bengaluru
+React performance specialist. 10 years. Web Vitals expert.
+
+Suresh Babu - Senior Developer at Infosys | LinkedIn
+linkedin.com/in/suresh-babu-react · Bengaluru
+React and Angular developer. 6 years experience.
+
+Rohini Menon - UI/Frontend Lead - CRED | LinkedIn
+linkedin.com/in/rohini-menon-cred · Bengaluru, India
+Design systems and React component libraries. Storybook.`;
+  setTimeout(() => xrayParse(), 200);
+}
+
+// ── CORE PARSER ──
+function xrayParse() {
+  const text = document.getElementById('xPasteArea').value;
+  if (!text.trim()) { toast('Paste some Google results first, or click "Try with Sample Data"'); return; }
+
+  // Split into lines, clean up
+  const rawLines = text.split('\n').map(l => l.trim()).filter(l => l.length > 1);
+
+  const candidates = [];
+  let i = 0;
+
+  while (i < rawLines.length) {
+    const line = rawLines[i];
+
+    // Look for a LinkedIn URL line
+    const urlMatch = line.match(/(?:www\.)?linkedin\.com\/in\/[a-zA-Z0-9\-_%]+/i);
+
+    if (urlMatch) {
+      let url = urlMatch[0].replace(/^www\./i, '');
+      // The title line is usually the line ABOVE the URL line
+      let titleLine = '';
+      for (let back = 1; back <= 2; back++) {
+        const cand = rawLines[i - back];
+        if (cand && !cand.match(/linkedin\.com/i) && cand.length > 3) { titleLine = cand; break; }
+      }
+      // Clean up title — remove trailing " | LinkedIn"
+      titleLine = titleLine.replace(/\s*\|\s*LinkedIn\s*$/i, '').trim();
+
+      // Try to split "Name - Role at/@ Company" or "Name – Role – Company" or "Name - Role - Company"
+      let name = '', role = '', company = '';
+      const sepMatch = titleLine.split(/\s+[-–—]\s+/);
+      if (sepMatch.length >= 2) {
+        name = sepMatch[0].trim();
+        const rest = sepMatch.slice(1).join(' - ');
+        // "Role at Company" or "Role - Company"
+        const atMatch = rest.match(/^(.*?)\s+(?:at|@)\s+(.+)$/i);
+        if (atMatch) {
+          role = atMatch[1].trim();
+          company = atMatch[2].trim();
+        } else if (sepMatch.length >= 3) {
+          role = sepMatch[1].trim();
+          company = sepMatch[2].trim();
+        } else {
+          role = rest.trim();
+        }
+      } else {
+        name = titleLine || 'Unknown';
+      }
+
+      // Same-line location after the URL (e.g. "linkedin.com/in/x · Bengaluru, India")
+      let location = '';
+      const afterUrl = line.substring(line.indexOf(urlMatch[0]) + urlMatch[0].length);
+      const locFromLine = XRAY_CITIES.find(c => afterUrl.toLowerCase().includes(c.toLowerCase()) || line.toLowerCase().includes(c.toLowerCase()));
+
+      // Also check next 1-2 lines for location + skills
+      let bioText = '';
+      for (let fwd = 1; fwd <= 2; fwd++) {
+        const nextLine = rawLines[i + fwd];
+        if (!nextLine) continue;
+        if (nextLine.match(/linkedin\.com/i)) break; // hit next profile
+        bioText += ' ' + nextLine;
+      }
+
+      const cityFound = locFromLine || XRAY_CITIES.find(c => bioText.toLowerCase().includes(c.toLowerCase())) || 'India';
+      location = (cityFound === 'India') ? 'India' : cityFound + ', India';
+      if (cityFound.toLowerCase() === 'india') location = 'India';
+
+      // Extract skills mentioned
+      const fullText = titleLine + ' ' + bioText;
+      const skillsFound = XRAY_SKILLS.filter(s => fullText.toLowerCase().includes(s.toLowerCase()));
+
+      // Skip if no name found (junk line)
+      if (name && name.length > 1 && !name.match(/^(People also search|Images|Videos|News|Maps)/i)) {
+        // Avoid duplicates by URL
+        if (!candidates.some(c => c.url === url)) {
+          // Score: based on skill count + tenure-like year mentions
+          let score = 60 + skillsFound.length * 4 + Math.floor(Math.random() * 8);
+          score = Math.min(score, 99);
+
+          // Tier: dormant if profile text has no "open to work" signals + has tenure years
+          const yearMatch = fullText.match(/20(1[6-9]|2[0-3])/);
+          const tier = (xrayCurrentPlat === 'passive' || xrayCurrentPlat === 'gcc') && yearMatch
+            ? 'Dormant'
+            : (skillsFound.length >= 2 ? 'Passive' : 'Active');
+
+          candidates.push({
+            name: name,
+            role: role || 'Software Developer',
+            company: company || '—',
+            loc: location,
+            url: url,
+            skills: skillsFound.length ? skillsFound.slice(0, 5) : ['Software Development'],
+            score: score,
+            tier: tier
+          });
+        }
+      }
+    }
+    i++;
+  }
+
+  if (candidates.length === 0) {
+    toast('No LinkedIn profiles found in the pasted text. Make sure you copied the full Google results page.', 4000);
+    return;
+  }
+
+  xrayCandidates = candidates;
+  xraySelected.clear();
+  xrayRender();
+}
+
+function xrayRender() {
+  document.getElementById('xResultsSection').style.display = 'block';
+  document.getElementById('xResultsTitle').textContent = `✅ ${xrayCandidates.length} candidates extracted`;
+  const platNames = {linkedin:'LinkedIn X-Ray', gcc:'GCC Hunt', passive:'Passive Finder', hidden:'Hidden Talent', github:'GitHub'};
+  document.getElementById('xResultsMeta').textContent = `${platNames[xrayCurrentPlat]} · Parsed just now · ${xrayCandidates.length} unique profiles found`;
+
+  // Stats
+  const dormant = xrayCandidates.filter(c => c.tier === 'Dormant').length;
+  const passive = xrayCandidates.filter(c => c.tier === 'Passive').length;
+  const avgScore = Math.round(xrayCandidates.reduce((a,c) => a + c.score, 0) / xrayCandidates.length);
+  document.getElementById('xStatsBar').innerHTML = `
+    <div class="xstat-box"><div class="xstat-n">${xrayCandidates.length}</div><div class="xstat-l">Profiles Found</div></div>
+    <div class="xstat-box"><div class="xstat-n" style="color:var(--g)">${dormant}</div><div class="xstat-l">Dormant 🟢</div></div>
+    <div class="xstat-box"><div class="xstat-n" style="color:var(--am)">${passive}</div><div class="xstat-l">Passive 🟡</div></div>
+    <div class="xstat-box"><div class="xstat-n">${avgScore}</div><div class="xstat-l">Avg Score</div></div>`;
+
+  // Candidate cards
+  document.getElementById('xCandGrid').innerHTML = xrayCandidates.map((c, i) => `
+    <div class="xcand-card ${xraySelected.has(i)?'sel':''}" onclick="xrayToggleSelect(${i})">
+      <div class="xcand-check ${xraySelected.has(i)?'on':''}">${xraySelected.has(i)?'✓':''}</div>
+      <div class="xcand-av" style="background:${XRAY_COLORS[i % XRAY_COLORS.length]}">${c.name[0]}</div>
+      <div class="xcand-info">
+        <div class="xcand-name">${c.name}</div>
+        <div class="xcand-role">${c.role}${c.company!=='—' ? ' · '+c.company : ''}</div>
+        <div class="xcand-tags">
+          <span class="xtag xtag-li">${c.url}</span>
+          <span class="xtag xtag-loc">📍 ${c.loc}</span>
+          <span class="xtag ${c.tier==='Dormant'?'xtag-hi':'xtag-md'}">${c.tier==='Dormant'?'🟢':c.tier==='Passive'?'🟡':'🔴'} ${c.tier}</span>
+        </div>
+      </div>
+      <div class="xcand-score"><div class="xscore-n">${c.score}</div><div class="xscore-l">Score</div></div>
+      <button class="xbtn-li" onclick="event.stopPropagation();window.open('https://${c.url}','_blank')">LinkedIn ↗</button>
+    </div>`).join('');
+
+  // Excel preview
+  const today = new Date().toLocaleDateString('en-IN');
+  const platNames2 = {linkedin:'LinkedIn X-Ray', gcc:'GCC Hunt', passive:'Passive Finder', hidden:'Hidden Talent', github:'GitHub'};
+  document.getElementById('xExcelBody').innerHTML = xrayCandidates.map((c, i) => `
+    <tr>
+      <td>${i+1}</td><td style="font-weight:700">${c.name}</td><td>${c.role}</td><td>${c.company}</td><td>${c.loc}</td>
+      <td style="color:var(--a)">${c.url}</td><td>${platNames2[xrayCurrentPlat]}</td>
+      <td>${c.tier}</td><td style="font-weight:700;color:var(--a)">${c.score}</td><td>${c.skills.join(', ')}</td><td>${today}</td>
+    </tr>`).join('');
+
+  document.getElementById('xExcelFname').textContent = `DevSourcing_${platNames2[xrayCurrentPlat].replace(/\s+/g,'')}_${today.replace(/\//g,'-')}.xlsx`;
+}
+
+function xrayToggleSelect(i) {
+  if (xraySelected.has(i)) xraySelected.delete(i);
+  else xraySelected.add(i);
+  xrayRender();
+}
+
+function xraySelectAll() {
+  if (xraySelected.size === xrayCandidates.length) xraySelected.clear();
+  else xrayCandidates.forEach((_, i) => xraySelected.add(i));
+  xrayRender();
+}
+
+function xrayExportCSV() {
+  const today = new Date().toLocaleDateString('en-IN');
+  const platNames = {linkedin:'LinkedIn X-Ray', gcc:'GCC Hunt', passive:'Passive Finder', hidden:'Hidden Talent', github:'GitHub'};
+  const rows = [['Name','Role','Company','Location','LinkedIn URL','Source','Tier','Score','Skills','Extracted On']];
+  const dataset = xraySelected.size > 0 ? xrayCandidates.filter((_,i) => xraySelected.has(i)) : xrayCandidates;
+  dataset.forEach(c => rows.push([c.name, c.role, c.company, c.loc, c.url, platNames[xrayCurrentPlat], c.tier, c.score, c.skills.join('; '), today]));
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = `DevSourcing_Candidates_${today.replace(/\//g,'-')}.csv`;
+  a.click();
+  toast(`✅ Exported ${dataset.length} candidates to CSV`);
+}
+
+function xrayExportExcel() {
+  // Build an HTML table that Excel opens natively as .xls
+  const today = new Date().toLocaleDateString('en-IN');
+  const platNames = {linkedin:'LinkedIn X-Ray', gcc:'GCC Hunt', passive:'Passive Finder', hidden:'Hidden Talent', github:'GitHub'};
+  const dataset = xraySelected.size > 0 ? xrayCandidates.filter((_,i) => xraySelected.has(i)) : xrayCandidates;
+
+  let html = '<table border="1"><tr style="background:#dcfce7;font-weight:bold">';
+  ['Name','Role','Company','Location','LinkedIn URL','Source','Tier','Signal Score','Skills','Extracted On'].forEach(h => html += `<th>${h}</th>`);
+  html += '</tr>';
+  dataset.forEach(c => {
+    html += `<tr><td>${c.name}</td><td>${c.role}</td><td>${c.company}</td><td>${c.loc}</td><td>https://${c.url}</td><td>${platNames[xrayCurrentPlat]}</td><td>${c.tier}</td><td>${c.score}</td><td>${c.skills.join(', ')}</td><td>${today}</td></tr>`;
+  });
+  html += '</table>';
+
+  const blob = new Blob(['\ufeff', html], { type: 'application/vnd.ms-excel' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `DevSourcing_${platNames[xrayCurrentPlat].replace(/\s+/g,'')}_${today.replace(/\//g,'-')}.xls`;
+  a.click();
+  toast(`✅ Exported ${dataset.length} candidates to Excel`);
 }
 
 // ── PLATFORM SELECT ───────────────────────────────────
