@@ -1434,20 +1434,39 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
       </div>
     </div>
 
-    <!-- STEP 1: Platform + Query -->
+    <!-- STEP 1: Build your search -->
     <div class="sbox" style="display:block;margin-bottom:16px">
-      <div style="font-size:14px;font-weight:700;color:var(--t1);margin-bottom:4px">Step 1 — Pick what you searched for</div>
-      <div style="font-size:12px;color:var(--t3);margin-bottom:14px">This helps us read the results correctly. If you already ran a search in the app, pick the same platform here.</div>
+      <div style="font-size:14px;font-weight:700;color:var(--t1);margin-bottom:4px">Step 1 — Build your search</div>
+      <div style="font-size:12px;color:var(--t3);margin-bottom:14px">Enter what you're looking for, pick a platform, and we'll generate the exact X-Ray query for you.</div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">
+        <div><div class="fl">Skill / Designation</div><input class="fi" id="xSkill" type="text" placeholder="e.g. React Developer" value="React Developer"></div>
+        <div><div class="fl">Experience (years)</div><input class="fi" id="xExp" type="text" placeholder="e.g. 4"></div>
+        <div><div class="fl">Location</div><input class="fi" id="xLoc" type="text" placeholder="e.g. Bengaluru" value="Bengaluru"></div>
+      </div>
+
+      <div class="fl" style="margin-bottom:8px">Platform</div>
       <div class="xray-plat-row">
         <button class="xplat-btn on" onclick="xraySelectPlat(this,'linkedin')">💼 LinkedIn X-Ray</button>
         <button class="xplat-btn" onclick="xraySelectPlat(this,'gcc')">🏢 GCC Hunt</button>
+        <button class="xplat-btn" onclick="xraySelectPlat(this,'tenure')">⏳ Tenure Target</button>
         <button class="xplat-btn" onclick="xraySelectPlat(this,'passive')">🕵️ Passive Finder</button>
         <button class="xplat-btn" onclick="xraySelectPlat(this,'hidden')">🔮 Hidden Talent</button>
-        <button class="xplat-btn" onclick="xraySelectPlat(this,'github')">🐙 GitHub</button>
+        <button class="xplat-btn" onclick="xraySelectPlat(this,'reddit')">🟠 Reddit</button>
+        <button class="xplat-btn" onclick="xraySelectPlat(this,'kaggle')">📊 Kaggle</button>
+        <button class="xplat-btn" onclick="xraySelectPlat(this,'leetcode')">💻 LeetCode</button>
+        <button class="xplat-btn" onclick="xraySelectPlat(this,'medium')">✍️ Medium</button>
+        <button class="xplat-btn" onclick="xraySelectPlat(this,'meetup')">📅 Meetup</button>
+        <button class="xplat-btn" onclick="xraySelectPlat(this,'gdg')">🔵 GDG</button>
+        <button class="xplat-btn" onclick="xraySelectPlat(this,'aws')">☁️ AWS UG</button>
       </div>
+
       <div class="xquery-box">
-        <div class="xquery-text" id="xQueryText">site:linkedin.com/in "React Developer" "Bengaluru" -"Open to Work" -"seeking opportunities" "2021" OR "2022"</div>
+        <div class="xquery-text" id="xQueryText">site:linkedin.com/in "React Developer" "Bengaluru"</div>
         <button class="bxo" onclick="window.open('https://www.google.com/search?q='+encodeURIComponent(document.getElementById('xQueryText').textContent),'_blank')">🔍 Open in Google</button>
+      </div>
+      <div class="xpaste-actions" style="margin-top:0">
+        <button class="btn-sct-analyze" style="width:auto;padding:8px 20px" onclick="xrayGenerateQuery()">⚙️ Generate Query</button>
       </div>
     </div>
 
@@ -2973,19 +2992,51 @@ let xrayCandidates = [];
 let xraySelected = new Set();
 let xrayCurrentPlat = 'linkedin';
 
-const XRAY_QUERIES = {
-  linkedin: 'site:linkedin.com/in "React Developer" "Bengaluru" -"Open to Work" -"seeking opportunities" "2021" OR "2022"',
-  gcc: 'site:linkedin.com/in "React" "Bengaluru" ("JPMorgan" OR "Walmart" OR "Google" OR "Microsoft") "2020" OR "2021"',
-  passive: 'site:linkedin.com/in "React Developer" "Bengaluru" -"Open to Work" -"actively looking" -"new role" "2019" OR "2020"',
-  hidden: 'site:linkedin.com/in ("Backend Engineer" OR "SDE-II" OR "Platform Engineer") "Bengaluru" "React" OR "Node.js"',
-  github: 'location:"Bengaluru" React developer in:bio'
+const XRAY_PLATFORM_LABELS = {
+  linkedin: 'LinkedIn X-Ray', gcc: 'GCC Hunt', tenure: 'Tenure Target', passive: 'Passive Finder', hidden: 'Hidden Talent',
+  reddit: 'Reddit', kaggle: 'Kaggle', leetcode: 'LeetCode', medium: 'Medium', meetup: 'Meetup', gdg: 'GDG', aws: 'AWS UG'
 };
 
 function xraySelectPlat(btn, plat) {
   document.querySelectorAll('.xplat-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
   xrayCurrentPlat = plat;
-  document.getElementById('xQueryText').textContent = XRAY_QUERIES[plat];
+  xrayGenerateQuery();
+}
+
+// Build a real X-Ray query using the same generators as the main search dashboard
+function xrayGenerateQuery() {
+  const sk = (document.getElementById('xSkill').value || '').trim() || 'Developer';
+  const ct = (document.getElementById('xLoc').value || '').trim() || 'India';
+  const ex = (document.getElementById('xExp').value || '').trim();
+  const plat = xrayCurrentPlat;
+  let query = '';
+
+  try {
+    if (plat === 'linkedin') {
+      query = `site:linkedin.com/in "${sk}" "${ct}"${ex ? ` "${ex} years"` : ''}`;
+    } else if (plat === 'gcc') {
+      const qs = getGCCQueries(sk, ct, ex);
+      query = (qs && qs[0] && qs[0].q) || '';
+    } else if (plat === 'tenure') {
+      const qs = getTenureQueries(sk, ct, 'product', '');
+      query = (qs && qs[0] && qs[0].q) || '';
+    } else if (plat === 'passive') {
+      const tiers = getPassiveQueries(sk, ct, ex);
+      query = (tiers && tiers[0] && tiers[0].items && tiers[0].items[0] && tiers[0].items[0].q) || '';
+    } else if (plat === 'hidden') {
+      const out = getHiddenTalentQueries(sk, ct, ex);
+      const qs = (out && out.queries) || [];
+      const liQ = qs.find(q => !q.isGH);
+      query = (liQ && liQ.q) || (qs[0] && qs[0].q) || '';
+    } else if (XRAY[plat]) {
+      const qs = XRAY[plat].gen(sk, ct);
+      query = (qs && qs[0] && qs[0].q) || '';
+    }
+  } catch (e) { query = ''; }
+
+  if (!query) query = `site:linkedin.com/in "${sk}" "${ct}"`;
+  document.getElementById('xQueryText').textContent = query;
 }
 
 // Avatar colour palette
@@ -3255,8 +3306,7 @@ function xrayParse() {
 function xrayRender() {
   document.getElementById('xResultsSection').style.display = 'block';
   document.getElementById('xResultsTitle').textContent = `✅ ${xrayCandidates.length} candidates extracted`;
-  const platNames = {linkedin:'LinkedIn X-Ray', gcc:'GCC Hunt', passive:'Passive Finder', hidden:'Hidden Talent', github:'GitHub'};
-  document.getElementById('xResultsMeta').textContent = `${platNames[xrayCurrentPlat]} · Parsed just now · ${xrayCandidates.length} unique profiles found`;
+  document.getElementById('xResultsMeta').textContent = `${XRAY_PLATFORM_LABELS[xrayCurrentPlat]||xrayCurrentPlat} · Parsed just now · ${xrayCandidates.length} unique profiles found`;
 
   // Stats
   const dormant = xrayCandidates.filter(c => c.tier === 'Dormant').length;
@@ -3288,15 +3338,15 @@ function xrayRender() {
 
   // Excel preview
   const today = new Date().toLocaleDateString('en-IN');
-  const platNames2 = {linkedin:'LinkedIn X-Ray', gcc:'GCC Hunt', passive:'Passive Finder', hidden:'Hidden Talent', github:'GitHub'};
+
   document.getElementById('xExcelBody').innerHTML = xrayCandidates.map((c, i) => `
     <tr>
       <td>${i+1}</td><td style="font-weight:700">${c.name}</td><td>${c.role}</td><td>${c.company}</td><td>${c.loc}</td>
-      <td style="color:var(--a)">${c.url ? 'https://'+c.url : 'https://'+c.searchUrl}</td><td>${platNames2[xrayCurrentPlat]}</td>
+      <td style="color:var(--a)">${c.url ? 'https://'+c.url : 'https://'+c.searchUrl}</td><td>${(XRAY_PLATFORM_LABELS[xrayCurrentPlat]||xrayCurrentPlat)}</td>
       <td>${c.tier}</td><td style="font-weight:700;color:var(--a)">${c.score}</td><td>${c.skills.join(', ')}</td><td>${today}</td>
     </tr>`).join('');
 
-  document.getElementById('xExcelFname').textContent = `DevSourcing_${platNames2[xrayCurrentPlat].replace(/\s+/g,'')}_${today.replace(/\//g,'-')}.xlsx`;
+  document.getElementById('xExcelFname').textContent = `DevSourcing_${(XRAY_PLATFORM_LABELS[xrayCurrentPlat]||xrayCurrentPlat).replace(/\s+/g,'')}_${today.replace(/\//g,'-')}.xlsx`;
 }
 
 function xrayToggleSelect(i) {
@@ -3313,10 +3363,9 @@ function xraySelectAll() {
 
 function xrayExportCSV() {
   const today = new Date().toLocaleDateString('en-IN');
-  const platNames = {linkedin:'LinkedIn X-Ray', gcc:'GCC Hunt', passive:'Passive Finder', hidden:'Hidden Talent', github:'GitHub'};
   const rows = [['Name','Role','Company','Location','LinkedIn URL','Source','Tier','Score','Skills','Extracted On']];
   const dataset = xraySelected.size > 0 ? xrayCandidates.filter((_,i) => xraySelected.has(i)) : xrayCandidates;
-  dataset.forEach(c => rows.push([c.name, c.role, c.company, c.loc, c.url ? 'https://'+c.url : 'https://'+c.searchUrl, platNames[xrayCurrentPlat], c.tier, c.score, c.skills.join('; '), today]));
+  dataset.forEach(c => rows.push([c.name, c.role, c.company, c.loc, c.url ? 'https://'+c.url : 'https://'+c.searchUrl, (XRAY_PLATFORM_LABELS[xrayCurrentPlat]||xrayCurrentPlat), c.tier, c.score, c.skills.join('; '), today]));
   const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
   const a = document.createElement('a');
   a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
@@ -3328,21 +3377,20 @@ function xrayExportCSV() {
 function xrayExportExcel() {
   // Build an HTML table that Excel opens natively as .xls
   const today = new Date().toLocaleDateString('en-IN');
-  const platNames = {linkedin:'LinkedIn X-Ray', gcc:'GCC Hunt', passive:'Passive Finder', hidden:'Hidden Talent', github:'GitHub'};
   const dataset = xraySelected.size > 0 ? xrayCandidates.filter((_,i) => xraySelected.has(i)) : xrayCandidates;
 
   let html = '<table border="1"><tr style="background:#dcfce7;font-weight:bold">';
   ['Name','Role','Company','Location','LinkedIn URL','Source','Tier','Signal Score','Skills','Extracted On'].forEach(h => html += `<th>${h}</th>`);
   html += '</tr>';
   dataset.forEach(c => {
-    html += `<tr><td>${c.name}</td><td>${c.role}</td><td>${c.company}</td><td>${c.loc}</td><td>${c.url ? 'https://'+c.url : 'https://'+c.searchUrl}</td><td>${platNames[xrayCurrentPlat]}</td><td>${c.tier}</td><td>${c.score}</td><td>${c.skills.join(', ')}</td><td>${today}</td></tr>`;
+    html += `<tr><td>${c.name}</td><td>${c.role}</td><td>${c.company}</td><td>${c.loc}</td><td>${c.url ? 'https://'+c.url : 'https://'+c.searchUrl}</td><td>${(XRAY_PLATFORM_LABELS[xrayCurrentPlat]||xrayCurrentPlat)}</td><td>${c.tier}</td><td>${c.score}</td><td>${c.skills.join(', ')}</td><td>${today}</td></tr>`;
   });
   html += '</table>';
 
   const blob = new Blob(['\ufeff', html], { type: 'application/vnd.ms-excel' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `DevSourcing_${platNames[xrayCurrentPlat].replace(/\s+/g,'')}_${today.replace(/\//g,'-')}.xls`;
+  a.download = `DevSourcing_${(XRAY_PLATFORM_LABELS[xrayCurrentPlat]||xrayCurrentPlat).replace(/\s+/g,'')}_${today.replace(/\//g,'-')}.xls`;
   a.click();
   toast(`✅ Exported ${dataset.length} candidates to Excel`);
 }
