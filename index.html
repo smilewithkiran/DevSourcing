@@ -1917,7 +1917,22 @@ function goHome(){
 }
 function showAuth(){showPage('pageAuth');updateNavLinks(false);}
 function showApp(){showPage('pageApp');updateNavLinks(true);}
-function showXrayPage(){showPage('pageXray');updateNavLinks(!!S.user);}
+function showXrayPage(){
+  // X-Ray Results Parser is a Pro-only feature — locked for Trial / Expired users
+  if(S.isAdmin || S.plan==='pro'){
+    showPage('pageXray');updateNavLinks(!!S.user);
+    return;
+  }
+  // Not signed in → ask to sign in first
+  if(!S.user){ showAuth(); return; }
+  // Trial or Expired → show pricing with lock message
+  const tn=document.getElementById('tnote');
+  if(tn){
+    tn.style.display='flex';
+    tn.innerHTML='🔒 X-Ray Results Parser is a Pro feature. Upgrade to ₹499/30 days to unlock.';
+  }
+  openMod('prMod');
+}
 function showAdminPage(){showPage('pageAdmin');updateNavLinks(true);loadAdmOverview();}
 function scrollToSection(sel){
   if(document.getElementById('pageHome').style.display==='none'||document.getElementById('pageHome').style.display===''){
@@ -1934,7 +1949,7 @@ function updateNavLinks(loggedIn){
     nl.innerHTML=`
       <div class="nl" onclick="showApp()">🔍 Search</div>
       <div class="nl" onclick="showPricing()">Pricing</div>
-      <div class="nl nl-xray" onclick="showXrayPage()">📋 X-Ray Parser</div>
+      <div class="nl nl-xray" onclick="showXrayPage()">📋 X-Ray Parser${(S.isAdmin||S.plan==='pro')?'':' 🔒'}</div>
       ${S.isAdmin?'<div class="nl" onclick="showAdminPage()">⚙️ Admin</div>':''}`;
   } else {
     nl.innerHTML=`
@@ -3643,7 +3658,7 @@ function closeMod(id){
   document.body.classList.remove('modal-open');
 }
 document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
-function showPricing(){const tn=document.getElementById('tnote');if(tn)tn.style.display=S.plan==='expired'?'flex':'none';openMod('prMod');}
+function showPricing(){const tn=document.getElementById('tnote');if(tn){tn.innerHTML='🎁 Your free trial has ended';tn.style.display=S.plan==='expired'?'flex':'none';}openMod('prMod');}
 
 // ── ADMIN ─────────────────────────────────────────────
 function swAdmTab(t,btn){
