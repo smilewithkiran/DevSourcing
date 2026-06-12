@@ -3179,15 +3179,39 @@ function xrayParse() {
       }
 
       if (structuredLine) {
-        const parts = structuredLine.split('·').map(p => p.trim()).filter(p => p);
-        if (parts.length >= 3) { location = parts[0]; role = parts[1]; company = parts[2]; }
-        else if (parts.length === 2) {
-          const looksLikeLoc = XRAY_CITIES.some(c => parts[0].toLowerCase().includes(c.toLowerCase())) || parts[0].toLowerCase().includes('india');
-          if (looksLikeLoc) { location = parts[0]; role = parts[1]; }
-          else { role = parts[0]; company = parts[1]; }
-        } else role = parts[0];
+        const rawParts = structuredLine.split('·').map(p => p.trim()).filter(p => p);
+        let locCand = '', roleCand = '', coCand = '';
+        const roleKeywords = /(developer|engineer|manager|designer|analyst|lead|architect|consultant|specialist|intern|director|founder|head|scientist|administrator|executive|officer|programmer)/i;
+
+        rawParts.forEach(part => {
+          // Labeled fields e.g. "Location: 560002", "Experience: Haycod Solutions"
+          const labelMatch = part.match(/^(Location|Experience|Education|Current|Company)\s*:\s*(.+)$/i);
+          if (labelMatch) {
+            const label = labelMatch[1].toLowerCase();
+            const val = labelMatch[2].trim();
+            if (label === 'location') { if (!locCand) locCand = val; }
+            else if (label === 'experience' || label === 'current' || label === 'company') { if (!coCand) coCand = val; }
+            return; // 'education' ignored
+          }
+          // Unlabeled — classify by content
+          const isLoc = /^\d{5,6}$/.test(part) || XRAY_CITIES.some(c => part.toLowerCase().includes(c.toLowerCase())) || /india/i.test(part);
+          if (isLoc && !locCand) { locCand = part; return; }
+          if (roleKeywords.test(part) && !roleCand) { roleCand = part; return; }
+          if (!coCand) { coCand = part; return; }
+          if (!roleCand) { roleCand = part; return; }
+        });
+
+        // If location is just a pincode, swap in a real city name if found anywhere in the text
+        if (/^\d{5,6}$/.test(locCand)) {
+          const cityFound = XRAY_CITIES.find(c => c.toLowerCase() !== 'india' && (headline + ' ' + structuredLine + ' ' + bioLines.join(' ')).toLowerCase().includes(c.toLowerCase()));
+          locCand = cityFound ? cityFound + ', India' : 'India';
+        }
+
+        location = locCand; role = roleCand; company = coCand;
       }
       if (!role && headlineRole) role = headlineRole;
+      // Clean up role text — hyphen-separated skill lists read better as comma-separated
+      if (role && role.split(' - ').length >= 3) role = role.split(' - ').map(s=>s.trim()).join(', ');
       if (!location) {
         const cityFound = XRAY_CITIES.find(c => (headline + ' ' + bioLines.join(' ')).toLowerCase().includes(c.toLowerCase()));
         location = (cityFound && cityFound.toLowerCase() !== 'india') ? cityFound + ', India' : 'India';
@@ -3202,7 +3226,7 @@ function xrayParse() {
     const dedupeKey = url || (name.toLowerCase() + '|' + company.toLowerCase());
     if (candidates.some(c => (c.url || (c.name.toLowerCase() + '|' + c.company.toLowerCase())) === dedupeKey)) continue;
 
-    const skillsFound = XRAY_SKILLS.filter(s => fullSearchText.toLowerCase().includes(s.toLowerCase()));
+    const skillsFound = XRAY_SKILLS.filter(s => new RegExp('\\b' + s.replace(/[.+]/g,'\\$&') + '\\b', 'i').test(fullSearchText));
 
     let score = 60 + skillsFound.length * 4 + Math.floor(Math.random() * 8);
     score = Math.min(score, 99);
