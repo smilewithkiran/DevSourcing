@@ -3052,104 +3052,141 @@ function xrayParse() {
   const text = document.getElementById('xPasteArea').value;
   if (!text.trim()) { toast('Paste some Google results first, or click "Try with Sample Data"'); return; }
 
+  // Normalize: collapse breadcrumb separators (› › ›  or  > > >) into slashes
+  // Google often shows "www.linkedin.com › in › arjun-mehta-react" instead of a real URL
+  let normalized = text.replace(/\s*[›>]\s*/g, '/');
+
   // Split into lines, clean up
-  const rawLines = text.split('\n').map(l => l.trim()).filter(l => l.length > 1);
+  const rawLines = normalized.split('\n').map(l => l.trim()).filter(l => l.length > 1);
 
   const candidates = [];
-  let i = 0;
 
-  while (i < rawLines.length) {
+  // Two patterns: normal URL form, and breadcrumb-collapsed form (both now look like .../in/username after normalization)
+  const urlPatterns = [
+    /(?:[a-z]{2,3}\.)?linkedin\.com\/in\/[a-zA-Z0-9\-_%.]+/i,
+    /linkedin\.com\/pub\/[a-zA-Z0-9\-_%.\/]+/i
+  ];
+
+  for (let i = 0; i < rawLines.length; i++) {
     const line = rawLines[i];
+    let urlMatch = null;
+    for (const pat of urlPatterns) {
+      urlMatch = line.match(pat);
+      if (urlMatch) break;
+    }
+    if (!urlMatch) continue;
 
-    // Look for a LinkedIn URL line
-    const urlMatch = line.match(/(?:www\.)?linkedin\.com\/in\/[a-zA-Z0-9\-_%]+/i);
+    let url = urlMatch[0].replace(/^(https?:\/\/)?(www\.)?/i, '').replace(/\/+$/,'');
+    // Strip trailing junk that sometimes gets appended (· LinkedIn, periods, etc.)
+    url = url.split(/[\s·|]/)[0].replace(/\.+$/,'');
 
-    if (urlMatch) {
-      let url = urlMatch[0].replace(/^www\./i, '');
-      // The title line is usually the line ABOVE the URL line
-      let titleLine = '';
-      for (let back = 1; back <= 2; back++) {
+    // ── Find the title line — search up to 3 lines back AND the same line (before the URL) ──
+    let titleLine = '';
+    // Same line, text before the URL match
+    const beforeUrl = line.substring(0, line.indexOf(urlMatch[0])).trim();
+    if (beforeUrl.length > 3 && !beforeUrl.match(/^https?:\/\//i)) {
+      titleLine = beforeUrl;
+    } else {
+      for (let back = 1; back <= 3; back++) {
         const cand = rawLines[i - back];
-        if (cand && !cand.match(/linkedin\.com/i) && cand.length > 3) { titleLine = cand; break; }
-      }
-      // Clean up title — remove trailing " | LinkedIn"
-      titleLine = titleLine.replace(/\s*\|\s*LinkedIn\s*$/i, '').trim();
-
-      // Try to split "Name - Role at/@ Company" or "Name – Role – Company" or "Name - Role - Company"
-      let name = '', role = '', company = '';
-      const sepMatch = titleLine.split(/\s+[-–—]\s+/);
-      if (sepMatch.length >= 2) {
-        name = sepMatch[0].trim();
-        const rest = sepMatch.slice(1).join(' - ');
-        // "Role at Company" or "Role - Company"
-        const atMatch = rest.match(/^(.*?)\s+(?:at|@)\s+(.+)$/i);
-        if (atMatch) {
-          role = atMatch[1].trim();
-          company = atMatch[2].trim();
-        } else if (sepMatch.length >= 3) {
-          role = sepMatch[1].trim();
-          company = sepMatch[2].trim();
-        } else {
-          role = rest.trim();
-        }
-      } else {
-        name = titleLine || 'Unknown';
-      }
-
-      // Same-line location after the URL (e.g. "linkedin.com/in/x · Bengaluru, India")
-      let location = '';
-      const afterUrl = line.substring(line.indexOf(urlMatch[0]) + urlMatch[0].length);
-      const locFromLine = XRAY_CITIES.find(c => afterUrl.toLowerCase().includes(c.toLowerCase()) || line.toLowerCase().includes(c.toLowerCase()));
-
-      // Also check next 1-2 lines for location + skills
-      let bioText = '';
-      for (let fwd = 1; fwd <= 2; fwd++) {
-        const nextLine = rawLines[i + fwd];
-        if (!nextLine) continue;
-        if (nextLine.match(/linkedin\.com/i)) break; // hit next profile
-        bioText += ' ' + nextLine;
-      }
-
-      const cityFound = locFromLine || XRAY_CITIES.find(c => bioText.toLowerCase().includes(c.toLowerCase())) || 'India';
-      location = (cityFound === 'India') ? 'India' : cityFound + ', India';
-      if (cityFound.toLowerCase() === 'india') location = 'India';
-
-      // Extract skills mentioned
-      const fullText = titleLine + ' ' + bioText;
-      const skillsFound = XRAY_SKILLS.filter(s => fullText.toLowerCase().includes(s.toLowerCase()));
-
-      // Skip if no name found (junk line)
-      if (name && name.length > 1 && !name.match(/^(People also search|Images|Videos|News|Maps)/i)) {
-        // Avoid duplicates by URL
-        if (!candidates.some(c => c.url === url)) {
-          // Score: based on skill count + tenure-like year mentions
-          let score = 60 + skillsFound.length * 4 + Math.floor(Math.random() * 8);
-          score = Math.min(score, 99);
-
-          // Tier: dormant if profile text has no "open to work" signals + has tenure years
-          const yearMatch = fullText.match(/20(1[6-9]|2[0-3])/);
-          const tier = (xrayCurrentPlat === 'passive' || xrayCurrentPlat === 'gcc') && yearMatch
-            ? 'Dormant'
-            : (skillsFound.length >= 2 ? 'Passive' : 'Active');
-
-          candidates.push({
-            name: name,
-            role: role || 'Software Developer',
-            company: company || '—',
-            loc: location,
-            url: url,
-            skills: skillsFound.length ? skillsFound.slice(0, 5) : ['Software Development'],
-            score: score,
-            tier: tier
-          });
+        if (!cand) continue;
+        if (cand.match(/linkedin\.com/i)) break; // hit previous profile's URL — stop
+        if (cand.length > 3 && !cand.match(/^(images?|videos?|news|maps|people also (ask|search)|related searches|see results about|\.{3,}|›|>)/i)) {
+          titleLine = cand;
+          break;
         }
       }
     }
-    i++;
+
+    // Clean up title — remove trailing " | LinkedIn", "- LinkedIn", connections count, etc.
+    titleLine = titleLine
+      .replace(/\s*[|·]\s*LinkedIn\s*$/i, '')
+      .replace(/\s*-\s*LinkedIn\s*$/i, '')
+      .replace(/\s*[·|]\s*\d+\+?\s*connections?\s*$/i, '')
+      .replace(/^\d+\.\s*/, '') // strip leading "1. " numbering
+      .trim();
+
+    // ── Parse "Name - Role at/@ Company" / "Name | Role | Company" / "Name – Role – Company" ──
+    let name = '', role = '', company = '';
+    // Try splitting on -, –, —, or |
+    const sepMatch = titleLine.split(/\s*[-–—|]\s*/).filter(s => s.length > 0);
+    if (sepMatch.length >= 2) {
+      name = sepMatch[0].trim();
+      const rest = sepMatch.slice(1).join(' - ');
+      const atMatch = rest.match(/^(.*?)\s+(?:at|@|,)\s+(.+)$/i);
+      if (atMatch) {
+        role = atMatch[1].trim();
+        company = atMatch[2].trim();
+      } else if (sepMatch.length >= 3) {
+        role = sepMatch[1].trim();
+        company = sepMatch[2].trim();
+      } else {
+        role = rest.trim();
+      }
+    } else if (titleLine) {
+      // No separator — try "Name, Role at Company" or just use whole line as name
+      const commaAt = titleLine.match(/^(.+?),\s*(.+?)\s+(?:at|@)\s+(.+)$/i);
+      if (commaAt) {
+        name = commaAt[1].trim(); role = commaAt[2].trim(); company = commaAt[3].trim();
+      } else {
+        const atOnly = titleLine.match(/^(.+?)\s+(?:at|@)\s+(.+)$/i);
+        if (atOnly) { name = atOnly[1].trim(); role = ''; company = atOnly[2].trim(); }
+        else name = titleLine;
+      }
+    }
+
+    // Fallback: if name looks too long (full sentence) or empty, derive from URL slug
+    if (!name || name.length > 60 || name.split(' ').length > 6) {
+      const slug = url.split('/in/')[1] || url.split('/pub/')[1] || '';
+      const slugName = slug.split(/[-_]/).filter(p => p && !/^\d+$/.test(p)).slice(0,3)
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      if (slugName) name = slugName;
+    }
+
+    // ── Location detection: same line after URL, or nearby lines ──
+    const afterUrl = line.substring(line.indexOf(urlMatch[0]) + urlMatch[0].length);
+    let bioText = afterUrl;
+    for (let fwd = 1; fwd <= 2; fwd++) {
+      const nextLine = rawLines[i + fwd];
+      if (!nextLine) continue;
+      if (nextLine.match(/linkedin\.com/i)) break;
+      bioText += ' ' + nextLine;
+    }
+    const fullSearchText = titleLine + ' ' + bioText;
+    const cityFound = XRAY_CITIES.find(c => fullSearchText.toLowerCase().includes(c.toLowerCase()));
+    let location = 'India';
+    if (cityFound && cityFound.toLowerCase() !== 'india') location = cityFound + ', India';
+
+    // Extract skills
+    const skillsFound = XRAY_SKILLS.filter(s => fullSearchText.toLowerCase().includes(s.toLowerCase()));
+
+    // Skip junk entries
+    if (!name || name.length < 2) continue;
+    if (name.match(/^(People also (ask|search)|Images?|Videos?|News|Maps|Related searches|See results about|Sign in|About|Feedback)/i)) continue;
+    if (candidates.some(c => c.url.toLowerCase() === url.toLowerCase())) continue;
+
+    let score = 60 + skillsFound.length * 4 + Math.floor(Math.random() * 8);
+    score = Math.min(score, 99);
+
+    const yearMatch = fullSearchText.match(/20(1[6-9]|2[0-3])/);
+    const tier = (xrayCurrentPlat === 'passive' || xrayCurrentPlat === 'gcc') && yearMatch
+      ? 'Dormant'
+      : (skillsFound.length >= 2 ? 'Passive' : 'Active');
+
+    candidates.push({
+      name: name,
+      role: role || 'Software Developer',
+      company: company || '—',
+      loc: location,
+      url: url,
+      skills: skillsFound.length ? skillsFound.slice(0, 5) : ['Software Development'],
+      score: score,
+      tier: tier
+    });
   }
 
   if (candidates.length === 0) {
-    toast('No LinkedIn profiles found in the pasted text. Make sure you copied the full Google results page.', 4000);
+    toast('No LinkedIn profiles found. Try copying the full results page including URLs — or click "Try with Sample Data" to see how it works.', 5000);
     return;
   }
 
@@ -3157,6 +3194,7 @@ function xrayParse() {
   xraySelected.clear();
   xrayRender();
 }
+
 
 function xrayRender() {
   document.getElementById('xResultsSection').style.display = 'block';
