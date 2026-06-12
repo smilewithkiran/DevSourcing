@@ -3057,113 +3057,152 @@ function xrayParse() {
   let normalized = text.replace(/\s*[›>]\s*/g, '/');
 
   // Split into lines, clean up
-  const rawLines = normalized.split('\n').map(l => l.trim()).filter(l => l.length > 1);
+  const rawLines = normalized.split('\n').map(l => l.trim()).filter(l => l.length > 0);
 
   const candidates = [];
 
-  // Two patterns: normal URL form, and breadcrumb-collapsed form (both now look like .../in/username after normalization)
+  // Pattern A: normal URL form / breadcrumb-collapsed form
   const urlPatterns = [
     /(?:[a-z]{2,3}\.)?linkedin\.com\/in\/[a-zA-Z0-9\-_%.]+/i,
     /linkedin\.com\/pub\/[a-zA-Z0-9\-_%.\/]+/i
   ];
+  // Pattern B: newer Google snippet format — "LinkedIn · Name" with NO url shown
+  const nameAnchorPattern = /^LinkedIn\s*[·•]\s*(.{2,60})$/i;
 
   for (let i = 0; i < rawLines.length; i++) {
     const line = rawLines[i];
+    let name = '', role = '', company = '', location = '', url = '', fullSearchText = '';
+
+    // ── Pattern A: a LinkedIn URL is present on this line ──
     let urlMatch = null;
-    for (const pat of urlPatterns) {
-      urlMatch = line.match(pat);
-      if (urlMatch) break;
+    for (const pat of urlPatterns) { urlMatch = line.match(pat); if (urlMatch) break; }
+
+    if (urlMatch) {
+      url = urlMatch[0].replace(/^(https?:\/\/)?(www\.)?/i, '').replace(/\/+$/,'');
+      url = url.split(/[\s·|]/)[0].replace(/\.+$/,'');
+
+      // Find the title line — same line before URL, or up to 3 lines back
+      let titleLine = '';
+      const beforeUrl = line.substring(0, line.indexOf(urlMatch[0])).trim();
+      if (beforeUrl.length > 3 && !beforeUrl.match(/^https?:\/\//i)) {
+        titleLine = beforeUrl;
+      } else {
+        for (let back = 1; back <= 3; back++) {
+          const cand = rawLines[i - back];
+          if (!cand) continue;
+          if (cand.match(/linkedin\.com/i) || cand.match(nameAnchorPattern)) break;
+          if (cand.length > 3 && !cand.match(/^(images?|videos?|news|maps|people also (ask|search)|related searches|see results about|\.{3,}|›|>)/i)) {
+            titleLine = cand;
+            break;
+          }
+        }
+      }
+
+      titleLine = titleLine
+        .replace(/\s*[|·]\s*LinkedIn\s*$/i, '')
+        .replace(/\s*-\s*LinkedIn\s*$/i, '')
+        .replace(/\s*[·|]\s*\d+\+?\s*(connections?|followers)\s*$/i, '')
+        .replace(/^\d+\.\s*/, '')
+        .trim();
+
+      // Parse "Name - Role at/@ Company" / "Name | Role | Company" / "Name – Role – Company"
+      const sepMatch = titleLine.split(/\s*[-–—|]\s*/).filter(s => s.length > 0);
+      if (sepMatch.length >= 2) {
+        name = sepMatch[0].trim();
+        const rest = sepMatch.slice(1).join(' - ');
+        const atMatch = rest.match(/^(.*?)\s+(?:at|@|,)\s+(.+)$/i);
+        if (atMatch) { role = atMatch[1].trim(); company = atMatch[2].trim(); }
+        else if (sepMatch.length >= 3) { role = sepMatch[1].trim(); company = sepMatch[2].trim(); }
+        else role = rest.trim();
+      } else if (titleLine) {
+        const commaAt = titleLine.match(/^(.+?),\s*(.+?)\s+(?:at|@)\s+(.+)$/i);
+        if (commaAt) { name = commaAt[1].trim(); role = commaAt[2].trim(); company = commaAt[3].trim(); }
+        else {
+          const atOnly = titleLine.match(/^(.+?)\s+(?:at|@)\s+(.+)$/i);
+          if (atOnly) { name = atOnly[1].trim(); company = atOnly[2].trim(); }
+          else name = titleLine;
+        }
+      }
+
+      // Fallback: derive name from URL slug if title parsing failed
+      if (!name || name.length > 60 || name.split(' ').length > 6) {
+        const slug = url.split('/in/')[1] || url.split('/pub/')[1] || '';
+        const slugName = slug.split(/[-_]/).filter(p => p && !/^\d+$/.test(p)).slice(0,3)
+          .map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        if (slugName) name = slugName;
+      }
+
+      // Location + bio from same/next lines
+      const afterUrl = line.substring(line.indexOf(urlMatch[0]) + urlMatch[0].length);
+      let bioText = afterUrl;
+      for (let fwd = 1; fwd <= 2; fwd++) {
+        const nl = rawLines[i + fwd];
+        if (!nl) continue;
+        if (nl.match(/linkedin\.com/i) || nl.match(nameAnchorPattern)) break;
+        bioText += ' ' + nl;
+      }
+      fullSearchText = titleLine + ' ' + bioText;
+      const cityFound = XRAY_CITIES.find(c => fullSearchText.toLowerCase().includes(c.toLowerCase()));
+      location = (cityFound && cityFound.toLowerCase() !== 'india') ? cityFound + ', India' : 'India';
     }
-    if (!urlMatch) continue;
+    // ── Pattern B: newer Google format — "LinkedIn · Name" anchor, no URL shown ──
+    else {
+      const nm = line.match(nameAnchorPattern);
+      if (!nm) continue;
+      name = nm[1].trim();
 
-    let url = urlMatch[0].replace(/^(https?:\/\/)?(www\.)?/i, '').replace(/\/+$/,'');
-    // Strip trailing junk that sometimes gets appended (· LinkedIn, periods, etc.)
-    url = url.split(/[\s·|]/)[0].replace(/\.+$/,'');
-
-    // ── Find the title line — search up to 3 lines back AND the same line (before the URL) ──
-    let titleLine = '';
-    // Same line, text before the URL match
-    const beforeUrl = line.substring(0, line.indexOf(urlMatch[0])).trim();
-    if (beforeUrl.length > 3 && !beforeUrl.match(/^https?:\/\//i)) {
-      titleLine = beforeUrl;
-    } else {
+      // Headline (role context) — usually 1-3 lines above, e.g. "Name - React Developer/Front end ..."
+      let headline = '';
       for (let back = 1; back <= 3; back++) {
         const cand = rawLines[i - back];
         if (!cand) continue;
-        if (cand.match(/linkedin\.com/i)) break; // hit previous profile's URL — stop
-        if (cand.length > 3 && !cand.match(/^(images?|videos?|news|maps|people also (ask|search)|related searches|see results about|\.{3,}|›|>)/i)) {
-          titleLine = cand;
-          break;
-        }
+        if (cand.match(nameAnchorPattern) || cand.match(/linkedin\.com/i)) break;
+        if (cand.length > 3) { headline = cand; break; }
       }
-    }
-
-    // Clean up title — remove trailing " | LinkedIn", "- LinkedIn", connections count, etc.
-    titleLine = titleLine
-      .replace(/\s*[|·]\s*LinkedIn\s*$/i, '')
-      .replace(/\s*-\s*LinkedIn\s*$/i, '')
-      .replace(/\s*[·|]\s*\d+\+?\s*connections?\s*$/i, '')
-      .replace(/^\d+\.\s*/, '') // strip leading "1. " numbering
-      .trim();
-
-    // ── Parse "Name - Role at/@ Company" / "Name | Role | Company" / "Name – Role – Company" ──
-    let name = '', role = '', company = '';
-    // Try splitting on -, –, —, or |
-    const sepMatch = titleLine.split(/\s*[-–—|]\s*/).filter(s => s.length > 0);
-    if (sepMatch.length >= 2) {
-      name = sepMatch[0].trim();
-      const rest = sepMatch.slice(1).join(' - ');
-      const atMatch = rest.match(/^(.*?)\s+(?:at|@|,)\s+(.+)$/i);
-      if (atMatch) {
-        role = atMatch[1].trim();
-        company = atMatch[2].trim();
-      } else if (sepMatch.length >= 3) {
-        role = sepMatch[1].trim();
-        company = sepMatch[2].trim();
-      } else {
-        role = rest.trim();
+      headline = headline.replace(/\.{2,}\s*$/, '').trim();
+      let headlineRole = '';
+      const hSep = headline.split(/\s*[-–—|]\s*/).filter(s => s.length > 0);
+      if (hSep.length >= 2 && hSep[0].toLowerCase().includes((name.split(' ')[0]||'').toLowerCase())) {
+        headlineRole = hSep.slice(1).join(' - ').trim();
       }
-    } else if (titleLine) {
-      // No separator — try "Name, Role at Company" or just use whole line as name
-      const commaAt = titleLine.match(/^(.+?),\s*(.+?)\s+(?:at|@)\s+(.+)$/i);
-      if (commaAt) {
-        name = commaAt[1].trim(); role = commaAt[2].trim(); company = commaAt[3].trim();
-      } else {
-        const atOnly = titleLine.match(/^(.+?)\s+(?:at|@)\s+(.+)$/i);
-        if (atOnly) { name = atOnly[1].trim(); role = ''; company = atOnly[2].trim(); }
-        else name = titleLine;
+
+      // Forward: skip "X+ followers/connections", find "Location · Role · Company" line + bio lines
+      let structuredLine = '';
+      const bioLines = [];
+      for (let fwd = 1; fwd <= 6; fwd++) {
+        const nl = rawLines[i + fwd];
+        if (!nl) continue;
+        if (nl.match(nameAnchorPattern) || nl.match(/linkedin\.com/i)) break;
+        if (nl.match(/^\d+\+?\s*(followers|connections)$/i)) continue;
+        if (!structuredLine && nl.includes('·')) { structuredLine = nl; continue; }
+        bioLines.push(nl);
       }
+
+      if (structuredLine) {
+        const parts = structuredLine.split('·').map(p => p.trim()).filter(p => p);
+        if (parts.length >= 3) { location = parts[0]; role = parts[1]; company = parts[2]; }
+        else if (parts.length === 2) {
+          const looksLikeLoc = XRAY_CITIES.some(c => parts[0].toLowerCase().includes(c.toLowerCase())) || parts[0].toLowerCase().includes('india');
+          if (looksLikeLoc) { location = parts[0]; role = parts[1]; }
+          else { role = parts[0]; company = parts[1]; }
+        } else role = parts[0];
+      }
+      if (!role && headlineRole) role = headlineRole;
+      if (!location) {
+        const cityFound = XRAY_CITIES.find(c => (headline + ' ' + bioLines.join(' ')).toLowerCase().includes(c.toLowerCase()));
+        location = (cityFound && cityFound.toLowerCase() !== 'india') ? cityFound + ', India' : 'India';
+      }
+      fullSearchText = headline + ' ' + headlineRole + ' ' + bioLines.join(' ');
     }
 
-    // Fallback: if name looks too long (full sentence) or empty, derive from URL slug
-    if (!name || name.length > 60 || name.split(' ').length > 6) {
-      const slug = url.split('/in/')[1] || url.split('/pub/')[1] || '';
-      const slugName = slug.split(/[-_]/).filter(p => p && !/^\d+$/.test(p)).slice(0,3)
-        .map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-      if (slugName) name = slugName;
-    }
-
-    // ── Location detection: same line after URL, or nearby lines ──
-    const afterUrl = line.substring(line.indexOf(urlMatch[0]) + urlMatch[0].length);
-    let bioText = afterUrl;
-    for (let fwd = 1; fwd <= 2; fwd++) {
-      const nextLine = rawLines[i + fwd];
-      if (!nextLine) continue;
-      if (nextLine.match(/linkedin\.com/i)) break;
-      bioText += ' ' + nextLine;
-    }
-    const fullSearchText = titleLine + ' ' + bioText;
-    const cityFound = XRAY_CITIES.find(c => fullSearchText.toLowerCase().includes(c.toLowerCase()));
-    let location = 'India';
-    if (cityFound && cityFound.toLowerCase() !== 'india') location = cityFound + ', India';
-
-    // Extract skills
-    const skillsFound = XRAY_SKILLS.filter(s => fullSearchText.toLowerCase().includes(s.toLowerCase()));
-
-    // Skip junk entries
-    if (!name || name.length < 2) continue;
+    // ── Common validation + finalization ──
+    if (!name || name.length < 2 || name.length > 60 || name.split(' ').length > 6) continue;
     if (name.match(/^(People also (ask|search)|Images?|Videos?|News|Maps|Related searches|See results about|Sign in|About|Feedback)/i)) continue;
-    if (candidates.some(c => c.url.toLowerCase() === url.toLowerCase())) continue;
+
+    const dedupeKey = url || (name.toLowerCase() + '|' + company.toLowerCase());
+    if (candidates.some(c => (c.url || (c.name.toLowerCase() + '|' + c.company.toLowerCase())) === dedupeKey)) continue;
+
+    const skillsFound = XRAY_SKILLS.filter(s => fullSearchText.toLowerCase().includes(s.toLowerCase()));
 
     let score = 60 + skillsFound.length * 4 + Math.floor(Math.random() * 8);
     score = Math.min(score, 99);
@@ -3173,12 +3212,16 @@ function xrayParse() {
       ? 'Dormant'
       : (skillsFound.length >= 2 ? 'Passive' : 'Active');
 
+    // If no direct profile URL was found, build a LinkedIn people-search link instead
+    const searchUrl = `linkedin.com/search/results/people/?keywords=${encodeURIComponent(name + (company !== '—' && company ? ' ' + company : ''))}`;
+
     candidates.push({
       name: name,
       role: role || 'Software Developer',
       company: company || '—',
-      loc: location,
+      loc: location || 'India',
       url: url,
+      searchUrl: searchUrl,
       skills: skillsFound.length ? skillsFound.slice(0, 5) : ['Software Development'],
       score: score,
       tier: tier
@@ -3186,7 +3229,7 @@ function xrayParse() {
   }
 
   if (candidates.length === 0) {
-    toast('No LinkedIn profiles found. Try copying the full results page including URLs — or click "Try with Sample Data" to see how it works.', 5000);
+    toast('No LinkedIn profiles found. Try copying the full results page — or click "Try with Sample Data" to see how it works.', 5000);
     return;
   }
 
@@ -3194,6 +3237,7 @@ function xrayParse() {
   xraySelected.clear();
   xrayRender();
 }
+
 
 
 function xrayRender() {
@@ -3221,13 +3265,13 @@ function xrayRender() {
         <div class="xcand-name">${c.name}</div>
         <div class="xcand-role">${c.role}${c.company!=='—' ? ' · '+c.company : ''}</div>
         <div class="xcand-tags">
-          <span class="xtag xtag-li">${c.url}</span>
+          <span class="xtag xtag-li">${c.url ? c.url : '🔍 Search LinkedIn for this profile'}</span>
           <span class="xtag xtag-loc">📍 ${c.loc}</span>
           <span class="xtag ${c.tier==='Dormant'?'xtag-hi':'xtag-md'}">${c.tier==='Dormant'?'🟢':c.tier==='Passive'?'🟡':'🔴'} ${c.tier}</span>
         </div>
       </div>
       <div class="xcand-score"><div class="xscore-n">${c.score}</div><div class="xscore-l">Score</div></div>
-      <button class="xbtn-li" onclick="event.stopPropagation();window.open('https://${c.url}','_blank')">LinkedIn ↗</button>
+      <button class="xbtn-li" onclick="event.stopPropagation();window.open('https://${c.url || c.searchUrl}','_blank')">${c.url ? 'LinkedIn ↗' : 'Find ↗'}</button>
     </div>`).join('');
 
   // Excel preview
@@ -3236,7 +3280,7 @@ function xrayRender() {
   document.getElementById('xExcelBody').innerHTML = xrayCandidates.map((c, i) => `
     <tr>
       <td>${i+1}</td><td style="font-weight:700">${c.name}</td><td>${c.role}</td><td>${c.company}</td><td>${c.loc}</td>
-      <td style="color:var(--a)">${c.url}</td><td>${platNames2[xrayCurrentPlat]}</td>
+      <td style="color:var(--a)">${c.url ? 'https://'+c.url : 'https://'+c.searchUrl}</td><td>${platNames2[xrayCurrentPlat]}</td>
       <td>${c.tier}</td><td style="font-weight:700;color:var(--a)">${c.score}</td><td>${c.skills.join(', ')}</td><td>${today}</td>
     </tr>`).join('');
 
@@ -3260,7 +3304,7 @@ function xrayExportCSV() {
   const platNames = {linkedin:'LinkedIn X-Ray', gcc:'GCC Hunt', passive:'Passive Finder', hidden:'Hidden Talent', github:'GitHub'};
   const rows = [['Name','Role','Company','Location','LinkedIn URL','Source','Tier','Score','Skills','Extracted On']];
   const dataset = xraySelected.size > 0 ? xrayCandidates.filter((_,i) => xraySelected.has(i)) : xrayCandidates;
-  dataset.forEach(c => rows.push([c.name, c.role, c.company, c.loc, c.url, platNames[xrayCurrentPlat], c.tier, c.score, c.skills.join('; '), today]));
+  dataset.forEach(c => rows.push([c.name, c.role, c.company, c.loc, c.url ? 'https://'+c.url : 'https://'+c.searchUrl, platNames[xrayCurrentPlat], c.tier, c.score, c.skills.join('; '), today]));
   const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
   const a = document.createElement('a');
   a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
@@ -3279,7 +3323,7 @@ function xrayExportExcel() {
   ['Name','Role','Company','Location','LinkedIn URL','Source','Tier','Signal Score','Skills','Extracted On'].forEach(h => html += `<th>${h}</th>`);
   html += '</tr>';
   dataset.forEach(c => {
-    html += `<tr><td>${c.name}</td><td>${c.role}</td><td>${c.company}</td><td>${c.loc}</td><td>https://${c.url}</td><td>${platNames[xrayCurrentPlat]}</td><td>${c.tier}</td><td>${c.score}</td><td>${c.skills.join(', ')}</td><td>${today}</td></tr>`;
+    html += `<tr><td>${c.name}</td><td>${c.role}</td><td>${c.company}</td><td>${c.loc}</td><td>${c.url ? 'https://'+c.url : 'https://'+c.searchUrl}</td><td>${platNames[xrayCurrentPlat]}</td><td>${c.tier}</td><td>${c.score}</td><td>${c.skills.join(', ')}</td><td>${today}</td></tr>`;
   });
   html += '</table>';
 
