@@ -635,8 +635,10 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 .xplat-btn:hover{border-color:var(--a);color:var(--a)}
 
 /* Query box */
-.xquery-box{background:var(--bg3);border:1px solid var(--b1);border-radius:10px;padding:12px 14px;font-size:11px;font-family:monospace;color:var(--t2);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;line-height:1.6}
-.xquery-text{flex:1;word-break:break-all;min-width:200px}
+.xquery-box{background:var(--bg3);border:1px solid var(--b1);border-radius:10px;padding:12px 14px;font-size:11px;font-family:monospace;color:var(--t2);margin-bottom:14px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;line-height:1.6}
+.xquery-text{flex:1;word-break:break-all;min-width:200px;background:transparent;border:none;outline:none;color:var(--t2);font-family:monospace;font-size:11px;line-height:1.6;resize:vertical;min-height:42px;width:100%;padding:0}
+.xquery-text:focus{color:var(--t1)}
+.xquery-edit-hint{font-size:10px;color:var(--t3);margin-top:-2px;margin-bottom:10px;display:flex;align-items:center;gap:5px}
 
 /* Paste area */
 .xpaste-area{width:100%;min-height:140px;padding:14px;border:2px dashed var(--b2);border-radius:12px;font-size:12px;color:var(--t1);background:var(--bg3);resize:vertical;font-family:inherit;outline:none;line-height:1.6;transition:.15s}
@@ -695,6 +697,12 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
   .xbtn-li{margin-left:auto}
   .xexcel-table{font-size:10px}
   .xquery-text{font-size:10px}
+  .xquery-box{flex-direction:column;align-items:stretch}
+  .xquery-box .bxo{width:100%}
+}
+@media(max-width:680px){
+  /* Step 1 inputs — 3 columns becomes 1 on mobile */
+  #pageXray .sbox > div[style*="grid-template-columns:repeat(3,1fr)"]{grid-template-columns:1fr!important;gap:10px!important}
 }
 @media(max-width:480px){
   .nav-links{display:flex!important;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:60vw}
@@ -1445,6 +1453,12 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
         <div><div class="fl">Location</div><input class="fi" id="xLoc" type="text" placeholder="e.g. Bengaluru" value="Bengaluru"></div>
       </div>
 
+      <div id="xCompaniesWrap" style="display:none;margin-bottom:14px">
+        <div class="fl">Companies (optional, comma-separated)</div>
+        <input class="fi" id="xCompanies" type="text" placeholder="e.g. TCS, Infosys, Wipro — leave blank to use default GCC/product companies">
+        <div style="font-size:10px;color:var(--t3);margin-top:4px">Replaces the default company list (Google, Microsoft, Amazon...) in the generated query. For Tenure Target, years are auto-set from Experience above.</div>
+      </div>
+
       <div class="fl" style="margin-bottom:8px">Platform</div>
       <div class="xray-plat-row">
         <button class="xplat-btn on" onclick="xraySelectPlat(this,'linkedin')">💼 LinkedIn X-Ray</button>
@@ -1462,9 +1476,10 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
       </div>
 
       <div class="xquery-box">
-        <div class="xquery-text" id="xQueryText">site:linkedin.com/in "React Developer" "Bengaluru"</div>
-        <button class="bxo" onclick="window.open('https://www.google.com/search?q='+encodeURIComponent(document.getElementById('xQueryText').textContent),'_blank')">🔍 Open in Google</button>
+        <textarea class="xquery-text" id="xQueryText" rows="2" spellcheck="false">site:linkedin.com/in "React Developer" "Bengaluru"</textarea>
+        <button class="bxo" onclick="window.open('https://www.google.com/search?q='+encodeURIComponent(document.getElementById('xQueryText').value),'_blank')">🔍 Open in Google</button>
       </div>
+      <div class="xquery-edit-hint">✏️ You can edit this query directly — remove companies, change years, or rewrite it entirely before opening Google.</div>
       <div class="xpaste-actions" style="margin-top:0">
         <button class="btn-sct-analyze" style="width:auto;padding:8px 20px" onclick="xrayGenerateQuery()">⚙️ Generate Query</button>
       </div>
@@ -3001,6 +3016,9 @@ function xraySelectPlat(btn, plat) {
   document.querySelectorAll('.xplat-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
   xrayCurrentPlat = plat;
+  // Show "Companies (optional)" field only for GCC Hunt / Tenure Target
+  const wrap = document.getElementById('xCompaniesWrap');
+  if (wrap) wrap.style.display = (plat === 'gcc' || plat === 'tenure') ? 'block' : 'none';
   xrayGenerateQuery();
 }
 
@@ -3009,18 +3027,39 @@ function xrayGenerateQuery() {
   const sk = (document.getElementById('xSkill').value || '').trim() || 'Developer';
   const ct = (document.getElementById('xLoc').value || '').trim() || 'India';
   const ex = (document.getElementById('xExp').value || '').trim();
+  const customCo = (document.getElementById('xCompanies')?.value || '').trim();
   const plat = xrayCurrentPlat;
   let query = '';
+
+  // Parse custom companies into a Google OR-group, e.g. ("TCS" OR "Infosys" OR "Wipro")
+  const customCoGroup = customCo
+    ? '(' + customCo.split(',').map(c => c.trim()).filter(c => c).map(c => `"${c}"`).join(' OR ') + ')'
+    : '';
 
   try {
     if (plat === 'linkedin') {
       query = `site:linkedin.com/in "${sk}" "${ct}"${ex ? ` "${ex} years"` : ''}`;
     } else if (plat === 'gcc') {
-      const qs = getGCCQueries(sk, ct, ex);
-      query = (qs && qs[0] && qs[0].q) || '';
+      if (customCoGroup) {
+        query = `site:linkedin.com/in "${sk}" "${ct}" ${customCoGroup}`;
+      } else {
+        const qs = getGCCQueries(sk, ct, ex);
+        query = (qs && qs[0] && qs[0].q) || '';
+      }
     } else if (plat === 'tenure') {
-      const qs = getTenureQueries(sk, ct, 'product', '');
-      query = (qs && qs[0] && qs[0].q) || '';
+      if (customCoGroup) {
+        // Auto-derive tenure years from Experience (e.g. 4 yrs exp → joined ~2021-2022)
+        const curYear = new Date().getFullYear();
+        let yearGroup = '';
+        if (ex && !isNaN(parseInt(ex))) {
+          const joinYear = curYear - parseInt(ex);
+          yearGroup = `("${joinYear}" OR "${joinYear+1}")`;
+        }
+        query = `site:linkedin.com/in "${sk}" "${ct}" ${customCoGroup}${yearGroup ? ' ' + yearGroup : ''}`;
+      } else {
+        const qs = getTenureQueries(sk, ct, 'product', '');
+        query = (qs && qs[0] && qs[0].q) || '';
+      }
     } else if (plat === 'passive') {
       const tiers = getPassiveQueries(sk, ct, ex);
       query = (tiers && tiers[0] && tiers[0].items && tiers[0].items[0] && tiers[0].items[0].q) || '';
@@ -3029,6 +3068,10 @@ function xrayGenerateQuery() {
       const qs = (out && out.queries) || [];
       const liQ = qs.find(q => !q.isGH);
       query = (liQ && liQ.q) || (qs[0] && qs[0].q) || '';
+    } else if (plat === 'meetup') {
+      // Meetup member profiles are no longer publicly indexed by Google.
+      // Target group/event pages instead — organizer names are often visible there.
+      query = `site:meetup.com "${ct}" "${sk}" group OR event organizer`;
     } else if (XRAY[plat]) {
       const qs = XRAY[plat].gen(sk, ct);
       query = (qs && qs[0] && qs[0].q) || '';
@@ -3036,7 +3079,7 @@ function xrayGenerateQuery() {
   } catch (e) { query = ''; }
 
   if (!query) query = `site:linkedin.com/in "${sk}" "${ct}"`;
-  document.getElementById('xQueryText').textContent = query;
+  document.getElementById('xQueryText').value = query;
 }
 
 // Avatar colour palette
