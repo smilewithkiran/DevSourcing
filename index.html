@@ -6,7 +6,7 @@
 
 <!-- ── PRIMARY SEO ── -->
 <title>DevSourcing.in — 15 Platforms LinkedIn Can't Search | Developer Sourcing India</title>
-<meta name="description" content="Search 15 developer platforms — GitHub, Stack Overflow, Dev.to, GCC Hunt, Passive Finder, Hidden Talent + 9 more. AI title expansion, passive candidates, built for Indian recruiters.">
+<meta name="description" content="19 developer platforms — GitHub, npm Package Finder with real emails, Hugging Face, Competitor Talent Map, GCC Hunt, Passive Finder, Hidden Talent + more. Built for Indian TA teams.dian recruiters.">
 <meta name="keywords" content="developer sourcing india, find developers india, github talent search, stack overflow recruiter, tech talent sourcing, developer search tool, recruiter tools india, hire developers india, devsourcing, talent acquisition india, IT recruitment india">
 <meta name="author" content="DevSourcing.in">
 <meta name="robots" content="index, follow">
@@ -18,7 +18,7 @@
 <meta property="og:url" content="https://devsourcing.in/">
 <meta property="og:site_name" content="DevSourcing.in">
 <meta property="og:title" content="DevSourcing.in — 15 Platforms LinkedIn Can't Search">
-<meta property="og:description" content="GitHub, Stack Overflow, Dev.to, GCC Hunt, Passive Finder, Hidden Talent + 9 more. Find passive candidates, expand job titles with AI. Built for Indian recruiters. ₹499/month.">
+<meta property="og:description" content="19 platforms beyond LinkedIn — npm authors with real emails, Competitor Talent Map, Hugging Face AI engineers, GCC Hunt across 100+ MNCs. ₹499/month flat. Built for Indian recruiters.rs. ₹499/month.">
 <meta property="og:image" content="https://devsourcing.in/og-image-v2.png">
 <meta property="og:image:secure_url" content="https://devsourcing.in/og-image-v2.png">
 <meta property="og:image:type" content="image/png">
@@ -46,7 +46,7 @@
 <meta name="twitter:site" content="@devsourcingin">
 <meta name="twitter:creator" content="@devsourcingin">
 <meta name="twitter:title" content="DevSourcing.in — 15 Platforms LinkedIn Can't Search">
-<meta name="twitter:description" content="15 platforms LinkedIn can't search. GCC Hunt, Passive Finder, AI title expansion. Real developer profiles. Built for Indian recruiters.">
+<meta name="twitter:description" content="19 platforms LinkedIn can't search. Package Maintainer Finder with real emails. GCC Hunt across 100+ MNCs. Competitor Talent Map. AI title expansion. Built for Indian TA teams.">
 <meta name="twitter:image" content="https://devsourcing.in/og-image-v2.png">
 
 <!-- ── GEO / INDIA TARGETING ── -->
@@ -132,6 +132,7 @@
   --g:#10b981;--gs:rgba(16,185,129,.1);--gb:rgba(16,185,129,.3);
   --am:#f59e0b;--ams:rgba(245,158,11,.1);--amb:rgba(245,158,11,.3);
   --pu:#a78bfa;--pus:rgba(167,139,250,.1);--pub:rgba(167,139,250,.3);
+  --pk:#ec4899;--pks:rgba(236,72,153,.1);--pkb:rgba(236,72,153,.3);
   --r:#f87171;--rs:rgba(248,113,113,.1);
   --grd:linear-gradient(135deg,#38bdf8,#818cf8);
 }
@@ -217,9 +218,9 @@ a{text-decoration:none;color:inherit}
 /* PLATFORM STRIP */
 .plat-strip{padding:36px 20px;border-bottom:1px solid var(--b1);background:var(--bg2)}
 .strip-lbl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;text-align:center;margin-bottom:16px}
-.plat-row{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;max-width:960px;margin:0 auto}
-@media(max-width:860px){.plat-row{grid-template-columns:repeat(4,1fr)}}
-@media(max-width:540px){.plat-row{grid-template-columns:repeat(3,1fr);gap:6px}}
+.hp-plat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;max-width:1060px;margin:0 auto}
+@media(max-width:900px){.hp-plat-row{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:600px){.hp-plat-row{grid-template-columns:repeat(3,1fr);gap:6px}}
 .pcard{background:var(--bg3);border:1.5px solid var(--b1);border-radius:12px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:all .18s;position:relative;text-align:center;min-height:76px;justify-content:center}
 .pcard:hover{border-color:var(--a);background:var(--as);transform:translateY(-2px)}
 .pcard.live{border-color:rgba(16,185,129,.3)}
@@ -491,6 +492,7 @@ a{text-decoration:none;color:inherit}
 .pgh{background:rgba(110,64,201,.15);color:#9f7aea;border:1px solid rgba(110,64,201,.2)}
 .pso{background:rgba(244,128,36,.1);color:#f48024;border:1px solid rgba(244,128,36,.2)}
 .pdt{background:rgba(59,73,223,.12);color:#818cf8;border:1px solid rgba(59,73,223,.2)}
+.ppk{background:var(--as);color:var(--a);border:1px solid var(--ab)}
 .pbio{font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:36px}
 .sigs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
 .sig{padding:3px 8px;border-radius:5px;font-size:10px;font-weight:600;background:var(--bg3);color:var(--t3);border:1px solid var(--b1)}
@@ -578,6 +580,7 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 .atb:hover:not(.on){border-color:var(--a);color:var(--a)}
 .admin-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
 @media(max-width:700px){.admin-stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.plat-cov-grid{grid-template-columns:repeat(2,1fr)!important}}
 .astat{background:var(--bg2);border:1px solid var(--b1);border-radius:14px;padding:18px;text-align:center}
 .astat-n{font-family:'Sora',sans-serif;font-size:30px;font-weight:800;color:var(--a)}
 .astat-l{font-size:11px;color:var(--t3);margin-top:3px}
@@ -604,6 +607,45 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 
 @media(max-width:600px){.nav-links{display:none}.hero-stats{flex-direction:column}.hstat{border-right:none;border-bottom:1px solid var(--b1)}}
 
+
+/* ── PLATFORM LIST REDESIGN (compact rows + categories + recommended) ── */
+.rec-banner{background:var(--as);border:1px solid var(--ab);border-radius:14px;padding:14px 16px;margin-bottom:14px}
+.rec-banner-title{font-size:11px;font-weight:700;color:var(--a);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.rec-chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.rec-chip{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--b1);border-radius:10px;padding:8px 10px;cursor:pointer;transition:.15s}
+.rec-chip:hover{border-color:var(--a)}
+.rec-chip-ic{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.rec-chip-nm{font-size:12px;font-weight:700;color:var(--t1)}
+.rec-chip-best{font-size:10px;color:var(--t3)}
+
+.cat-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.cat-pill{padding:6px 14px;border-radius:18px;font-size:12px;font-weight:600;border:1px solid var(--b1);background:var(--bg2);color:var(--t3);cursor:pointer;transition:.15s;white-space:nowrap}
+.cat-pill.on{border-color:var(--a);color:var(--a);background:var(--as)}
+.cat-pill:hover{border-color:var(--a);color:var(--a)}
+
+.plat-list{display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
+.plat-row{display:flex;align-items:center;gap:12px;background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:10px 14px;cursor:pointer;transition:.15s}
+.plat-row:hover{border-color:var(--b2)}
+.plat-row.on{border-color:var(--a);background:var(--as)}
+.plat-row-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.plat-row-info{flex:1;min-width:0}
+.plat-row-nm{font-size:13px;font-weight:700;color:var(--t1);display:flex;align-items:center;gap:6px}
+.plat-row-best{font-size:11px;color:var(--t3);margin-top:1px}
+.plat-row-badge{font-size:9px;font-weight:800;padding:3px 8px;border-radius:6px;flex-shrink:0;text-transform:uppercase;letter-spacing:.3px}
+.badge-live{background:var(--as);color:var(--a)}
+.badge-smart{background:var(--pus);color:var(--pu)}
+.badge-power{background:var(--ams);color:var(--am)}
+.badge-new{background:var(--pks);color:var(--pk)}
+.live-dot-sm{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--g);margin-right:2px}
+
+@media(max-width:680px){
+  .rec-chips{grid-template-columns:repeat(2,1fr)}
+  .cat-pills{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+  .cat-pill{flex-shrink:0}
+  .plat-row{padding:9px 12px}
+  .plat-row-nm{font-size:12px}
+  .plat-row-best{font-size:10px}
+}
 
 /* ── X-RAY PARSER NAV BUTTON — highlighted ── */
 .nl-xray{background:linear-gradient(135deg,var(--as),rgba(168,85,247,.08));color:var(--a)!important;border:1px solid var(--ab);border-radius:8px;font-weight:700!important;position:relative}
@@ -782,7 +824,7 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
   .xqc{flex-wrap:wrap;gap:8px}
   .bxo{width:100%;margin-top:4px}
   /* Homepage platform strip */
-  .plat-row{grid-template-columns:repeat(2,1fr)!important}
+  .hp-plat-row{grid-template-columns:repeat(2,1fr)!important}
   /* Deep profile grid */
   .dp-comm-grid{grid-template-columns:repeat(3,1fr)!important}
   /* Admin tabs */
@@ -853,26 +895,26 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-eyebrow"><span></span>Live APIs Active · 10 Platforms</div>
-    <h1>Go beyond LinkedIn.<br><em>Find developers where</em><br><em>they actually build.</em></h1>
-    <div class="hero-tagline">Finding developers on their native platforms.</div>
-    <p class="hero-sub">GitHub profiles. Stack Overflow answers. Dev.to articles. Real signals from where developers work — not just where they list skills.</p>
+    <div class="hero-eyebrow"><span></span>19 Platforms · Live APIs Active · Built for Indian TA Teams</div>
+    <h1>Your next hire isn't<br><em>on LinkedIn.</em><br>We know where they are.</h1>
+    <div class="hero-tagline">The developer sourcing platform LinkedIn can't replace.</div>
+    <p class="hero-sub">19 platforms. Live GitHub APIs. npm package authors with real emails. Competitor engineering blogs. GCC Hunt across 100+ MNCs. Passive candidates who'll never apply. One tool. One price. No per-seat nonsense.</p>
     <div class="hero-btns">
-      <button class="btn-hero" onclick="showAuth()">Start Free Trial — 1 Day Free →</button>
-      <button class="btn-hero-sec" onclick="scrollToSection('#how')">See How It Works ↓</button>
+      <button class="btn-hero" onclick="showAuth()">Start Free — 1 Day Trial →</button>
+      <button class="btn-hero-sec" onclick="scrollToSection('#platforms')">See All 19 Platforms ↓</button>
     </div>
     <div class="hero-stats">
-      <div class="hstat"><div class="hstat-n">15</div><div class="hstat-l">Platforms</div></div>
+      <div class="hstat"><div class="hstat-n">19</div><div class="hstat-l">Platforms</div></div>
       <div class="hstat"><div class="hstat-n">3</div><div class="hstat-l">Live APIs</div></div>
-      <div class="hstat"><div class="hstat-n">12</div><div class="hstat-l">Smart Search</div></div>
-      <div class="hstat"><div class="hstat-n">Real</div><div class="hstat-l">Profiles</div></div>
+      <div class="hstat"><div class="hstat-n">100+</div><div class="hstat-l">GCC Companies</div></div>
+      <div class="hstat"><div class="hstat-n">₹499</div><div class="hstat-l">Flat / Month</div></div>
     </div>
   </section>
 
   <!-- PLATFORM STRIP -->
   <section class="plat-strip" id="platforms">
-    <div class="strip-lbl">Search across 10 developer platforms</div>
-    <div class="plat-row">
+    <div class="strip-lbl">19 platforms — beyond LinkedIn, beyond job boards</div>
+    <div class="hp-plat-row">
       <!-- Live APIs -->
       <div class="pcard live">
         <div class="live-badge">LIVE</div>
@@ -936,6 +978,36 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
         <div><div class="pcard-nm">Hidden Talent</div><div class="pcard-tp">Title Expansion</div></div>
         <div class="pcard-tip"><strong>Hidden Talent</strong>Java → SDE-II, Platform Eng, Backend Eng + 9 more. 5x bigger pool.</div>
       </div>
+      <div class="pcard" style="border-color:rgba(56,189,248,.4)">
+        <div class="smart-badge" style="background:var(--as);color:var(--a);border:1px solid var(--ab)">LIVE</div>
+        <div class="pcard-ic" style="background:var(--as);border-radius:6px;font-size:16px;display:flex;align-items:center;justify-content:center">📦</div>
+        <div><div class="pcard-nm">Package Finder</div><div class="pcard-tp">npm authors + emails</div></div>
+        <div class="pcard-tip"><strong>Package Maintainer Finder</strong>The only platform that returns real working emails. npm registry — live API, no X-Ray needed.</div>
+      </div>
+      <div class="pcard" style="border-color:rgba(167,139,250,.4)">
+        <div class="smart-badge" style="background:var(--pus);color:var(--pu);border:1px solid var(--pub)">NEW</div>
+        <div class="pcard-ic" style="background:var(--pus);border-radius:6px;font-size:16px;display:flex;align-items:center;justify-content:center">🤗</div>
+        <div><div class="pcard-nm">Hugging Face</div><div class="pcard-tp">AI / NLP / LLM</div></div>
+        <div class="pcard-tip"><strong>Hugging Face</strong>AI/ML engineers who build and publish real models. Cross-refs with GitHub for full profile.</div>
+      </div>
+      <div class="pcard" style="border-color:rgba(245,158,11,.4)">
+        <div class="smart-badge" style="background:var(--ams);color:var(--am);border:1px solid var(--amb)">NEW</div>
+        <div class="pcard-ic" style="background:var(--ams);border-radius:6px;font-size:16px;display:flex;align-items:center;justify-content:center">🗺️</div>
+        <div><div class="pcard-nm">Competitor Map</div><div class="pcard-tp">Swiggy · Razorpay · PhonePe</div></div>
+        <div class="pcard-tip"><strong>Competitor Talent Map</strong>Source engineers from top Indian product companies via their engineering blogs, GitHub orgs, and conference talks.</div>
+      </div>
+      <div class="pcard" style="border-color:rgba(16,185,129,.4)">
+        <div class="smart-badge" style="background:var(--gs);color:var(--g);border:1px solid var(--gb)">NEW</div>
+        <div class="pcard-ic" style="background:var(--gs);border-radius:6px;font-size:16px;display:flex;align-items:center;justify-content:center">🏆</div>
+        <div><div class="pcard-nm">Devfolio</div><div class="pcard-tp">Hackathon builders</div></div>
+        <div class="pcard-tip"><strong>Devfolio</strong>ETHIndia, HackIndia builders — project pages link directly to GitHub and LinkedIn profiles.</div>
+      </div>
+      <div class="pcard" style="border-color:rgba(16,185,129,.4)">
+        <div class="smart-badge" style="background:var(--gs);color:var(--g);border:1px solid var(--gb)">NEW</div>
+        <div class="pcard-ic" style="background:var(--gs);border-radius:6px;font-size:16px;display:flex;align-items:center;justify-content:center">🧑‍💻</div>
+        <div><div class="pcard-nm">CodeChef</div><div class="pcard-tp">Competitive coders</div></div>
+        <div class="pcard-tip"><strong>CodeChef</strong>5★/6★ rated competitive programmers. Strong DSA signal — ideal for product companies and algo-heavy roles.</div>
+      </div>
     </div>
   </section>
 
@@ -956,12 +1028,13 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
         <div class="wnl-item"><div class="wnl-dot bad"></div><span>Expensive per-seat recruiter pricing</span></div>
       </div>
       <div class="wnl-card good">
-        <div class="wnl-lbl" style="color:#38bdf8">DevSourcing shows you</div>
-        <div class="wnl-item"><div class="wnl-dot good"></div><span>GitHub repos with real commit history</span></div>
-        <div class="wnl-item"><div class="wnl-dot good"></div><span>Stack Overflow rep built over years</span></div>
-        <div class="wnl-item"><div class="wnl-dot good"></div><span>Dev.to articles proving deep knowledge</span></div>
-        <div class="wnl-item"><div class="wnl-dot good"></div><span>Kaggle rankings for ML/AI talent</span></div>
-        <div class="wnl-item"><div class="wnl-dot good"></div><span>₹499/month — flat, no per-seat cost</span></div>
+        <div class="wnl-lbl" style="color:#38bdf8">DevSourcing gives you</div>
+        <div class="wnl-item"><div class="wnl-dot good"></div><span>GitHub repos · real commits · real skill proof</span></div>
+        <div class="wnl-item"><div class="wnl-dot good"></div><span>npm package authors with actual email addresses</span></div>
+        <div class="wnl-item"><div class="wnl-dot good"></div><span>Passive candidates who haven't opened LinkedIn in months</span></div>
+        <div class="wnl-item"><div class="wnl-dot good"></div><span>Engineers at Swiggy, Razorpay, PhonePe via their own blogs</span></div>
+        <div class="wnl-item"><div class="wnl-dot good"></div><span>Kaggle · Hugging Face · CodeChef · Devfolio talent no one else finds</span></div>
+        <div class="wnl-item"><div class="wnl-dot good"></div><span>₹499/month — flat rate, unlimited searches, no per-seat pricing</span></div>
       </div>
     </div>
   </section>
@@ -1040,7 +1113,11 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
       <div class="pc-price">₹499</div>
       <div class="pc-period">per 30 days</div>
       <ul class="pc-features">
-        <li class="pc-feat"><span class="pc-feat-i">✓</span>All 15 platforms — GitHub, SO, Dev.to + 12 Smart Search</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>All 19 platforms — GitHub, SO, Dev.to + 16 Smart Search & Power</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>📦 Package Maintainer Finder — real npm authors + emails</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>🤗 Hugging Face — AI/ML/NLP engineers via GitHub crossref</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>🗺️ Competitor Talent Map — Swiggy, Razorpay, PhonePe & more</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>🏆 Devfolio + 🧑‍💻 CodeChef — hackathon builders & competitive coders</li>
         <li class="pc-feat"><span class="pc-feat-i">✓</span>🏢 GCC Hunt — 100+ companies (Walmart, JPMorgan, Google...)</li>
         <li class="pc-feat"><span class="pc-feat-i">✓</span>⏳ Tenure Targeting — 2-6yr passive candidates</li>
         <li class="pc-feat"><span class="pc-feat-i">✓</span>🕵️ Passive Finder — dormant profiles, highest response rate</li>
@@ -1152,115 +1229,22 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 <div class="page-app" id="pageApp">
   <div class="app-wrap">
     <div class="sec-label">Select a platform to search</div>
-    <!-- Platform section labels -->
-    <div style="font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:2px">Live APIs</div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px">
-      <div class="pc" data-p="github" onclick="selPlat(this)">
-        <div class="pc-ic" style="background:#f0f0f0"><svg width="18" height="18" viewBox="0 0 24 24" fill="#1a1a1a"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.44 9.8 8.21 11.39.6.11.82-.26.82-.57v-2.24c-3.34.73-4.04-1.41-4.04-1.41-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.34-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.11-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.3-1.55 3.3-1.23 3.3-1.23.65 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.69.82.57A12.02 12.02 0 0 0 24 12C24 5.37 18.63 0 12 0z"/></svg></div>
-        <div class="pc-nm"><span class="live-dot"></span>GitHub</div>
-        <div class="pc-tp">Live API</div>
-        <div class="pc-tip"><strong>GitHub</strong>Real repos, commits, followers. Strongest skill proof signal.</div>
-      </div>
-      <div class="pc" data-p="stackoverflow" onclick="selPlat(this)">
-        <div class="pc-ic" style="background:#fff4ed"><svg width="18" height="18" viewBox="0 0 32 32" fill="#f48024"><path d="M22 28v-5h2v7H4v-7h2v5zm-13-6l.4-2 10 2-.4 2zm1-5l.7-1.9 9.3 3.9-.7 1.9zm2-5l1.2-1.7 8.3 5.5-1.2 1.7zm4-5l1.6-1.4 6.5 7-1.6 1.4zm5-4V1h2v4z"/></svg></div>
-        <div class="pc-nm"><span class="live-dot"></span>Stack Overflow</div>
-        <div class="pc-tp">Live API</div>
-        <div class="pc-tip"><strong>Stack Overflow</strong>Reputation built over years. Impossible to fake.</div>
-      </div>
-      <div class="pc" data-p="devto" onclick="selPlat(this)">
-        <div class="pc-ic" style="background:#eef0ff"><svg width="18" height="18" viewBox="0 0 24 24" fill="#3b49df"><path d="M7.42 10.05c-.18-.16-.46-.23-.84-.23H6l.02 2.44.04 2.45.56-.02c.41 0 .63-.07.83-.26.24-.24.26-.36.26-2.2 0-1.91-.02-1.96-.29-2.18zM0 4.94v14.12h24V4.94H0zM8.56 15.3c-.44.58-1.06.77-2.53.77H4.71V8.53h1.4c1.67 0 2.16.18 2.6.9.27.43.29.6.32 2.57.05 2.23-.02 2.73-.47 3.3zm5.09-5.47h-2.47v1.77h1.52v1.28l-.72.04-.75.03v1.77l1.22.03 1.2.04v1.28h-1.6c-1.53 0-1.6-.01-1.87-.3l-.3-.28v-3.16c0-3.02.01-3.18.25-3.48.23-.31.25-.31 1.88-.31h1.64v1.29zm4.68 5.45c-.17.43-.64.79-1 .79-.18 0-.45-.15-.67-.39-.32-.32-.45-.63-.82-2.08l-.9-3.39-.45-1.67h.76c.4 0 .75.02.75.05 0 .06 1.16 4.54 1.26 4.83.04.15.32-.7.73-2.3l.66-2.52.74-.04c.4-.02.73 0 .73.04 0 .14-1.67 6.38-1.8 6.68z"/></svg></div>
-        <div class="pc-nm"><span class="live-dot"></span>Dev.to</div>
-        <div class="pc-tp">Live API</div>
-        <div class="pc-tip"><strong>Dev.to</strong>Articles + reactions = domain expertise proof.</div>
-      </div>
+
+    <div class="rec-banner" id="recBanner" style="display:none">
+      <div class="rec-banner-title" id="recTitle">Recommended for "..."</div>
+      <div class="rec-chips" id="recChips"></div>
     </div>
-    <div style="font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:2px">Smart Search</div>
-    <div class="plt-grid">
-      <div class="pc" data-p="reddit" onclick="selPlat(this)">
-        <div class="sm-pill">Smart</div>
-        <div class="pc-ic" style="background:#fff0ee"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ff4500"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg></div>
-        <div class="pc-nm">Reddit</div>
-        <div class="pc-tp">Smart Search</div>
-        <div class="pc-tip"><strong>Reddit</strong>r/python, r/reactjs top contributors. Community-active devs hard to find elsewhere.</div>
-      </div>
-      <div class="pc" data-p="kaggle" onclick="selPlat(this)">
-        <div class="sm-pill">Smart</div>
-        <div class="pc-ic" style="background:#e8f9ff"><svg width="18" height="18" viewBox="0 0 24 24" fill="#20beff"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 2c5.514 0 10 4.486 10 10s-4.486 10-10 10S2 17.514 2 12 6.486 2 12 2zm0 3a7 7 0 1 0 0 14A7 7 0 0 0 12 5zm0 2a5 5 0 1 1 0 10A5 5 0 0 1 12 7zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg></div>
-        <div class="pc-nm">Kaggle</div>
-        <div class="pc-tp">Smart Search</div>
-        <div class="pc-tip"><strong>Kaggle</strong>Data Scientists, ML Engineers, AI researchers. Competition ranking = verified skill.</div>
-      </div>
-      <div class="pc" data-p="leetcode" onclick="selPlat(this)">
-        <div class="sm-pill">Smart</div>
-        <div class="pc-ic" style="background:#fffbee"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ffa116"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/></svg></div>
-        <div class="pc-nm">LeetCode</div>
-        <div class="pc-tp">Smart Search</div>
-        <div class="pc-tip"><strong>LeetCode</strong>Strong DSA-focused engineers. 500+ solved = top-tier. Great for product companies.</div>
-      </div>
-      <div class="pc" data-p="medium" onclick="selPlat(this)">
-        <div class="sm-pill">Smart</div>
-        <div class="pc-ic" style="background:#f5f5f5"><svg width="18" height="18" viewBox="0 0 24 24" fill="#555"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg></div>
-        <div class="pc-nm">Medium</div>
-        <div class="pc-tp">Smart Search</div>
-        <div class="pc-tip"><strong>Medium</strong>Technical writers, thought leaders. Published articles = domain expertise proof.</div>
-      </div>
-      <div class="pc" data-p="meetup" onclick="selPlat(this)">
-        <div class="sm-pill">Smart</div>
-        <div class="pc-ic" style="background:#fff0f2"><svg width="18" height="18" viewBox="0 0 24 24" fill="#f64060"><path d="M19.24 12.59c.08-.29.12-.6.12-.91 0-1.83-1.48-3.31-3.31-3.31-.34 0-.67.05-.98.14C14.44 7.38 13.1 6.5 11.6 6.5c-2.14 0-3.87 1.73-3.87 3.87v.28c-1.48.28-2.6 1.59-2.6 3.15 0 1.77 1.44 3.21 3.21 3.21h10.11c1.47 0 2.66-1.19 2.66-2.66 0-1.08-.65-2.01-1.87-1.76z"/></svg></div>
-        <div class="pc-nm">Meetup</div>
-        <div class="pc-tp">Smart Search</div>
-        <div class="pc-tip"><strong>Meetup</strong>Community organisers and speakers. Active in tech events = well-networked senior devs.</div>
-      </div>
-      <div class="pc" data-p="gdg" onclick="selPlat(this)">
-        <div class="sm-pill">Smart</div>
-        <div class="pc-ic" style="background:#fff0ee"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#ea4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285f4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#fbbc05" d="M10.53 28.59c-.48-1.37-.76-2.83-.76-4.59s.27-3.22.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34a853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.91 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></div>
-        <div class="pc-nm">GDG</div>
-        <div class="pc-tp">Smart Search</div>
-        <div class="pc-tip"><strong>GDG / DevFest</strong>Google ecosystem devs (Android, Flutter, Firebase). Speakers = deep expertise.</div>
-      </div>
-      <div class="pc" data-p="aws" onclick="selPlat(this)">
-        <div class="sm-pill">Smart</div>
-        <div class="pc-ic" style="background:#fff8ee"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ff9900"><path d="M6.763 10.036c0 .296.032.535.088.71.064.176.144.368.256.576.04.063.056.127.056.183 0 .08-.048.16-.152.24l-.503.335a.383.383 0 0 1-.208.072c-.08 0-.16-.04-.239-.112a2.47 2.47 0 0 1-.287-.375 6.18 6.18 0 0 1-.248-.471c-.622.734-1.405 1.101-2.347 1.101-.67 0-1.205-.191-1.596-.574-.391-.384-.59-.894-.59-1.533 0-.678.239-1.23.726-1.644.487-.415 1.133-.623 1.955-.623.272 0 .551.024.846.064.296.04.6.104.918.176v-.583c0-.607-.127-1.030-.375-1.277-.255-.248-.686-.367-1.3-.367-.28 0-.568.031-.863.103-.295.072-.583.16-.862.272a2.287 2.287 0 0 1-.28.104.488.488 0 0 1-.127.023c-.112 0-.168-.08-.168-.247v-.391c0-.128.016-.224.056-.28a.597.597 0 0 1 .224-.167c.279-.144.614-.264 1.005-.36a4.84 4.84 0 0 1 1.246-.151c.95 0 1.644.216 2.091.647.439.43.662 1.085.662 1.963v2.586zm3.24 1.214c.263 0 .534-.048.822-.144.287-.096.543-.271.758-.51.128-.152.224-.32.272-.512.047-.191.08-.423.08-.694v-.335a6.66 6.66 0 0 0-.735-.136 6.02 6.02 0 0 0-.75-.048c-.535 0-.926.104-1.19.32-.262.215-.39.518-.39.917 0 .375.095.655.295.846.191.2.47.296.838.296zm-3.24-1.214H6.5v2.586c0 .878-.222 1.532-.662 1.963-.447.431-1.14.647-2.091.647a4.84 4.84 0 0 1-1.246-.151c-.391-.096-.726-.216-1.005-.36a.597.597 0 0 1-.224-.167c-.04-.056-.056-.152-.056-.28v-.391c0-.167.056-.247.168-.247a.488.488 0 0 1 .127.023 2.287 2.287 0 0 1 .28.104c.279.112.567.2.862.272.295.072.583.103.863.103.614 0 1.045-.119 1.3-.367.248-.247.375-.67.375-1.277v-.583a6.18 6.18 0 0 1-.918.176c-.295.04-.574.064-.846.064-.822 0-1.468-.208-1.955-.623-.487-.414-.726-.966-.726-1.644 0-.639.199-1.149.59-1.533.391-.383.926-.574 1.596-.574.942 0 1.725.367 2.347 1.101a6.18 6.18 0 0 1 .248-.471.383.383 0 0 1 .208-.072z"/></svg></div>
-        <div class="pc-nm">AWS UG</div>
-        <div class="pc-tp">Smart Search</div>
-        <div class="pc-tip"><strong>AWS User Group</strong>Cloud architects, DevOps engineers. UG leaders = community-recognized AWS experts.</div>
-      </div>
+
+    <div class="cat-pills">
+      <button class="cat-pill on" onclick="setCat('all',this)">All platforms</button>
+      <button class="cat-pill" onclick="setCat('live',this)">Live APIs</button>
+      <button class="cat-pill" onclick="setCat('data',this)">Data & AI</button>
+      <button class="cat-pill" onclick="setCat('oss',this)">Code & OSS</button>
+      <button class="cat-pill" onclick="setCat('community',this)">Community</button>
+      <button class="cat-pill" onclick="setCat('power',this)">Power features</button>
     </div>
-    <div style="font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;margin-top:16px;padding-left:2px">Power Features</div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px">
-      <!-- GCC Hunt -->
-      <div class="pc" data-p="gcc" onclick="selPlat(this)" style="border-color:rgba(245,158,11,.4)">
-        <div class="sm-pill" style="background:rgba(245,158,11,.12);color:#b45309;border-color:rgba(245,158,11,.3)">GCC</div>
-        <div class="pc-ic" style="background:#fffbeb"><svg width="18" height="18" viewBox="0 0 24 24" fill="#b45309"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22" stroke="#b45309" stroke-width="2" fill="none"/></svg></div>
-        <div class="pc-nm">GCC Hunt</div>
-        <div class="pc-tp">100+ companies</div>
-        <div class="pc-tip"><strong>GCC Hunt</strong>100+ Global Capability Centres. LinkedIn X-Ray + GitHub combined.</div>
-      </div>
-      <!-- Tenure Target -->
-      <div class="pc" data-p="tenure" onclick="selPlat(this)" style="border-color:rgba(99,102,241,.4)">
-        <div class="sm-pill" style="background:rgba(99,102,241,.1);color:#4338ca;border-color:rgba(99,102,241,.3)">Tenure</div>
-        <div class="pc-ic" style="background:#eef2ff"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4338ca" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg></div>
-        <div class="pc-nm">Tenure Target</div>
-        <div class="pc-tp">Passive candidates</div>
-        <div class="pc-tip"><strong>Tenure Targeting</strong>2-3yr startups, 3-5yr product, 4-6yr GCCs. 70% higher response rate.</div>
-      </div>
-      <!-- Passive Finder -->
-      <div class="pc" data-p="passive" onclick="selPlat(this)" style="border-color:rgba(6,182,212,.4)">
-        <div class="sm-pill" style="background:rgba(6,182,212,.1);color:#0369a1;border-color:rgba(6,182,212,.3)">Passive</div>
-        <div class="pc-ic" style="background:#ecfeff"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0369a1" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg></div>
-        <div class="pc-nm">Passive Finder</div>
-        <div class="pc-tp">Dormant profiles</div>
-        <div class="pc-tip"><strong>Passive Finder</strong>Inactive profiles — no Open to Work, long tenure. Highest response rates.</div>
-      </div>
-      <!-- Hidden Talent -->
-      <div class="pc" data-p="hidden" onclick="selPlat(this)" style="border-color:rgba(168,85,247,.4)">
-        <div class="sm-pill" style="background:rgba(168,85,247,.1);color:#7e22ce;border-color:rgba(168,85,247,.3)">AI</div>
-        <div class="pc-ic" style="background:#faf5ff"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7e22ce" stroke-width="2"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></div>
-        <div class="pc-nm">Hidden Talent</div>
-        <div class="pc-tp">Title expansion</div>
-        <div class="pc-tip"><strong>Hidden Talent</strong>AI title expansion. 5x bigger talent pool than standard search.</div>
-      </div>
-    </div>
+
+    <div class="plat-list" id="platListWrap"></div>
 
     <!-- ── SCORE CARD TOOL ── -->
     <div style="margin-bottom:20px">
@@ -1371,10 +1355,11 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
         <span>No public API for this platform. We generate <strong style="color:var(--pu)">precision search queries</strong> that surface real profiles indexed on the web. Click <strong style="color:var(--pu)">Open Search</strong> to run instantly.</span>
       </div>
       <div class="srow">
-        <div><div class="fl">Skill / Language / Role</div><input class="fi" id="iSk" type="text" placeholder="e.g. React, Python, DevOps, Java" onkeydown="if(event.key==='Enter')runSearch()"></div>
+        <div><div class="fl">Skill / Language / Role</div><input class="fi" id="iSk" type="text" placeholder="e.g. React, Python, DevOps, Java" onkeydown="if(event.key==='Enter')runSearch()" oninput="renderRecommended()"></div>
         <div><div class="fl">City (India)</div><input class="fi" id="iCt" type="text" placeholder="e.g. Bengaluru, Hyderabad, Pune" onkeydown="if(event.key==='Enter')runSearch()"></div>
         <div id="tenureCoWrap" style="display:none"><div class="fl">Target Company (optional)</div><input class="fi" id="iTenureCo" type="text" placeholder="e.g. Infosys, TCS, Wipro, JPMorgan"></div>
         <div id="gccCoWrap" style="display:none"><div class="fl">Specific Company (optional)</div><input class="fi" id="iGccCo" type="text" placeholder="e.g. JPMorgan, Walmart, Google GCC"></div>
+        <div id="competitorCoWrap" style="display:none"><div class="fl">Target Company (optional)</div><input class="fi" id="iCompetitorCo" type="text" placeholder="e.g. Swiggy, Razorpay, PhonePe — leave blank for top 6"></div>
         <div><div class="fl">Experience</div>
           <select class="fi" id="iEx">
             <option value="">Any level</option>
@@ -1590,21 +1575,31 @@ Just paste everything and click Parse below."></textarea>
       <!-- Platform stats -->
       <div style="background:var(--bg3);border:1px solid var(--b1);border-radius:14px;padding:16px;margin-bottom:14px">
         <div style="font-size:11px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">🗂 Platform Coverage</div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+        <div class="plat-cov-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px">
           <div style="background:var(--bg2);border:1px solid var(--gb);border-radius:8px;padding:10px;text-align:center">
             <div style="font-size:16px;font-weight:800;color:var(--g)">3</div>
             <div style="font-size:10px;color:var(--t3)">Live APIs</div>
             <div style="font-size:9px;color:var(--t3);margin-top:2px">GitHub · SO · Dev.to</div>
           </div>
+          <div style="background:var(--bg2);border:1px solid var(--pub);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-size:16px;font-weight:800;color:var(--pu)">2</div>
+            <div style="font-size:10px;color:var(--t3)">Data & AI</div>
+            <div style="font-size:9px;color:var(--t3);margin-top:2px">Kaggle · Hugging Face</div>
+          </div>
+          <div style="background:var(--bg2);border:1px solid var(--pkb);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-size:16px;font-weight:800;color:var(--pk)">4</div>
+            <div style="font-size:10px;color:var(--t3)">Code & OSS</div>
+            <div style="font-size:9px;color:var(--t3);margin-top:2px">LeetCode · CodeChef · npm · Devfolio</div>
+          </div>
           <div style="background:var(--bg2);border:1px solid var(--ab);border-radius:8px;padding:10px;text-align:center">
-            <div style="font-size:16px;font-weight:800;color:var(--a)">12</div>
-            <div style="font-size:10px;color:var(--t3)">Smart Search</div>
-            <div style="font-size:9px;color:var(--t3);margin-top:2px">+Passive+HiddenTalent+more</div>
+            <div style="font-size:16px;font-weight:800;color:var(--a)">5</div>
+            <div style="font-size:10px;color:var(--t3)">Community</div>
+            <div style="font-size:9px;color:var(--t3);margin-top:2px">Reddit · Medium · Meetup · GDG · AWS</div>
           </div>
           <div style="background:var(--bg2);border:1px solid var(--amb);border-radius:8px;padding:10px;text-align:center">
-            <div style="font-size:16px;font-weight:800;color:var(--am)">4</div>
+            <div style="font-size:16px;font-weight:800;color:var(--am)">5</div>
             <div style="font-size:10px;color:var(--t3)">Power Features</div>
-            <div style="font-size:9px;color:var(--t3);margin-top:2px">GCC · Tenure · Passive · Hidden</div>
+            <div style="font-size:9px;color:var(--t3);margin-top:2px">GCC · Tenure · Passive · Hidden · Competitor</div>
           </div>
         </div>
       </div>
@@ -1725,7 +1720,77 @@ Just paste everything and click Parse below."></textarea>
           </div>
         </div>
 
-        <!-- GCC Hunt info -->
+        <!-- Package Maintainer Finder info -->
+        <div style="background:var(--bg3);border:1px solid var(--ab);border-radius:14px;padding:18px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <span style="font-size:24px">📦</span>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--a)">Package Maintainer Finder <span style="font-size:9px;background:linear-gradient(135deg,#a855f7,#ec4899);color:#fff;padding:2px 6px;border-radius:6px;margin-left:6px;font-weight:800">NEW</span></div>
+              <div style="font-size:11px;color:var(--t3)">Real npm package authors & maintainers — Live API, real emails</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.65;margin-bottom:10px">
+            Calls npm's public registry search API live (no X-Ray needed). For each matched package, extracts the author/maintainer name, email (when publicly listed), repository link, and a popularity score from download stats. The only platform that can return a real, working email address directly.
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span style="padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;background:var(--as);border:1px solid var(--ab);color:var(--a)">Live API — registry.npmjs.org</span>
+            <span style="padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;background:var(--gs);border:1px solid var(--gb);color:var(--g)">Real emails (when public)</span>
+            <span style="padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;background:var(--bg2);border:1px solid var(--b1);color:var(--t3)">Best for: Backend / Python / JS</span>
+          </div>
+        </div>
+
+        <!-- Hugging Face info -->
+        <div style="background:var(--bg3);border:1px solid var(--pub);border-radius:14px;padding:18px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <span style="font-size:24px">🤗</span>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--pu)">Hugging Face <span style="font-size:9px;background:linear-gradient(135deg,#a855f7,#ec4899);color:#fff;padding:2px 6px;border-radius:6px;margin-left:6px;font-weight:800">NEW</span></div>
+              <div style="font-size:11px;color:var(--t3)">AI/ML/NLP/LLM engineers — Smart Search + GitHub crossref</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.65;margin-bottom:10px">
+            Generates X-Ray queries targeting Hugging Face profile, model, and dataset pages for India-based AI/ML engineers. Hugging Face usernames frequently match GitHub usernames — cross-reference the username found here with the GitHub Live API for a full profile.
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span style="padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;background:var(--pus);border:1px solid var(--pub);color:var(--pu)">Best for: AI / NLP / LLM</span>
+          </div>
+        </div>
+
+        <!-- Competitor Talent Map info -->
+        <div style="background:var(--bg3);border:1px solid var(--amb);border-radius:14px;padding:18px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <span style="font-size:24px">🗺️</span>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--am)">Competitor Talent Map <span style="font-size:9px;background:linear-gradient(135deg,#a855f7,#ec4899);color:#fff;padding:2px 6px;border-radius:6px;margin-left:6px;font-weight:800">NEW</span></div>
+              <div style="font-size:11px;color:var(--t3)">Source engineers at top Indian product companies</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.65;margin-bottom:10px">
+            Instead of sourcing individuals directly, identify companies using the target stack — then find their engineers via engineering blogs, GitHub org contributions, LinkedIn, and conference talks. Covers 20 curated Indian product companies; user can also type a specific company.
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            ${['Swiggy','Razorpay','PhonePe','Meesho','Flipkart','Zomato','CRED','Paytm','Ola','Zerodha'].map(c=>`<span style="padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;background:var(--bg2);border:1px solid var(--b1);color:var(--t3)">${c}</span>`).join('')}
+            <span style="padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;background:var(--ams);border:1px solid var(--amb);color:var(--am)">+10 more</span>
+          </div>
+        </div>
+
+        <!-- Devfolio + CodeChef info -->
+        <div style="background:var(--bg3);border:1px solid var(--gb);border-radius:14px;padding:18px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <span style="font-size:24px">🏆</span>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--g)">Devfolio + CodeChef <span style="font-size:9px;background:linear-gradient(135deg,#a855f7,#ec4899);color:#fff;padding:2px 6px;border-radius:6px;margin-left:6px;font-weight:800">NEW</span></div>
+              <div style="font-size:11px;color:var(--t3)">Hackathon builders & competitive programmers</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.65;margin-bottom:10px">
+            Devfolio targets project pages from ETHIndia/HackIndia and other hackathons, which often link directly to a builder's GitHub and LinkedIn — great for early-career full-stack talent. CodeChef targets indexed user profiles filtered by city and skill, with crossref to LinkedIn and GitHub for 5★/6★ rated coders — strong DSA/algorithm signal.
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span style="padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;background:var(--gs);border:1px solid var(--gb);color:var(--g)">Best for: Hackathon builders / Full stack</span>
+            <span style="padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;background:var(--gs);border:1px solid var(--gb);color:var(--g)">Best for: Competitive programmers</span>
+          </div>
+        </div>
         <div style="background:var(--bg3);border:1px solid var(--amb);border-radius:14px;padding:18px">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
             <span style="font-size:24px">🏢</span>
@@ -1866,7 +1931,9 @@ Just paste everything and click Parse below."></textarea>
         <div class="pc-price" style="font-family:'Sora',sans-serif;font-size:38px;font-weight:800;color:var(--t1);margin-bottom:3px">₹499</div>
         <div style="font-size:12px;color:var(--t3);margin-bottom:14px">per 30 days</div>
         <ul class="pc-features">
-          <li class="pc-feat"><span class="pc-feat-i">✓</span>All 15 platforms incl. GCC Hunt + Tenure + Passive + Hidden Talent</li>
+          <li class="pc-feat"><span class="pc-feat-i">✓</span>All 19 platforms incl. Package Maintainer Finder, Hugging Face, Competitor Talent Map</li>
+          <li class="pc-feat"><span class="pc-feat-i">✓</span>GCC Hunt + Tenure + Passive + Hidden Talent</li>
+          <li class="pc-feat"><span class="pc-feat-i">✓</span>📋 X-Ray Results Parser — paste search results → Excel</li>
           <li class="pc-feat"><span class="pc-feat-i">✓</span>Unlimited searches per day</li>
           <li class="pc-feat"><span class="pc-feat-i">✓</span>Export shortlist to CSV</li>
           <li class="pc-feat"><span class="pc-feat-i">✓</span>AI signal score on every profile</li>
@@ -1938,7 +2005,7 @@ function goHome(){
   updateNavLinks(false);
 }
 function showAuth(){showPage('pageAuth');updateNavLinks(false);}
-function showApp(){showPage('pageApp');updateNavLinks(true);}
+function showApp(){showPage('pageApp');updateNavLinks(true);renderPlatformList();renderRecommended();}
 function showXrayPage(){
   // X-Ray Results Parser is a Pro-only feature — locked for Trial / Expired users
   if(S.isAdmin || S.plan==='pro'){
@@ -1988,7 +2055,11 @@ const PM={
   devto:{n:'Dev.to',ic:'✍️',d:'Technical authors via Dev.to API',xr:false},
   reddit:{n:'Reddit',ic:'🟠',d:'Community-active devs via Smart Search',xr:true},
   kaggle:{n:'Kaggle',ic:'🏆',d:'Data science experts — Smart Search',xr:true},
+  huggingface:{n:'Hugging Face',ic:'🤗',d:'AI/ML model & dataset authors — Smart Search + GitHub crossref',xr:true},
   leetcode:{n:'LeetCode',ic:'💻',d:'DSA-focused engineers — Smart Search',xr:true},
+  codechef:{n:'CodeChef',ic:'🧑‍💻',d:'Competitive programmers — Smart Search',xr:true},
+  pkgfinder:{n:'Package Maintainer Finder',ic:'📦',d:'Real npm package authors & maintainers, with emails',xr:false},
+  devfolio:{n:'Devfolio',ic:'🏆',d:'Hackathon project builders — Smart Search',xr:true},
   medium:{n:'Medium',ic:'📰',d:'Technical writers — Smart Search',xr:true},
   meetup:{n:'Meetup',ic:'🤝',d:'Community members — Smart Search',xr:true},
   gdg:{n:'GDG',ic:'🎤',d:'GDG speakers — Smart Search',xr:true},
@@ -1996,8 +2067,35 @@ const PM={
   gcc:{n:'GCC Hunt',ic:'🏢',d:'100+ GCC companies — LinkedIn X-Ray + GitHub',xr:false},
   tenure:{n:'Tenure Target',ic:'⏳',d:'Passive candidates by company tenure',xr:false},
   passive:{n:'Passive Finder',ic:'🕵️',d:'Inactive LinkedIn profiles — highest response rate',xr:false},
-  hidden:{n:'Hidden Talent',ic:'🔮',d:'AI title expansion — 5x bigger talent pool',xr:false}
+  hidden:{n:'Hidden Talent',ic:'🔮',d:'AI title expansion — 5x bigger talent pool',xr:false},
+  competitor:{n:'Competitor Talent Map',ic:'🗺️',d:'Engineers at top Indian product companies — blogs + GitHub + LinkedIn',xr:true}
 };
+
+// ── PLATFORM METADATA — categories, "best for" tags, badges, skill-match keywords ──
+const PLAT_META={
+  github:{cat:'live',best:'All Skills',badge:'live',skills:['all']},
+  stackoverflow:{cat:'live',best:'All Skills, Senior',badge:'live',skills:['all']},
+  devto:{cat:'live',best:'Frontend / Backend Writers',badge:'live',skills:['react','javascript','frontend','backend','node','vue','angular']},
+  kaggle:{cat:'data',best:'ML / AI / Data',badge:'smart',skills:['python','machine learning','ml','ai','data','data science','data engineer','tensorflow','pytorch']},
+  huggingface:{cat:'data',best:'AI / NLP / LLM',badge:'new',skills:['python','ai','ml','nlp','llm','machine learning','deep learning','transformers']},
+  leetcode:{cat:'oss',best:'DSA-Strong / Backend',badge:'smart',skills:['java','python','c++','dsa','backend','algorithms']},
+  codechef:{cat:'oss',best:'Competitive Programmers',badge:'new',skills:['java','python','c++','dsa','algorithms','competitive programming']},
+  pkgfinder:{cat:'oss',best:'OSS Authors — Backend / Python / JS',badge:'new',skills:['javascript','node','python','react','npm','typescript','library']},
+  devfolio:{cat:'oss',best:'Hackathon Builders / Full Stack',badge:'new',skills:['react','node','javascript','python','full stack','hackathon']},
+  reddit:{cat:'community',best:'Community-Active Devs',badge:'smart',skills:['all']},
+  medium:{cat:'community',best:'Senior / Lead Engineers',badge:'smart',skills:['all']},
+  meetup:{cat:'community',best:'Community Leaders',badge:'smart',skills:['all']},
+  gdg:{cat:'community',best:'Cloud / Android / Web',badge:'smart',skills:['android','java','kotlin','flutter','cloud','web','firebase']},
+  aws:{cat:'community',best:'Cloud / DevOps / SA',badge:'smart',skills:['aws','devops','cloud','solutions architect','kubernetes','docker']},
+  gcc:{cat:'power',best:'Enterprise / MNC, Any Skill',badge:'power',skills:['all']},
+  tenure:{cat:'power',best:'Passive, Any Skill',badge:'power',skills:['all']},
+  passive:{cat:'power',best:'Passive, Any Skill',badge:'power',skills:['all']},
+  hidden:{cat:'power',best:'Any Skill (Expanded Titles)',badge:'power',skills:['all']},
+  competitor:{cat:'power',best:'Any Skill, Company-Specific',badge:'new',skills:['all']}
+};
+const CAT_LABELS={all:'All platforms',live:'Live APIs',data:'Data & AI',oss:'Code & OSS',community:'Community',power:'Power features'};
+const BADGE_LABELS={live:'Live',smart:'Smart',power:'Power',new:'New'};
+
 
 
 // ── GCC COMPANIES LIST (100+) ────────────────────────
@@ -2134,11 +2232,11 @@ const XRAY={
     {l:'Medium + GitHub combo',q:`"${sk}" "${cy}" site:medium.com OR site:github.com developer`},
   ]},
   meetup:{gen:(sk,cy)=>[
-    {l:'Meetup group members — skill + city',q:`site:meetup.com "${sk}" "${cy}" members`},
+    {l:'Meetup group/event pages — skill + city',q:`site:meetup.com "${cy}" "${sk}" group OR event organizer`},
     {l:'Meetup organiser → LinkedIn',q:`site:linkedin.com/in "${sk}" "${cy}" Meetup organizer`},
-    {l:'Meetup speaker 2024',q:`site:linkedin.com/in "${sk}" "${cy}" Meetup speaker 2024`},
+    {l:'Meetup speaker → LinkedIn',q:`site:linkedin.com/in "${sk}" "${cy}" Meetup speaker`},
     {l:'Meetup India tech group',q:`site:meetup.com/cities/in "${cy}" "${sk}" group`},
-    {l:'Meetup event speakers 2024',q:`site:meetup.com "${cy}" "${sk}" event 2024`},
+    {l:'Meetup event speakers 2025',q:`site:meetup.com "${cy}" "${sk}" event 2025`},
   ]},
   gdg:{gen:(sk,cy)=>[
     {l:'GDG speaker by city + skill',q:`site:gdg.community "${cy}" speaker "${sk}"`},
@@ -2152,8 +2250,29 @@ const XRAY={
     {l:'AWS Community Hero India',q:`site:linkedin.com/in "AWS Community Hero" India "${sk}"`},
     {l:'AWS Certified pro in city',q:`site:linkedin.com/in "AWS Certified" "${sk}" "${cy}"`},
     {l:'AWS re:Invent speaker India',q:`site:linkedin.com/in AWS speaker India "${sk}" "${cy}"`},
-    {l:'AWS Meetup city group',q:`site:meetup.com "AWS User Group ${cy}" members`},
-  ]}
+    {l:'AWS Meetup group page',q:`site:meetup.com "AWS User Group" "${cy}" group`},
+  ]},
+  huggingface:{gen:(sk,cy)=>[
+    {l:'Hugging Face profile - India + skill',q:`site:huggingface.co "${cy}" "${sk}"`},
+    {l:'HF model card author to GitHub crossref',q:`site:huggingface.co "${sk}" India github`},
+    {l:'HF profile to LinkedIn crossref',q:`site:linkedin.com/in "Hugging Face" "${sk}" "${cy}"`},
+    {l:'HF dataset/model author bio',q:`site:huggingface.co "${sk}" "based in ${cy}" OR "India"`},
+    {l:'HF organisation member - India',q:`site:huggingface.co/organizations "${sk}" India`},
+  ]},
+  codechef:{gen:(sk,cy)=>[
+    {l:'CodeChef profile - city + skill',q:`site:codechef.com/users "${cy}" "${sk}"`},
+    {l:'CodeChef rated coder to LinkedIn',q:`site:linkedin.com/in "CodeChef" "${sk}" "${cy}"`},
+    {l:'CodeChef high rating + India',q:`site:codechef.com/users "India" "${sk}" rating`},
+    {l:'CodeChef contest winner LinkedIn crossref',q:`site:linkedin.com/in "CodeChef" "${sk}" "5 star" OR "6 star"`},
+    {l:'CodeChef profile to GitHub crossref',q:`site:codechef.com/users "${sk}" github.com "${cy}"`},
+  ]},
+  devfolio:{gen:(sk,cy)=>[
+    {l:'Devfolio project - skill + city',q:`site:devfolio.co/projects "${sk}" "${cy}"`},
+    {l:'Devfolio hackathon winner LinkedIn crossref',q:`site:linkedin.com/in "Devfolio" "${sk}" "${cy}" hackathon`},
+    {l:'Devfolio team member to GitHub',q:`site:devfolio.co "${sk}" github.com "${cy}"`},
+    {l:'Devfolio India hackathon winners',q:`site:devfolio.co/projects "${sk}" India winner`},
+    {l:'ETHIndia/HackIndia builder profile',q:`site:devfolio.co "${sk}" "ETHIndia" OR "HackIndia" "${cy}"`},
+  ]},
 };
 
 // ── LIVE API SCORING ──────────────────────────────────
@@ -3438,15 +3557,268 @@ function xrayExportExcel() {
   toast(`✅ Exported ${dataset.length} candidates to Excel`);
 }
 
+// ── COMPETITOR TALENT MAP — Indian product companies ─────────
+const COMPETITOR_COMPANIES = [
+  {n:'Swiggy',blog:'bytes.swiggy.com',gh:'swiggy'},
+  {n:'Razorpay',blog:'razorpay.com/blog',gh:'razorpay'},
+  {n:'PhonePe',blog:'phonepe.com/blog',gh:'phonepe'},
+  {n:'Meesho',blog:'medium.com/meesho-tech',gh:'Meesho'},
+  {n:'Flipkart',blog:'tech.flipkart.com',gh:'flipkart-incubator'},
+  {n:'Zomato',blog:'blog.zomato.com',gh:'Zomato'},
+  {n:'CRED',blog:'blog.cred.club',gh:'CRED-CLUB'},
+  {n:'Paytm',blog:'paytm.com/blog',gh:'paytm'},
+  {n:'Ola',blog:'medium.com/ola-engineering',gh:'olacabs'},
+  {n:'Zerodha',blog:'zerodha.tech',gh:'zerodha'},
+  {n:'Groww',blog:'groww.in/blog',gh:'groww'},
+  {n:'Dream11',blog:'medium.com/dream11-engineering',gh:'dream11'},
+  {n:'Urban Company',blog:'medium.com/urban-company-engineering',gh:'urbanCompany'},
+  {n:'Sharechat',blog:'tech.sharechat.com',gh:'sharechat'},
+  {n:'Postman',blog:'blog.postman.com',gh:'postmanlabs'},
+  {n:'Freshworks',blog:'engineering.freshworks.com',gh:'freshworks'},
+  {n:'Browserstack',blog:'browserstack.com/blog',gh:'browserstack'},
+  {n:'Innovaccer',blog:'innovaccer.com/blog',gh:'innovaccer'},
+  {n:'Slice',blog:'blog.sliceit.com',gh:'sliceit'},
+  {n:'Zepto',blog:'zeptonow.com/blog',gh:'zeptoinc'}
+];
+
+function getCompetitorQueries(skill, city, targetCo){
+  const s=skill||'developer';
+  const c=city||'India';
+  const queries=[];
+
+  // If a specific company is given, focus all queries on it
+  const targets = targetCo
+    ? [{n:targetCo,blog:'',gh:''}]
+    : COMPETITOR_COMPANIES.slice(0,6);
+
+  targets.forEach(co=>{
+    // 1) Engineering blog authors
+    if(co.blog){
+      queries.push({
+        type:'linkedin',
+        l:`${co.n} engineering blog authors`,
+        desc:`Technical posts on ${co.blog} — strong senior-engineer signal`,
+        q:`site:${co.blog} "${s}" author`,
+        company:co.n
+      });
+    } else {
+      queries.push({
+        type:'linkedin',
+        l:`${co.n} engineering blog authors`,
+        desc:`Searches for ${co.n}'s engineering blog directly`,
+        q:`"${co.n}" engineering blog "${s}" author`,
+        company:co.n
+      });
+    }
+    // 2) LinkedIn X-Ray — current employees with this skill
+    queries.push({
+      type:'linkedin',
+      l:`${co.n} — ${s} engineers on LinkedIn`,
+      desc:`Current employees at ${co.n} in ${c} with "${s}" skill`,
+      q:`site:linkedin.com/in "${s}" "${c}" "${co.n}"`,
+      company:co.n
+    });
+    // 3) GitHub org / bio search
+    if(co.gh){
+      queries.push({
+        type:'github',
+        l:`${co.n} GitHub org contributors — ${s}`,
+        desc:`Real GitHub profiles contributing to ${co.n}'s open-source org`,
+        q:`${s} org:${co.gh}`,
+        isGH:true,
+        ghUrl:`https://github.com/search?q=${encodeURIComponent(s)}+org%3A${co.gh}&type=users`,
+        company:co.n
+      });
+    } else {
+      queries.push({
+        type:'github',
+        l:`${co.n} engineers on GitHub — ${s}`,
+        desc:`GitHub profiles with ${co.n} in bio/company field`,
+        q:`location:"${c}" ${s} in:bio company:${co.n.toLowerCase().replace(/\\s/g,'')}`,
+        isGH:true,
+        ghUrl:`https://github.com/search?q=location%3A"${encodeURIComponent(c)}"+${encodeURIComponent(s)}+company%3A${co.n.toLowerCase().replace(/\\s/g,'')}&type=users`,
+        company:co.n
+      });
+    }
+    // 4) Conference speaker crossref
+    queries.push({
+      type:'linkedin',
+      l:`${co.n} conference speakers — ${s}`,
+      desc:`Sessionize/Speaker Deck talks mentioning ${co.n} — senior talent signal`,
+      q:`site:sessionize.com OR site:speakerdeck.com "${co.n}" "${s}"`,
+      company:co.n
+    });
+  });
+
+  return queries;
+}
+
+function renderCompetitor(sk,ct,targetCo){
+  const s=sk||'developer', c=ct||'India';
+  const qs=getCompetitorQueries(s,c,targetCo);
+  const title=targetCo?`🗺️ Competitor Talent Map — ${targetCo}`:'🗺️ Competitor Talent Map — Top Indian Product Companies';
+  const subtitle=targetCo
+    ? `Engineering blog, LinkedIn, GitHub & conference talks for "${s}" at ${targetCo}`
+    : `Engineering blog, LinkedIn, GitHub & conference talks for "${s}" across 6 top Indian product companies`;
+  const rw=document.getElementById('rw');
+  rw.innerHTML=`
+    <div class="rbar"><div><div class="rtitle">${title}</div><div class="rmeta">${subtitle}</div></div></div>
+    <div class="xintro"><div style="font-size:22px;flex-shrink:0">🗺️</div><div>
+      <div class="xi-tt" style="color:var(--am)">Company-specific sourcing</div>
+      <div class="xi-sb">Instead of sourcing individuals directly, identify companies using your target stack — then find their engineers via engineering blogs, GitHub contributions, and conference talks. ${targetCo?'':'Type a company name in the field above to focus all queries on just that company.'}</div>
+    </div></div>
+    <div class="xql">${qs.map((q,i)=>`
+      <div class="xqc">
+        <div class="xqn" style="background:var(--ams);color:var(--am);border-color:var(--amb)">${i+1}</div>
+        <div class="xqi">
+          <div class="xql-t">${q.l}</div>
+          <div style="font-size:11px;color:var(--t3);margin-bottom:6px">${q.desc}</div>
+          <div class="xql-q">${q.q}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+          <button class="bxo" onclick="window.open(${JSON.stringify(q.isGH?q.ghUrl:('https://www.google.com/search?q='+encodeURIComponent(q.q)))},'_blank')">🔍 ${q.isGH?'Open GitHub':'Open Search'}</button>
+          <button class="bxo" style="background:var(--bg3);color:var(--t2);border-color:var(--b2)" onclick="navigator.clipboard.writeText(${JSON.stringify(q.q)}).then(()=>toast('Copied! ✓'))">📋 Copy</button>
+        </div>
+      </div>`).join('')}
+    </div>`;
+}
+
+// ── PACKAGE MAINTAINER FINDER — npm Live API (real authors + emails) ──
+async function searchNpmPackages(skill){
+  const q=encodeURIComponent(skill||'developer');
+  const r=await fetch(`https://registry.npmjs.org/-/v1/search?text=${q}&size=20`);
+  if(!r.ok)throw new Error('npm registry request failed');
+  const d=await r.json();
+  const objs=(d.objects||[]).filter(o=>o.package);
+  // Shuffle slightly for variety, take top 12
+  const top=objs.slice(0,12);
+  return top.map(o=>{
+    const pkg=o.package;
+    const author=pkg.author||{};
+    const maintainers=pkg.maintainers||[];
+    const primaryMaintainer=maintainers[0]||{};
+    const name=author.name||primaryMaintainer.username||'Unknown maintainer';
+    const email=author.email||primaryMaintainer.email||'';
+    let repo='';
+    if(pkg.links&&pkg.links.repository)repo=pkg.links.repository.replace(/^git\\+/,'').replace(/\\.git$/,'');
+    const downloads=o.score&&o.score.detail?Math.round((o.score.detail.popularity||0)*100):0;
+    return{
+      id:pkg.name,name:name,user:primaryMaintainer.username||pkg.name,
+      pkgName:pkg.name,pkgDesc:pkg.description||'',
+      p:'pkgfinder',loc:'',bio:pkg.description||`npm package: ${pkg.name}`,
+      av:'',url:repo||pkg.links?.npm||`https://www.npmjs.com/package/${pkg.name}`,
+      email:email,repo:repo,downloads:downloads,
+      maintainers:maintainers.map(m=>m.username).filter(Boolean),
+      sigs:[
+        {t:`📦 ${pkg.name}`,c:'sky'},
+        ...(downloads?[{t:`📈 Popularity ${downloads}%`,c:'green'}]:[]),
+        ...(maintainers.length>1?[{t:`👥 ${maintainers.length} maintainers`,c:''}]:[]),
+        ...(repo?[{t:'🌐 Repo',c:''}]:[])
+      ],
+      sc:Math.min(60+downloads/2+(email?10:0)+(maintainers.length>1?5:0),99)
+    };
+  }).filter(c=>c.name!=='Unknown maintainer'||c.email);
+}
+
+function mkPackageCard(p){
+  const sc=p.sc>=80?'shi':p.sc>=60?'smd':'slo';
+  const av=`${(p.name||'?')[0]}`;
+  const isSL=S.shortlist.some(x=>x.id===p.id);
+  return `<div class="pfc" id="pfc-${p.id.replace(/[^a-zA-Z0-9]/g,'_')}">
+    <div class="pfc-top sky"></div>
+    <div class="sring ${sc}">${Math.round(p.sc)}</div>
+    <div class="pfh">
+      <div class="pfav">${av}</div>
+      <div style="flex:1;min-width:0"><div class="pfnm">${p.name}</div><div class="pfloc">📦 Maintainer of <strong>${p.pkgName}</strong></div></div>
+      <span class="ppl ppk" style="margin-top:2px">npm</span>
+    </div>
+    <div class="pbio">${(p.pkgDesc||'No description available.').substring(0,160)}${p.pkgDesc&&p.pkgDesc.length>160?'…':''}</div>
+    <div class="sigs">${p.sigs.map(s=>`<span class="sig ${s.c}">${s.t}</span>`).join('')}${p.email?`<span class="sig green">✉️ ${p.email}</span>`:''}</div>
+    <div class="pfoot">
+      ${p.repo?`<a href="${p.repo}" target="_blank" class="bvp">View Repo ↗</a>`:`<a href="https://www.npmjs.com/package/${p.pkgName}" target="_blank" class="bvp">View on npm ↗</a>`}
+      <button class="bvp2" onclick="toggleSL('${p.id}')" id="sl-${p.id.replace(/[^a-zA-Z0-9]/g,'_')}">${isSL?'✓ Saved':'+ Shortlist'}</button>
+    </div>
+  </div>`;
+}
+
+// ── PLATFORM LIST RENDERER (categories + recommended banner) ──
+let plActiveCat='all';
+function platIconHTML(id){
+  const ic=PM[id].ic;
+  return `<span style="font-size:16px">${ic}</span>`;
+}
+function platBadgeHTML(id){
+  const meta=PLAT_META[id];if(!meta)return'';
+  const cls={live:'badge-live',smart:'badge-smart',power:'badge-power',new:'badge-new'}[meta.badge]||'badge-smart';
+  return `<span class="plat-row-badge ${cls}">${BADGE_LABELS[meta.badge]}</span>`;
+}
+function matchSkill(skillsArr,query){
+  if(!query)return false;
+  if(skillsArr.includes('all'))return false; // 'all' platforms shown as fallback, not as primary match
+  const q=query.toLowerCase();
+  return skillsArr.some(s=>q.includes(s)||s.includes(q));
+}
+function renderRecommended(){
+  const box=document.getElementById('recBanner');
+  if(!box)return;
+  const sk=(document.getElementById('iSk')?.value||'').trim();
+  if(!sk){box.style.display='none';return;}
+  const ids=Object.keys(PLAT_META);
+  let matched=ids.filter(id=>matchSkill(PLAT_META[id].skills,sk));
+  if(matched.length<3){
+    const fallback=ids.filter(id=>PLAT_META[id].skills.includes('all')&&!matched.includes(id));
+    matched=matched.concat(fallback).slice(0,4);
+  } else matched=matched.slice(0,4);
+  box.style.display='block';
+  document.getElementById('recTitle').textContent=`Recommended for "${sk}"`;
+  document.getElementById('recChips').innerHTML=matched.map(id=>{
+    const m=PLAT_META[id],p=PM[id];
+    return `<div class="rec-chip" data-p="${id}" onclick="selPlatFromList('${id}')">
+      <div class="rec-chip-ic" style="background:var(--as)">${p.ic}</div>
+      <div><div class="rec-chip-nm">${p.n}</div><div class="rec-chip-best">${m.best}</div></div>
+    </div>`;
+  }).join('');
+}
+function setCat(cat,btn){
+  plActiveCat=cat;
+  document.querySelectorAll('.cat-pill').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderPlatformList();
+}
+function renderPlatformList(){
+  const wrap=document.getElementById('platListWrap');
+  if(!wrap)return;
+  const ids=Object.keys(PLAT_META).filter(id=>plActiveCat==='all'||PLAT_META[id].cat===plActiveCat);
+  wrap.innerHTML=ids.map(id=>{
+    const m=PLAT_META[id],p=PM[id];
+    const on=S.plat===id?'on':'';
+    return `<div class="plat-row pc ${on}" data-p="${id}" onclick="selPlat(this)">
+      <div class="plat-row-ic" style="background:var(--as)">${p.ic}</div>
+      <div class="plat-row-info">
+        <div class="plat-row-nm">${p.n}</div>
+        <div class="plat-row-best">${m.best}</div>
+      </div>
+      ${platBadgeHTML(id)}
+    </div>`;
+  }).join('');
+}
+function selPlatFromList(id){
+  renderPlatformList();
+  const el=document.querySelector(`.plat-row[data-p="${id}"]`);
+  if(el)selPlat(el);
+}
+
 // ── PLATFORM SELECT ───────────────────────────────────
 function selPlat(el){
-  document.querySelectorAll('.pc').forEach(c=>c.classList.remove('on'));
+  document.querySelectorAll('.pc, .plat-row').forEach(c=>c.classList.remove('on'));
   el.classList.add('on');S.plat=el.dataset.p;
   // Show company fields for relevant platforms
   const tenureWrap=document.getElementById('tenureCoWrap');
   if(tenureWrap)tenureWrap.style.display=el.dataset.p==='tenure'?'block':'none';
   const gccWrap=document.getElementById('gccCoWrap');
   if(gccWrap)gccWrap.style.display=el.dataset.p==='gcc'?'block':'none';
+  const competitorWrap=document.getElementById('competitorCoWrap');
+  if(competitorWrap)competitorWrap.style.display=el.dataset.p==='competitor'?'block':'none';
   const m=PM[S.plat];
   document.getElementById('spIc').textContent=m.ic;
   document.getElementById('spNm').textContent=m.n;
@@ -3526,6 +3898,15 @@ async function runSearch(){
     }catch(e){} // silent fail — X-Ray queries still show below
     return;
   }
+  // Competitor Talent Map
+  if(pl==='competitor'){
+    rw.innerHTML=`<div class="ls"><div class="spin"></div>Mapping engineering talent at competitor companies...</div>`;
+    await delay(500);
+    btn.disabled=false;btn.innerHTML='🔍 Search';
+    const competitorCo=document.getElementById('iCompetitorCo')?.value?.trim()||'';
+    renderCompetitor(sk,ct,competitorCo);
+    return;
+  }
   if(XRAY[pl]){
     rw.innerHTML=`<div class="ls"><div class="spin"></div>Building Smart Search queries...</div>`;
     await delay(300);btn.disabled=false;btn.innerHTML='🔍 Search';
@@ -3535,6 +3916,7 @@ async function runSearch(){
   try{
     let results=[];
     if(pl==='github')results=await searchGitHub(sk,ct||'India');
+    else if(pl==='pkgfinder')results=await searchNpmPackages(sk);
     else if(pl==='stackoverflow'){
       results=await searchStackOverflow(sk,ct||'India');
       // Check if we got city-matched results
@@ -3608,7 +3990,7 @@ function renderCards(results,pl,sk,ct){
       <button class="fc on" onclick="filterC('all',this)">All (${results.length})</button>
       <button class="fc" onclick="filterC('hi',this)">Score 80+ (${hi})</button>
     </div>
-    <div class="cgrid" id="cgrid">${results.map(mkCard).join('')}</div>
+    <div class="cgrid" id="cgrid">${results.map(pl==='pkgfinder'?mkPackageCard:mkCard).join('')}</div>
     ${sedeHtml||''}`;
 }
 
@@ -3645,7 +4027,8 @@ function filterC(t,btn){
   let f=[...S.results];
   if(t==='hi')f=f.filter(p=>p.sc>=80);
   const g=document.getElementById('cgrid');
-  if(g)g.innerHTML=f.length?f.map(mkCard).join(''):`<div class="es"><div class="es-ic">🔍</div><div class="es-tt">No results</div></div>`;
+  const cardFn=S.plat==='pkgfinder'?mkPackageCard:mkCard;
+  if(g)g.innerHTML=f.length?f.map(cardFn).join(''):`<div class="es"><div class="es-ic">🔍</div><div class="es-tt">No results</div></div>`;
 }
 
 function renderXray(pl,sk,ct){
@@ -3689,7 +4072,7 @@ function toggleSL(id){
   const idx=S.shortlist.findIndex(x=>x.id===id);
   if(idx>=0){S.shortlist.splice(idx,1);toast('Removed from shortlist');}
   else{S.shortlist.push(p);toast('Added to shortlist ✓');}
-  const btn=document.getElementById('sl-'+id);
+  const btn=document.getElementById('sl-'+String(id).replace(/[^a-zA-Z0-9]/g,'_'));
   if(btn)btn.textContent=S.shortlist.some(x=>x.id===id)?'✓ Saved':'+ Shortlist';
   const bar=document.getElementById('slBar');
   bar.classList.toggle('show',S.shortlist.length>0);
