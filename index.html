@@ -162,7 +162,7 @@ a{text-decoration:none;color:inherit}
 .logo-t{font-family:'Sora',sans-serif;font-weight:800;font-size:16px;letter-spacing:-.3px;color:var(--t1)}
 .logo-t em{font-style:normal;color:var(--a)}
 .logo-t .dot{font-weight:400;font-size:16px;color:var(--t3);letter-spacing:-.3px}
-.nav-links{display:flex;gap:2px}
+.nav-links{display:flex;gap:2px;flex-wrap:wrap;align-items:center}
 .nl{padding:6px 13px;border-radius:7px;font-size:13px;font-weight:500;color:var(--t2);transition:.15s;cursor:pointer}
 .nl:hover{background:var(--bg3);color:var(--t1)}
 .nav-r{display:flex;align-items:center;gap:8px}
@@ -648,7 +648,7 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 }
 
 /* ── X-RAY PARSER NAV BUTTON — highlighted ── */
-.nl-xray{background:linear-gradient(135deg,var(--as),rgba(168,85,247,.08));color:var(--a)!important;border:1px solid var(--ab);border-radius:8px;font-weight:700!important;position:relative}
+.nl-xray{background:linear-gradient(135deg,var(--as),rgba(168,85,247,.08));color:var(--a)!important;border:1px solid var(--ab);border-radius:8px;font-weight:700!important;position:relative;white-space:nowrap;flex-shrink:0}
 .nl-xray:hover{background:var(--as)}
 .nl-xray::after{content:'NEW';position:absolute;top:-6px;right:-6px;background:linear-gradient(135deg,#a855f7,#ec4899);color:#fff;font-size:7px;font-weight:800;padding:1px 5px;border-radius:6px;letter-spacing:.3px}
 
@@ -3792,7 +3792,7 @@ function renderPlatformList(){
   wrap.innerHTML=ids.map(id=>{
     const m=PLAT_META[id],p=PM[id];
     const on=S.plat===id?'on':'';
-    return `<div class="plat-row pc ${on}" data-p="${id}" onclick="selPlat(this)">
+    return `<div class="plat-row ${on}" data-p="${id}" onclick="selPlat(this)">
       <div class="plat-row-ic" style="background:var(--as)">${p.ic}</div>
       <div class="plat-row-info">
         <div class="plat-row-nm">${p.n}</div>
