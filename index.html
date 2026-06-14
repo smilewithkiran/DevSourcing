@@ -156,16 +156,20 @@ a{text-decoration:none;color:inherit}
   .nav-links{display:none!important}
   .theme-btn{display:none!important}
   .nav-in{padding:0 16px;height:56px}
+  .un{display:none}
+  .bdg-txt{display:none}
+  .bdg-a{padding:5px 7px}
 }
-.logo{display:flex;align-items:center;gap:10px;cursor:default}
+.logo{display:flex;align-items:center;gap:10px;cursor:default;flex-shrink:0}
 .logo-sq{width:34px;height:34px;border-radius:9px;background:#080c14;border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .logo-t{font-family:'Sora',sans-serif;font-weight:800;font-size:16px;letter-spacing:-.3px;color:var(--t1)}
 .logo-t em{font-style:normal;color:var(--a)}
 .logo-t .dot{font-weight:400;font-size:16px;color:var(--t3);letter-spacing:-.3px}
-.nav-links{display:flex;gap:2px;align-items:center}
+.nav-links{display:flex;gap:2px;align-items:center;flex-shrink:1;min-width:0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.nav-links::-webkit-scrollbar{display:none}
 .nl{padding:6px 13px;border-radius:7px;font-size:13px;font-weight:500;color:var(--t2);transition:.15s;cursor:pointer}
 .nl:hover{background:var(--bg3);color:var(--t1)}
-.nav-r{display:flex;align-items:center;gap:8px}
+.nav-r{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .theme-btn{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;border:1px solid var(--b2);color:var(--t3);font-size:16px;transition:.15s;flex-shrink:0}
 .theme-btn:hover{border-color:var(--a);color:var(--a)}
 .nav-cta{padding:8px 18px;border-radius:8px;background:var(--a);color:#080c14;font-size:13px;font-weight:700;transition:.15s}
@@ -651,6 +655,13 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 .nl-xray{background:linear-gradient(135deg,var(--as),rgba(168,85,247,.08));color:var(--a)!important;border:1px solid var(--ab);border-radius:8px;font-weight:700!important;position:relative;white-space:nowrap;flex-shrink:0}
 .nl-xray:hover{background:var(--as)}
 .nl-xray::after{content:'NEW';position:absolute;top:-6px;right:-6px;background:linear-gradient(135deg,#a855f7,#ec4899);color:#fff;font-size:7px;font-weight:800;padding:1px 5px;border-radius:6px;letter-spacing:.3px}
+
+/* Medium widths (tablets / landscape mobile): compact nav-links so it scrolls
+   within its own space rather than pushing Sign out off-screen */
+@media(max-width:1024px){
+  .nl{padding:6px 9px;font-size:12px}
+  .nl-xray{padding:6px 11px}
+}
 
 /* ── X-RAY PARSER PAGE ── */
 .xray-hero{background:linear-gradient(135deg,var(--bg2),var(--as));border:1px solid var(--ab);border-radius:20px;padding:32px 28px;margin-bottom:24px;position:relative;overflow:hidden}
@@ -4204,7 +4215,7 @@ function enterApp(ud){
 function renderNav(){
   const u=S.user;if(!u)return;
   const av=u.photo?`<div class="uav"><img src="${u.photo}" referrerpolicy="no-referrer"></div>`:`<div class="uav">${u.avatar||'U'}</div>`;
-  const bdg=u.isAdmin?'<span class="bdg bdg-a">👑 Admin</span>':({trial:'<span class="bdg bdg-t">Trial</span>',pro:'<span class="bdg bdg-p">Pro</span>',expired:'<span class="bdg bdg-e">Expired</span>'}[S.plan]||'');
+  const bdg=u.isAdmin?'<span class="bdg bdg-a">👑<span class="bdg-txt"> Admin</span></span>':({trial:'<span class="bdg bdg-t">Trial</span>',pro:'<span class="bdg bdg-p">Pro</span>',expired:'<span class="bdg bdg-e">Expired</span>'}[S.plan]||'');
   document.getElementById('navUser').innerHTML=`<div class="nav-user-wrap">${av}<span class="un">${(u.name||'').split(' ')[0]}</span>${bdg}<button class="btn-so" onclick="doSignOut()">Sign out</button></div>`;
   updateNavLinks(true);
 }
