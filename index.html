@@ -157,8 +157,6 @@ a{text-decoration:none;color:inherit}
   .theme-btn{display:none!important}
   .nav-in{padding:0 16px;height:56px}
   .un{display:none}
-  .bdg-txt{display:none}
-  .bdg-a{padding:5px 7px}
 }
 .logo{display:flex;align-items:center;gap:10px;cursor:default;flex-shrink:0}
 .logo-sq{width:34px;height:34px;border-radius:9px;background:#080c14;border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -182,7 +180,6 @@ a{text-decoration:none;color:inherit}
 .bdg-t{background:var(--ams);color:var(--am);border:1px solid var(--amb)}
 .bdg-p{background:var(--as);color:var(--a);border:1px solid var(--ab)}
 .bdg-e{background:var(--bg3);color:var(--t3);border:1px solid var(--b1)}
-.bdg-a{background:rgba(245,158,11,.15);color:var(--am);border:1px solid var(--amb)}
 .btn-so{padding:5px 12px;border-radius:6px;font-size:12px;font-weight:600;color:var(--t3);border:1px solid var(--b2);transition:.15s;white-space:nowrap}
 .btn-so:hover{border-color:var(--r);color:var(--r)}
 
@@ -455,7 +452,6 @@ a{text-decoration:none;color:inherit}
 .sp-ic{font-size:20px}
 .sp-nm{font-size:15px;font-weight:700}
 .sp-dc{font-size:11px;color:var(--t3);margin-left:auto}
-.xr-note{background:var(--pus);border:1px solid var(--pub);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--t2);margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;line-height:1.6}
 .srow{display:grid;grid-template-columns:1fr 1fr 180px auto;gap:10px;align-items:end}
 @media(max-width:740px){.srow{grid-template-columns:1fr 1fr}.srow .bts{grid-column:1/-1}}
 .fl{font-size:10px;font-weight:700;color:var(--t3);margin-bottom:6px;letter-spacing:.4px;text-transform:uppercase}
@@ -1360,10 +1356,6 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
         <span class="sp-ic" id="spIc"></span>
         <span class="sp-nm" id="spNm"></span>
         <span class="sp-dc" id="spDc"></span>
-      </div>
-      <div class="xr-note" id="xrNote" style="display:none">
-        <span>⚡</span>
-        <span>No public API for this platform. We generate <strong style="color:var(--pu)">precision search queries</strong> that surface real profiles indexed on the web. Click <strong style="color:var(--pu)">Open Search</strong> to run instantly.</span>
       </div>
       <div class="srow">
         <div><div class="fl">Skill / Language / Role</div><input class="fi" id="iSk" type="text" placeholder="e.g. React, Python, DevOps, Java" onkeydown="if(event.key==='Enter')runSearch()" oninput="renderRecommended()"></div>
@@ -3843,7 +3835,6 @@ function selPlat(el){
   document.getElementById('spIc').textContent=m.ic;
   document.getElementById('spNm').textContent=m.n;
   document.getElementById('spDc').textContent=m.d;
-  document.getElementById('xrNote').style.display=m.xr?'flex':'none';
   const sb=document.getElementById('sbox');sb.classList.add('show');
   sb.scrollIntoView({behavior:'smooth',block:'nearest'});
   const rw=document.getElementById('rw');rw.classList.remove('show');rw.innerHTML='';
@@ -4215,7 +4206,7 @@ function enterApp(ud){
 function renderNav(){
   const u=S.user;if(!u)return;
   const av=u.photo?`<div class="uav"><img src="${u.photo}" referrerpolicy="no-referrer"></div>`:`<div class="uav">${u.avatar||'U'}</div>`;
-  const bdg=u.isAdmin?'<span class="bdg bdg-a">👑<span class="bdg-txt"> Admin</span></span>':({trial:'<span class="bdg bdg-t">Trial</span>',pro:'<span class="bdg bdg-p">Pro</span>',expired:'<span class="bdg bdg-e">Expired</span>'}[S.plan]||'');
+  const bdg=u.isAdmin?'':({trial:'<span class="bdg bdg-t">Trial</span>',pro:'<span class="bdg bdg-p">Pro</span>',expired:'<span class="bdg bdg-e">Expired</span>'}[S.plan]||'');
   document.getElementById('navUser').innerHTML=`<div class="nav-user-wrap">${av}<span class="un">${(u.name||'').split(' ')[0]}</span>${bdg}<button class="btn-so" onclick="doSignOut()">Sign out</button></div>`;
   updateNavLinks(true);
 }
