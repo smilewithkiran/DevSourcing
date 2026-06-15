@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- ── PRIMARY SEO ── -->
-<title>DevSourcing.in — 15 Platforms LinkedIn Can't Search | Developer Sourcing India</title>
+<title>DevSourcing.in — 19 Platforms LinkedIn Can't Search | Developer Sourcing India</title>
 <meta name="description" content="19 developer platforms — GitHub, npm Package Finder with real emails, Hugging Face, Target Company Sourcing, GCC Hunt, Passive Finder, Hidden Talent + more. Built for Indian TA teams.">
 <meta name="keywords" content="developer sourcing india, find developers india, github talent search, stack overflow recruiter, tech talent sourcing, developer search tool, recruiter tools india, hire developers india, devsourcing, talent acquisition india, IT recruitment india">
 <meta name="author" content="DevSourcing.in">
@@ -17,7 +17,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://devsourcing.in/">
 <meta property="og:site_name" content="DevSourcing.in">
-<meta property="og:title" content="DevSourcing.in — 15 Platforms LinkedIn Can't Search">
+<meta property="og:title" content="DevSourcing.in — 19 Platforms LinkedIn Can't Search">
 <meta property="og:description" content="19 platforms beyond LinkedIn — npm authors with real emails, Target Company Sourcing (current + alumni), Hugging Face AI engineers, GCC Hunt across 100+ MNCs. ₹499/month flat.">
 <meta property="og:image" content="https://devsourcing.in/og-image-v3.png">
 <meta property="og:image:secure_url" content="https://devsourcing.in/og-image-v3.png">
@@ -45,7 +45,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@devsourcingin">
 <meta name="twitter:creator" content="@devsourcingin">
-<meta name="twitter:title" content="DevSourcing.in — 15 Platforms LinkedIn Can't Search">
+<meta name="twitter:title" content="DevSourcing.in — 19 Platforms LinkedIn Can't Search">
 <meta name="twitter:description" content="19 platforms LinkedIn can't search. Package Maintainer Finder with real emails. GCC Hunt across 100+ MNCs. Target Company Sourcing — current + alumni. AI title expansion. Built for Indian TA teams.">
 <meta name="twitter:image" content="https://devsourcing.in/og-image-v3.png">
 
@@ -483,7 +483,7 @@ a{text-decoration:none;color:inherit}
 .pfc-top.so{background:linear-gradient(90deg,#f48024,#f4a524)}
 .pfc-top.dt{background:linear-gradient(90deg,#3b49df,#7352f5)}
 .pfc:hover{box-shadow:0 8px 32px rgba(56,189,248,.12);border-color:var(--b2);transform:translateY(-2px)}
-.pfh{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+.pfh{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;padding-right:42px}
 .pfav{width:46px;height:46px;border-radius:12px;background:var(--bg3);border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;overflow:hidden;font-weight:700;color:var(--a)}
 .pfav img{width:100%;height:100%;object-fit:cover;border-radius:11px}
 .pfnm{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:2px;line-height:1.3}
@@ -1014,6 +1014,31 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
         <div class="pcard-ic" style="background:var(--gs);border-radius:6px;font-size:16px;display:flex;align-items:center;justify-content:center">🧑‍💻</div>
         <div><div class="pcard-nm">CodeChef</div><div class="pcard-tp">Competitive coders</div></div>
         <div class="pcard-tip"><strong>CodeChef</strong>5★/6★ rated competitive programmers. Strong DSA signal — ideal for product companies and algo-heavy roles.</div>
+      </div>
+      <!-- Community -->
+      <div class="pcard">
+        <div class="smart-badge">SMART</div>
+        <div class="pcard-ic" style="background:#f0f0f0;border-radius:6px;font-size:16px;display:flex;align-items:center;justify-content:center">📰</div>
+        <div><div class="pcard-nm">Medium</div><div class="pcard-tp">Senior / Lead Engineers</div></div>
+        <div class="pcard-tip"><strong>Medium</strong>Technical writers sharing deep engineering insights — a strong senior-engineer signal.</div>
+      </div>
+      <div class="pcard">
+        <div class="smart-badge">SMART</div>
+        <div class="pcard-ic" style="background:#fef2f2;border-radius:6px;font-size:16px;display:flex;align-items:center;justify-content:center">🤝</div>
+        <div><div class="pcard-nm">Meetup</div><div class="pcard-tp">Community Leaders</div></div>
+        <div class="pcard-tip"><strong>Meetup</strong>Group organizers and event speakers — visible community leadership signal.</div>
+      </div>
+      <div class="pcard">
+        <div class="smart-badge">SMART</div>
+        <div class="pcard-ic" style="background:#eef2ff;border-radius:6px;font-size:16px;display:flex;align-items:center;justify-content:center">🎤</div>
+        <div><div class="pcard-nm">GDG</div><div class="pcard-tp">Cloud / Android / Web</div></div>
+        <div class="pcard-tip"><strong>Google Developer Groups</strong>Speakers and organizers across Cloud, Android, Flutter and Web tracks.</div>
+      </div>
+      <div class="pcard">
+        <div class="smart-badge">SMART</div>
+        <div class="pcard-ic" style="background:#fff7ed;border-radius:6px;font-size:16px;display:flex;align-items:center;justify-content:center">☁️</div>
+        <div><div class="pcard-nm">AWS UG</div><div class="pcard-tp">Cloud / DevOps / SA</div></div>
+        <div class="pcard-tip"><strong>AWS User Groups</strong>Community leaders, AWS Certified pros and AWS Heroes — strong cloud/DevOps signal.</div>
       </div>
     </div>
   </section>
@@ -2337,19 +2362,25 @@ async function searchStackOverflow(skill,city){
   const tag=skill.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9+#.]/g,'');
   const cityQ=city||'India';
 
-  // Try SO API first (no location filter but quick)
+  // Try SO API first (no location filter param exists — we filter client-side)
   let apiResults=[];
   try{
-    const page=Math.floor(Math.random()*3)+1;
-    const r=await fetch(`https://api.stackexchange.com/2.3/users?order=desc&sort=reputation&tagged=${encodeURIComponent(tag)}&site=stackoverflow&pagesize=20&page=${page}`);
+    // Larger pool (pagesize 50) improves odds of finding India-located users
+    // for the given tag, since top-reputation lists skew non-Indian.
+    const r=await fetch(`https://api.stackexchange.com/2.3/users?order=desc&sort=reputation&tagged=${encodeURIComponent(tag)}&site=stackoverflow&pagesize=50&page=1`);
     if(r.ok){
       const data=await r.json();
       const all=(data.items||[]);
-      // Soft location filter — match city in location field
       const cityL=cityQ.toLowerCase();
-      const cityFiltered=all.filter(u=>(u.location||'').toLowerCase().includes(cityL));
-      // Use city-filtered if we got 3+, else use all sorted by rep
-      apiResults=(cityFiltered.length>=3?cityFiltered:all)
+      // Prefer exact city/location match
+      let cityFiltered=all.filter(u=>(u.location||'').toLowerCase().includes(cityL));
+      // If a specific city was requested but nothing matched, broaden to
+      // country-level "India" — but NEVER fall back to global/all results,
+      // since this platform is India-only.
+      if(cityFiltered.length===0&&cityL!=='india'){
+        cityFiltered=all.filter(u=>(u.location||'').toLowerCase().includes('india'));
+      }
+      apiResults=cityFiltered
         .sort(()=>Math.random()-.5)
         .slice(0,10)
         .map(u=>({
@@ -2925,6 +2956,87 @@ function getPassiveQueries(skill, city, exp) {
   });
 
   return queries;
+}
+
+// ── GCC HUNT RENDERER ─────────────────────────────────
+function renderGCC(sk, ct, ex, gccCo) {
+  const s = sk || 'developer';
+  const c = ct || 'India';
+  const rw = document.getElementById('rw');
+
+  if (gccCo) {
+    // Focused queries for one specific company the user typed
+    const expStr = ex ? ` ${ex}+ years` : '';
+    const queries = [
+      {l:`LinkedIn — ${s}${expStr} at ${gccCo}`, desc:`Current employees at ${gccCo} in ${c}`, q:`site:linkedin.com/in "${s}" "${c}" "${gccCo}"`},
+      {l:`LinkedIn — ${gccCo} GCC/GTC team`, desc:`Targets the Global Capability Centre / Global Technology Centre team specifically`, q:`site:linkedin.com/in "${s}" "${gccCo}" "Global Capability Centre" OR "GCC" OR "Global Technology Centre"`},
+      ...(ex ? [{l:`LinkedIn — ${s} with ${ex}+ yrs at ${gccCo}`, desc:`Targets ${ex}+ years experience at ${gccCo}`, q:`site:linkedin.com/in "${s}" "${c}" "${gccCo}" "${ex} years" OR "${parseInt(ex)+1} years" OR "${parseInt(ex)+2} years"`}] : []),
+      {l:`GitHub — ${s} developers at ${gccCo}`, desc:`Real GitHub profiles with company field set to ${gccCo}`, q:`location:"${c}" ${s} in:bio company:${gccCo.toLowerCase().replace(/\s/g,'')}`, isGH:true, ghUrl:`https://github.com/search?q=location%3A"${encodeURIComponent(c)}"+${encodeURIComponent(s)}+company%3A${encodeURIComponent(gccCo.toLowerCase().replace(/\s/g,''))}&type=users`}
+    ];
+
+    rw.innerHTML = `
+      <div class="rbar"><div>
+        <div class="rtitle">🏢 GCC Hunt — ${gccCo}</div>
+        <div class="rmeta">${queries.length} precision queries · "${s}" · ${c}</div>
+      </div></div>
+      <div class="xintro"><div style="font-size:22px;flex-shrink:0">🏢</div><div>
+        <div class="xi-tt" style="color:var(--am)">Targeting ${gccCo}</div>
+        <div class="xi-sb">LinkedIn X-Ray for current employees, the GCC/GTC team specifically, and real GitHub profiles with <strong style="color:var(--t1)">${gccCo}</strong> set as their company.</div>
+      </div></div>
+      <div class="xql">${queries.map((q,i)=>`
+        <div class="xqc">
+          <div class="xqn" style="background:var(--ams);color:var(--am);border-color:var(--amb)">${i+1}</div>
+          <div class="xqi">
+            <div class="xql-t">${q.l}</div>
+            <div style="font-size:11px;color:var(--t3);margin-bottom:6px">${q.desc}</div>
+            <div class="xql-q">${q.q}</div>
+          </div>
+          <button class="bxo" style="background:var(--ams);color:var(--am);border-color:var(--amb)" onclick="window.open(${JSON.stringify(q.isGH?q.ghUrl:('https://www.google.com/search?q='+encodeURIComponent(q.q)))},'_blank')">🔍 ${q.isGH?'Open GitHub':'Search'}</button>
+        </div>`).join('')}
+      </div>`;
+    return;
+  }
+
+  // Default: full batched list across 100+ GCC companies
+  const allQueries = getGCCQueries(s, c, ex);
+  const linkedinQs = allQueries.filter(q=>q.type==='linkedin');
+  const githubQs = allQueries.filter(q=>q.type==='github');
+
+  rw.innerHTML = `
+    <div class="rbar"><div>
+      <div class="rtitle">🏢 GCC Hunt — ${s} · ${c}</div>
+      <div class="rmeta">${allQueries.length} precision queries across 100+ Global Capability Centres</div>
+    </div></div>
+    <div class="xintro"><div style="font-size:22px;flex-shrink:0">🏢</div><div>
+      <div class="xi-tt" style="color:var(--am)">100+ GCC / GTC companies in India</div>
+      <div class="xi-sb">LinkedIn X-Ray queries batched across Walmart, JPMorgan, Google, Microsoft, Amex and 95+ more — plus real GitHub profiles filtered by company field. Type a specific company above to focus on just one.</div>
+    </div></div>
+
+    <div style="font-size:11px;font-weight:800;color:var(--am);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">LinkedIn — Batched GCC Searches (${linkedinQs.length})</div>
+    <div class="xql" style="margin-bottom:24px">${linkedinQs.map((q,i)=>`
+      <div class="xqc">
+        <div class="xqn" style="background:var(--ams);color:var(--am);border-color:var(--amb)">${i+1}</div>
+        <div class="xqi">
+          <div class="xql-t">${q.l}</div>
+          <div style="font-size:11px;color:var(--t3);margin-bottom:6px">${q.desc}</div>
+          <div class="xql-q">${q.q}</div>
+        </div>
+        <button class="bxo" style="background:var(--ams);color:var(--am);border-color:var(--amb)" onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(q.q)}','_blank')">🔍 Search</button>
+      </div>`).join('')}
+    </div>
+
+    <div style="font-size:11px;font-weight:800;color:var(--g);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">GitHub — By Company (${githubQs.length})</div>
+    <div class="xql">${githubQs.map((q,i)=>`
+      <div class="xqc">
+        <div class="xqn" style="background:var(--gs);color:var(--g);border-color:var(--gb)">${i+1}</div>
+        <div class="xqi">
+          <div class="xql-t">${q.l}</div>
+          <div style="font-size:11px;color:var(--t3);margin-bottom:6px">${q.desc}</div>
+          <div class="xql-q">${q.q}</div>
+        </div>
+        <button class="bxo" style="background:var(--gs);color:var(--g);border-color:var(--gb)" onclick="window.open('${q.ghUrl}','_blank')">🐙 Open GitHub</button>
+      </div>`).join('')}
+    </div>`;
 }
 
 function renderPassive(sk, ct, ex) {
@@ -3712,7 +3824,14 @@ async function searchNpmPackages(skill){
     const name=author.name||primaryMaintainer.username||'Unknown maintainer';
     const email=author.email||primaryMaintainer.email||'';
     let repo='';
-    if(pkg.links&&pkg.links.repository)repo=pkg.links.repository.replace(/^git\\+/,'').replace(/\\.git$/,'');
+    if(pkg.links&&pkg.links.repository){
+      repo=pkg.links.repository
+        .replace(/^git\+/,'')
+        .replace(/\.git$/,'')
+        .replace(/^git:\/\//,'https://')
+        .replace(/^ssh:\/\/git@/,'https://')
+        .replace(/^git@([^:]+):/,'https://$1/');
+    }
     const downloads=o.score&&o.score.detail?Math.round((o.score.detail.popularity||0)*100):0;
     return{
       id:pkg.name,name:name,user:primaryMaintainer.username||pkg.name,
@@ -4048,7 +4167,6 @@ function renderXray(pl,sk,ct){
   const qs=cfg.gen(s,c);
   document.getElementById('rw').innerHTML=`
     <div class="rbar"><div><div class="rtitle">${PM[pl].ic} ${PM[pl].n} — Smart Search</div><div class="rmeta">${qs.length} precision queries · "${s}" · ${c}</div></div></div>
-    <div class="xintro"><div style="font-size:24px;flex-shrink:0">⚡</div><div><div class="xi-tt">How Smart Search works</div><div class="xi-sb">${PM[pl].n} has no public API. We build precision queries using indexed profiles. Click <strong>Open Search</strong> — real developer profiles appear in Google results instantly.</div></div></div>
     <div class="xql">${qs.map((q,i)=>`<div class="xqc"><div class="xqn">${i+1}</div><div class="xqi"><div class="xql-t">${q.l}</div><div class="xql-q">${q.q}</div></div><button class="bxo" onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(q.q)}','_blank')">🔍 Open</button></div>`).join('')}</div>`;
 }
 
