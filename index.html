@@ -653,13 +653,32 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 .nl-xray::after{content:'NEW';position:absolute;top:-6px;right:-6px;background:linear-gradient(135deg,#a855f7,#ec4899);color:#fff;font-size:7px;font-weight:800;padding:1px 5px;border-radius:6px;letter-spacing:.3px}
 .nl-sct{background:linear-gradient(135deg,var(--as),rgba(168,85,247,.08));color:var(--a)!important;border:1px solid var(--ab);border-radius:8px;font-weight:700!important;position:relative;white-space:nowrap;flex-shrink:0}
 .nl-sct:hover{background:var(--as)}
+.nl-eg{background:linear-gradient(135deg,var(--ams),rgba(168,85,247,.08));color:var(--am)!important;border:1px solid var(--amb);border-radius:8px;font-weight:700!important;position:relative;white-space:nowrap;flex-shrink:0}
+.nl-eg:hover{background:var(--ams)}
 
 /* Medium widths (tablets / landscape mobile): compact nav-links so it scrolls
    within its own space rather than pushing Sign out off-screen */
 @media(max-width:1024px){
   .nl{padding:6px 9px;font-size:12px}
-  .nl-xray,.nl-sct{padding:6px 11px}
+  .nl-xray,.nl-sct,.nl-eg{padding:6px 11px}
 }
+
+/* ── EMAIL GUESS FEATURE — page + cards ── */
+.eg-disclaimer{background:var(--ams);border:1px solid var(--amb);border-radius:14px;padding:16px 18px;margin-bottom:24px;display:flex;gap:14px;align-items:flex-start}
+.eg-disclaimer-ic{font-size:22px;flex-shrink:0}
+.eg-disclaimer-tt{font-size:13px;font-weight:700;color:var(--am);margin-bottom:4px}
+.eg-disclaimer-sb{font-size:12px;color:var(--t2);line-height:1.6}
+
+.eg-card{background:var(--bg2);border:1px solid var(--b1);border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.eg-conf{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;border:2px solid;flex-direction:column}
+.eg-conf-hi{background:var(--gs);color:var(--g);border-color:var(--gb)}
+.eg-conf-md{background:var(--ams);color:var(--am);border-color:var(--amb)}
+.eg-conf-lo{background:var(--bg3);color:var(--t3);border-color:var(--b2)}
+.eg-email{font-size:13px;font-weight:700;color:var(--t1);font-family:monospace;word-break:break-all}
+.eg-pattern{font-size:10px;color:var(--t3);margin-top:2px}
+.eg-actions{display:flex;gap:6px;flex-shrink:0}
+
+.eg-verify-note{background:var(--bg3);border:1px solid var(--b1);border-radius:10px;padding:12px 14px;margin-top:16px;font-size:11px;color:var(--t3);line-height:1.6}
 
 /* ── X-RAY PARSER PAGE ── */
 .xray-hero{background:linear-gradient(135deg,var(--bg2),var(--as));border:1px solid var(--ab);border-radius:20px;padding:32px 28px;margin-bottom:24px;position:relative;overflow:hidden}
@@ -740,6 +759,7 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 @media(max-width:768px){
   .nl-xray{order:-1}
   .nl-sct{order:-1}
+  .nl-eg{order:-1}
   .xray-steps{grid-template-columns:1fr 1fr;gap:8px}
   .xresults-stats{grid-template-columns:repeat(2,1fr)}
   .xray-plat-row{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;padding-bottom:4px}
@@ -759,7 +779,7 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 @media(max-width:480px){
   .nav-links{display:flex!important;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:60vw}
   .nav-links .nl{display:none}
-  .nav-links .nl-xray,.nav-links .nl-sct{display:flex!important;font-size:11px;padding:6px 10px;white-space:nowrap}
+  .nav-links .nl-xray,.nav-links .nl-sct,.nav-links .nl-eg{display:flex!important;font-size:11px;padding:6px 10px;white-space:nowrap}
 }
 
 /* ── GLOBAL MOBILE FIXES ── */
@@ -1160,6 +1180,7 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
         <li class="pc-feat"><span class="pc-feat-i">✓</span>🎯 Resume Scorecard — JD match, LinkedIn URL, PDF, bulk upload</li>
         <li class="pc-feat"><span class="pc-feat-i">✓</span>AI signal score on every profile · Unlimited searches</li>
         <li class="pc-feat"><span class="pc-feat-i">✓</span>📋 X-Ray Results Parser — paste search results → Excel</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>✉️ Email Guess — likely email patterns from name + company (unverified)</li>
         <li class="pc-feat"><span class="pc-feat-i">✓</span>Export shortlist to CSV · 1-day free trial</li>
       </ul>
       <button class="btn-pay" onclick="showAuth()">Start Free Trial — Pay ₹499 via Razorpay</button>
@@ -1574,6 +1595,73 @@ Just paste everything and click Parse below."></textarea>
     </div>
   </div>
 </div>
+<!-- ════════════════════════════════════════
+     EMAIL GUESS PAGE (Unverified Guess Email-ID)
+     ════════════════════════════════════════ -->
+<div class="page-app" id="pageEmailGuess" style="display:none">
+  <div class="app-wrap" style="max-width:900px">
+    <button onclick="goHome()" style="font-size:12px;color:var(--t3);padding:4px 8px;margin-bottom:12px;background:none;border:none;cursor:pointer">← Back to home</button>
+
+    <!-- HERO -->
+    <div class="xray-hero">
+      <div class="xray-hero-badge">✉️ New Feature</div>
+      <h1>Unverified Guess <em>Email-ID</em></h1>
+      <p class="xray-hero-sub">
+        Paste a candidate's LinkedIn profile URL — we'll guess their first and last name from it, you confirm the details are correct, then we generate the most likely email patterns.
+        These are <strong style="color:var(--t1)">educated guesses, not confirmed emails</strong> — always verify before relying on them for outreach.
+      </p>
+    </div>
+
+    <div class="eg-disclaimer">
+      <div class="eg-disclaimer-ic">⚠️</div>
+      <div>
+        <div class="eg-disclaimer-tt">These are unverified guesses — not confirmed, real email addresses</div>
+        <div class="eg-disclaimer-sb">We don't have access to any company's actual employee directory or a verified email database. What we generate are <strong style="color:var(--t1)">pattern-based predictions</strong> using the same conventions most companies follow (firstname.lastname@, flastname@, etc.) — the same starting point used by tools like Hunter.io or Apollo before their own verification step. We do not claim these emails exist, are active, or are deliverable. Always verify independently before using these for outreach — sending to a wrong address can bounce or reach the wrong person.</div>
+      </div>
+    </div>
+
+    <!-- STEP 1: Paste LinkedIn URL -->
+    <div class="sbox show" id="egStep1" style="margin-bottom:20px">
+      <div class="fl" style="margin-bottom:8px">Step 1 — LinkedIn Profile URL</div>
+      <div class="li-row">
+        <div class="li-input-wrap">
+          <span class="li-icon">in</span>
+          <input class="li-input" id="egLiUrl" type="url" placeholder="https://linkedin.com/in/ravi-kumar-java-developer">
+        </div>
+      </div>
+      <div class="sct-hint" style="margin-bottom:14px">💡 We'll guess the first and last name from the URL — you'll get a chance to fix it on the next screen before anything is generated. LinkedIn URLs never contain a company name, so you'll need to enter that yourself.</div>
+      <button class="btn-sct-analyze" onclick="parseEgLinkedInUrl()">→ Continue</button>
+    </div>
+
+    <!-- STEP 2: Confirm parsed details -->
+    <div class="sbox" id="egStep2" style="margin-bottom:20px;display:none">
+      <div class="fl" style="margin-bottom:8px">Step 2 — Confirm these details are correct</div>
+      <div style="background:var(--ams);border:1px solid var(--amb);border-radius:10px;padding:10px 12px;margin-bottom:14px;font-size:11px;color:var(--t2);display:flex;gap:8px;align-items:flex-start">
+        <span style="flex-shrink:0">👀</span>
+        <span>We guessed the name from the LinkedIn URL — this can be wrong (URLs sometimes use nicknames, middle names, or unrelated slugs). Please check the actual LinkedIn profile and correct anything below before continuing.</span>
+      </div>
+      <div class="jd-row">
+        <div>
+          <div class="fl" style="margin-bottom:6px">First Name</div>
+          <input class="fi" id="egFirstName" type="text" placeholder="e.g. Ravi">
+        </div>
+        <div>
+          <div class="fl" style="margin-bottom:6px">Last Name</div>
+          <input class="fi" id="egLastName" type="text" placeholder="e.g. Kumar">
+        </div>
+      </div>
+      <div class="fl" style="margin-bottom:6px">Company Name or Domain</div>
+      <input class="fi" id="egCompanyConfirm" type="text" placeholder="e.g. Infosys or infosys.com" style="margin-bottom:14px">
+      <div style="display:flex;gap:10px">
+        <button class="btn-sct-analyze" style="flex:1;background:var(--bg3);color:var(--t2);border:1.5px solid var(--b2)" onclick="backToEgStep1()">← Back</button>
+        <button class="btn-sct-analyze" style="flex:2" onclick="confirmAndGenerateEmailGuesses()">✓ Confirm & Generate Email Guesses</button>
+      </div>
+    </div>
+
+    <div id="egResults"></div>
+
+  </div>
+</div>
 
 <!-- ════════════════════════════════════════
      ADMIN PAGE
@@ -1964,6 +2052,7 @@ Just paste everything and click Parse below."></textarea>
           <li class="pc-feat"><span class="pc-feat-i">✓</span>All 19 platforms incl. Package Maintainer Finder, Hugging Face, Target Company Sourcing</li>
           <li class="pc-feat"><span class="pc-feat-i">✓</span>GCC Hunt + Tenure + Passive + Hidden Talent</li>
           <li class="pc-feat"><span class="pc-feat-i">✓</span>📋 X-Ray Results Parser — paste search results → Excel</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>✉️ Email Guess — likely email patterns from name + company (unverified)</li>
           <li class="pc-feat"><span class="pc-feat-i">✓</span>Unlimited searches per day</li>
           <li class="pc-feat"><span class="pc-feat-i">✓</span>Export shortlist to CSV</li>
           <li class="pc-feat"><span class="pc-feat-i">✓</span>AI signal score on every profile</li>
@@ -2022,8 +2111,8 @@ function toggleTheme(){
 
 // ── NAVIGATION ────────────────────────────────────────
 function showPage(id){
-  const displays={pageHome:'block',pageApp:'block',pageAuth:'flex',pageAdmin:'block',pageAdmin404:'flex',pageXray:'block'};
-  ['pageHome','pageApp','pageAuth','pageAdmin','pageAdmin404','pageXray'].forEach(p=>{
+  const displays={pageHome:'block',pageApp:'block',pageAuth:'flex',pageAdmin:'block',pageAdmin404:'flex',pageXray:'block',pageEmailGuess:'block'};
+  ['pageHome','pageApp','pageAuth','pageAdmin','pageAdmin404','pageXray','pageEmailGuess'].forEach(p=>{
     const el=document.getElementById(p);
     if(el)el.style.display='none';
   });
@@ -2055,6 +2144,20 @@ function showXrayPage(){
   }
   openMod('prMod');
 }
+function showEmailGuessPage(){
+  // Unverified Guess Email-ID is a Pro-only feature — locked for Trial / Expired users
+  if(S.isAdmin || S.plan==='pro'){
+    showPage('pageEmailGuess');updateNavLinks(!!S.user);
+    return;
+  }
+  if(!S.user){ showAuth(); return; }
+  const tn=document.getElementById('tnote');
+  if(tn){
+    tn.style.display='flex';
+    tn.innerHTML='🔒 Unverified Guess Email-ID is a Pro feature. Upgrade to ₹499/30 days to unlock.';
+  }
+  openMod('prMod');
+}
 function showAdminPage(){showPage('pageAdmin');updateNavLinks(true);loadAdmOverview();}
 function scrollToSection(sel){
   if(document.getElementById('pageHome').style.display==='none'||document.getElementById('pageHome').style.display===''){
@@ -2073,6 +2176,7 @@ function updateNavLinks(loggedIn){
       <div class="nl" onclick="showPricing()">Pricing</div>
       <div class="nl nl-xray" onclick="showXrayPage()">📋 X-Ray Parser${(S.isAdmin||S.plan==='pro')?'':' 🔒'}</div>
       <div class="nl nl-sct" onclick="showScoreCard()">🎯 Resume Scorecard</div>
+      <div class="nl nl-eg" onclick="showEmailGuessPage()">✉️ Email Guess${(S.isAdmin||S.plan==='pro')?'':' 🔒'}</div>
       ${S.isAdmin?'<div class="nl" onclick="showAdminPage()">⚙️ Admin</div>':''}`;
   } else {
     nl.innerHTML=`
@@ -2612,6 +2716,134 @@ function showScoreCard(){
     if(panel) panel.scrollIntoView({behavior:'smooth', block:'start'});
   }, 80);
 }
+// ── UNVERIFIED GUESS EMAIL-ID ──────────────────────────
+
+// Extract probable first/last name from a LinkedIn URL slug
+function nameFromLinkedInUrl(url){
+  const urlParts = url.replace('https://','').replace('http://','').replace('www.','').split('/');
+  const slug = urlParts.find(p=>p && p!=='linkedin.com' && p!=='in') || '';
+  // Drop trailing numeric/hex IDs (common in LinkedIn slugs, e.g. -a1b2c3d4)
+  const words = slug.split('-').filter(w=>w && !/^[a-f0-9]{6,}$/.test(w) && !/^\d+$/.test(w));
+  const cap = w => w.charAt(0).toUpperCase()+w.slice(1).toLowerCase();
+  return {
+    first: words[0] ? cap(words[0]) : '',
+    last: words.length>1 ? cap(words[words.length-1]) : ''
+  };
+}
+
+// Step 1 -> Step 2: parse the URL, pre-fill the confirm fields
+function parseEgLinkedInUrl(){
+  const url = document.getElementById('egLiUrl').value.trim();
+  if(!url){toast('Please paste a LinkedIn URL first');return;}
+  if(!url.includes('linkedin.com/')){toast('That doesn\'t look like a LinkedIn URL');return;}
+  const {first, last} = nameFromLinkedInUrl(url);
+  document.getElementById('egFirstName').value = first;
+  document.getElementById('egLastName').value = last;
+  document.getElementById('egCompanyConfirm').value = '';
+  document.getElementById('egStep1').style.display = 'none';
+  document.getElementById('egStep2').style.display = 'block';
+  document.getElementById('egResults').innerHTML = '';
+  document.getElementById('egStep2').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function backToEgStep1(){
+  document.getElementById('egStep2').style.display = 'none';
+  document.getElementById('egStep1').style.display = 'block';
+}
+
+// Turn "Infosys" or "infosys.com" or "https://infosys.com" into a clean
+// guessed domain. If it already looks like a domain, use it as-is.
+function guessDomainFromCompany(input){
+  let v = input.trim().toLowerCase();
+  v = v.replace(/^https?:\/\//,'').replace(/^www\./,'').split('/')[0];
+  if(v.includes('.')) return v; // already looks like a domain
+  // Strip common suffixes/spaces, append .com as the most common default
+  const clean = v.replace(/[^a-z0-9]/g,'');
+  return clean ? clean + '.com' : '';
+}
+
+// Generate likely email patterns for a name + domain, each tagged with a
+// rough confidence level based on how common that pattern is in practice.
+function generateEmailPatterns(firstName, lastName, domain){
+  const first = (firstName||'').trim().toLowerCase().replace(/[^a-z]/g,'');
+  const last = (lastName||'').trim().toLowerCase().replace(/[^a-z]/g,'');
+  if(!first || !domain) return [];
+  const fi = first[0] || '';
+  const li = last[0] || '';
+
+  if(!last){
+    // Single-word name — fewer reliable patterns possible
+    return [
+      {email:`${first}@${domain}`, pattern:'firstname@domain', confidence:'md'}
+    ];
+  }
+
+  const patterns = [
+    {email:`${first}.${last}@${domain}`, pattern:'firstname.lastname@domain', confidence:'hi'},
+    {email:`${first}${last}@${domain}`, pattern:'firstnamelastname@domain', confidence:'md'},
+    {email:`${fi}${last}@${domain}`, pattern:'flastname@domain', confidence:'hi'},
+    {email:`${first}.${li}@${domain}`, pattern:'firstname.l@domain', confidence:'md'},
+    {email:`${first}_${last}@${domain}`, pattern:'firstname_lastname@domain', confidence:'lo'},
+    {email:`${first}@${domain}`, pattern:'firstname@domain', confidence:'lo'},
+    {email:`${fi}.${last}@${domain}`, pattern:'f.lastname@domain', confidence:'lo'}
+  ];
+
+  // Dedupe in case first/last produce identical strings
+  const seen = new Set();
+  return patterns.filter(p=>{
+    if(seen.has(p.email)) return false;
+    seen.add(p.email);
+    return true;
+  });
+}
+
+function renderEmailGuesses(firstName, lastName, domain){
+  const el = document.getElementById('egResults');
+  const fullName = [firstName,lastName].filter(Boolean).join(' ');
+  if(!firstName || !domain){
+    el.innerHTML = `<div class="es"><div class="es-ic">✉️</div><div class="es-tt">First name and company are required to generate guesses</div></div>`;
+    return;
+  }
+  const patterns = generateEmailPatterns(firstName, lastName, domain);
+  if(patterns.length === 0){
+    el.innerHTML = `<div class="es"><div class="es-ic">⚠️</div><div class="es-tt">Couldn't generate patterns — check the name and company fields</div></div>`;
+    return;
+  }
+  const confLabel = {hi:'LIKELY', md:'POSSIBLE', lo:'UNLIKELY'};
+  const confClass = {hi:'eg-conf-hi', md:'eg-conf-md', lo:'eg-conf-lo'};
+
+  el.innerHTML = `
+    <div class="rbar"><div>
+      <div class="rtitle">✉️ Guessed Patterns for ${fullName} @ ${domain}</div>
+      <div class="rmeta">${patterns.length} unverified guesses · based on your confirmed details</div>
+    </div></div>
+    ${patterns.map(p=>`
+      <div class="eg-card">
+        <div class="eg-conf ${confClass[p.confidence]}">${confLabel[p.confidence]}</div>
+        <div style="flex:1;min-width:0">
+          <div class="eg-email">${p.email}</div>
+          <div class="eg-pattern">Pattern: ${p.pattern}</div>
+        </div>
+        <div class="eg-actions">
+          <button class="bxo" style="background:var(--bg3);color:var(--t2);border-color:var(--b2)" onclick="navigator.clipboard.writeText('${p.email}').then(()=>toast('Copied! ✓'))">📋 Copy</button>
+        </div>
+      </div>`).join('')}
+    <div class="eg-verify-note">
+      💡 <strong style="color:var(--t2)">Before relying on any of these:</strong> verify via a tool like Hunter.io, or send a low-stakes test email and check for a bounce. "LIKELY" patterns (firstname.lastname@, flastname@) are the most common conventions across Indian and global companies, but every company is different — some use employee IDs, different separators, or no public email convention at all.
+    </div>`;
+  el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function confirmAndGenerateEmailGuesses(){
+  const first = document.getElementById('egFirstName').value.trim();
+  const last = document.getElementById('egLastName').value.trim();
+  const companyInput = document.getElementById('egCompanyConfirm').value.trim();
+  if(!first){toast('Please enter at least a first name');return;}
+  if(!companyInput){toast('Please enter a company name or domain');return;}
+  const domain = guessDomainFromCompany(companyInput);
+  renderEmailGuesses(first, last, domain);
+}
+
 
 function switchSctTab(tab){
   document.querySelectorAll('.sct-tab').forEach(t=>t.classList.remove('on'));
