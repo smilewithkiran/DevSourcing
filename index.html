@@ -651,12 +651,14 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 .nl-xray{background:linear-gradient(135deg,var(--as),rgba(168,85,247,.08));color:var(--a)!important;border:1px solid var(--ab);border-radius:8px;font-weight:700!important;position:relative;white-space:nowrap;flex-shrink:0}
 .nl-xray:hover{background:var(--as)}
 .nl-xray::after{content:'NEW';position:absolute;top:-6px;right:-6px;background:linear-gradient(135deg,#a855f7,#ec4899);color:#fff;font-size:7px;font-weight:800;padding:1px 5px;border-radius:6px;letter-spacing:.3px}
+.nl-sct{background:linear-gradient(135deg,var(--as),rgba(168,85,247,.08));color:var(--a)!important;border:1px solid var(--ab);border-radius:8px;font-weight:700!important;position:relative;white-space:nowrap;flex-shrink:0}
+.nl-sct:hover{background:var(--as)}
 
 /* Medium widths (tablets / landscape mobile): compact nav-links so it scrolls
    within its own space rather than pushing Sign out off-screen */
 @media(max-width:1024px){
   .nl{padding:6px 9px;font-size:12px}
-  .nl-xray{padding:6px 11px}
+  .nl-xray,.nl-sct{padding:6px 11px}
 }
 
 /* ── X-RAY PARSER PAGE ── */
@@ -737,6 +739,7 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 /* Mobile */
 @media(max-width:768px){
   .nl-xray{order:-1}
+  .nl-sct{order:-1}
   .xray-steps{grid-template-columns:1fr 1fr;gap:8px}
   .xresults-stats{grid-template-columns:repeat(2,1fr)}
   .xray-plat-row{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;padding-bottom:4px}
@@ -756,7 +759,7 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 @media(max-width:480px){
   .nav-links{display:flex!important;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:60vw}
   .nav-links .nl{display:none}
-  .nav-links .nl-xray{display:flex!important;font-size:11px;padding:6px 10px;white-space:nowrap}
+  .nav-links .nl-xray,.nav-links .nl-sct{display:flex!important;font-size:11px;padding:6px 10px;white-space:nowrap}
 }
 
 /* ── GLOBAL MOBILE FIXES ── */
@@ -1279,7 +1282,7 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
     <div class="plat-list" id="platListWrap"></div>
 
     <!-- ── SCORE CARD TOOL ── -->
-    <div style="margin-bottom:20px">
+    <div id="scoreCardPanel" style="margin-bottom:20px">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;cursor:pointer" onclick="toggleScoreTool()">
         <div style="font-size:13px;font-weight:700;color:var(--t2)">🎯 Score Card Tool <span class="sct-badge sct-badge-new">NEW</span></div>
         <button id="sctToggle" style="padding:4px 12px;border-radius:8px;background:var(--bg3);border:1px solid var(--b2);color:var(--t3);font-size:11px;font-weight:600;cursor:pointer;flex-shrink:0">▼ Expand</button>
@@ -1287,11 +1290,7 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
       <div id="sctWrap" class="sct-wrap" style="display:none">
         <!-- TABS -->
         <div class="sct-tabs">
-          <div class="sct-tab on" id="sctTab-jd" onclick="switchSctTab('jd')">
-            <div class="sct-tab-ic">📋</div>
-            <div class="sct-tab-lbl">JD / Skills</div>
-          </div>
-          <div class="sct-tab" id="sctTab-li" onclick="switchSctTab('li')">
+          <div class="sct-tab on" id="sctTab-li" onclick="switchSctTab('li')">
             <div class="sct-tab-ic">💼</div>
             <div class="sct-tab-lbl">LinkedIn URL</div>
           </div>
@@ -1305,29 +1304,8 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
           </div>
         </div>
 
-        <!-- TAB: JD / Key Skills -->
-        <div class="sct-panel on" id="sctPanel-jd">
-          <div class="jd-row">
-            <div>
-              <div class="fl" style="margin-bottom:6px">Job Description or Key Skills</div>
-              <textarea class="jd-ta" id="jdText" placeholder="Paste your JD here...&#10;&#10;e.g. We are looking for a Senior Java Developer with 5+ years experience in Spring Boot, Microservices, REST APIs, AWS. Must have strong system design skills."></textarea>
-              <div class="sct-hint">💡 Paste full JD or just key skills. We extract skills automatically and score candidates.</div>
-            </div>
-            <div>
-              <div class="fl" style="margin-bottom:6px">Candidate Name (optional)</div>
-              <input class="fi" id="jdCandName" type="text" placeholder="e.g. Ravi Kumar" style="margin-bottom:10px">
-              <div class="fl" style="margin-bottom:6px">Current Company (optional)</div>
-              <input class="fi" id="jdCandCompany" type="text" placeholder="e.g. Infosys, TCS, Wipro">
-              <div class="fl" style="margin-bottom:6px;margin-top:10px">Years of Experience</div>
-              <input class="fi" id="jdCandExp" type="number" placeholder="e.g. 5" min="0" max="40">
-            </div>
-          </div>
-          <button class="btn-sct-analyze" onclick="analyzeJD()">🎯 Generate Score Card</button>
-          <div id="jdResult" class="sct-results"></div>
-        </div>
-
         <!-- TAB: LinkedIn URL -->
-        <div class="sct-panel" id="sctPanel-li">
+        <div class="sct-panel on" id="sctPanel-li">
           <div class="fl" style="margin-bottom:8px">LinkedIn Profile URL</div>
           <div class="li-row">
             <div class="li-input-wrap">
@@ -1871,7 +1849,7 @@ Just paste everything and click Parse below."></textarea>
             Score any candidate against a JD. Extracts skills automatically. Shows skill bars, community scores, key insights. Works standalone — no search needed.
           </div>
           <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">
-            ${[['📋 JD / Skills','Paste JD → extract skills → score candidate'],['💼 LinkedIn URL','Paste profile URL → X-Ray + JD score'],['📄 PDF / Word','Upload resume → parse → score vs JD'],['📁 Bulk Upload','Upload folder → rank all candidates']].map(([t,d])=>`
+            ${[['💼 LinkedIn URL','Paste profile URL → X-Ray + JD score'],['📄 PDF / Word','Upload resume → parse → score vs JD'],['📁 Bulk Upload','Upload folder → rank all candidates']].map(([t,d])=>`
             <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:8px;padding:10px">
               <div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:3px">${t}</div>
               <div style="font-size:10px;color:var(--t3)">${d}</div>
@@ -2067,6 +2045,7 @@ function updateNavLinks(loggedIn){
       <div class="nl" onclick="showApp()">🔍 Search</div>
       <div class="nl" onclick="showPricing()">Pricing</div>
       <div class="nl nl-xray" onclick="showXrayPage()">📋 X-Ray Parser${(S.isAdmin||S.plan==='pro')?'':' 🔒'}</div>
+      <div class="nl nl-sct" onclick="showScoreCard()">🎯 Score Card</div>
       ${S.isAdmin?'<div class="nl" onclick="showAdminPage()">⚙️ Admin</div>':''}`;
   } else {
     nl.innerHTML=`
@@ -2591,6 +2570,22 @@ function toggleScoreTool(){
   btn.textContent = open ? '▲ Collapse' : '▼ Expand';
 }
 
+// Jump to the Search page and auto-expand the Score Card panel —
+// lets the nav pill deep-link straight into the tool.
+function showScoreCard(){
+  showApp();
+  setTimeout(()=>{
+    const wrap = document.getElementById('sctWrap');
+    const btn = document.getElementById('sctToggle');
+    if(wrap && wrap.style.display === 'none'){
+      wrap.style.display = 'block';
+      if(btn) btn.textContent = '▲ Collapse';
+    }
+    const panel = document.getElementById('scoreCardPanel') || wrap;
+    if(panel) panel.scrollIntoView({behavior:'smooth', block:'start'});
+  }, 80);
+}
+
 function switchSctTab(tab){
   document.querySelectorAll('.sct-tab').forEach(t=>t.classList.remove('on'));
   document.querySelectorAll('.sct-panel').forEach(p=>p.classList.remove('on'));
@@ -2652,7 +2647,25 @@ function extractSkillsFromJD(jdText){
     'microservices','architecture','design patterns','solid','tdd',
     'android','ios','mobile','backend','frontend','fullstack','full stack',
     '.net','c#','c++','php','laravel','ruby','rails',
-    'blockchain','web3','solidity','security','cybersecurity'
+    'blockchain','web3','solidity','security','cybersecurity',
+    // Talent Acquisition / HR / Recruiting
+    'talent acquisition','recruitment','recruiting','sourcing','it staffing',
+    'rpo','talent solutions','stakeholder management','hiring','headhunting',
+    'gcc hiring','gcc','captive','global capability center','global capability centre',
+    'technical hiring','niche hiring','high-volume hiring','bulk hiring',
+    'client management','vendor management','team leadership','people management',
+    'hr operations','hrbp','employer branding','candidate experience',
+    'ats','workday','greenhouse','lever','successfactors','naukri','linkedin recruiter',
+    'onboarding','offer management','salary negotiation','interview coordination',
+    // Sales / Business / Ops
+    'business development','account management','sales','crm','salesforce',
+    'p&l','revenue growth','client relationship','negotiation','b2b','b2c',
+    'project management','program management','six sigma','process improvement',
+    'operations','supply chain','logistics','procurement','vendor sourcing',
+    // Finance / Marketing
+    'financial analysis','accounting','audit','taxation','compliance',
+    'digital marketing','seo','sem','content marketing','brand management',
+    'market research','product management','product strategy','go-to-market'
   ];
   return allSkills.filter(s => text.includes(s)).slice(0,10);
 }
@@ -2670,6 +2683,10 @@ function scoreCandidateAgainstJD(candidateName, company, exp, skills, jdText){
   const jdExp = extractExpFromJD(jdText);
   const candText = (candidateName + ' ' + company + ' ' + skills.join(' ')).toLowerCase();
 
+  // No recognizable skills in the JD — we have no real basis for a score.
+  // Flag this clearly instead of defaulting to a fabricated 50%.
+  const noSkillSignal = extractedSkills.length === 0;
+
   // Skill match
   let skillHits = 0;
   extractedSkills.forEach(s => {
@@ -2677,7 +2694,7 @@ function scoreCandidateAgainstJD(candidateName, company, exp, skills, jdText){
   });
   const skillPct = extractedSkills.length > 0
     ? Math.round((skillHits/extractedSkills.length)*100)
-    : 50;
+    : null;
 
   // Experience match
   let expScore = 70;
@@ -2701,16 +2718,20 @@ function scoreCandidateAgainstJD(candidateName, company, exp, skills, jdText){
   const community = Math.min(45 + (exp||0)*2 + skillHits*2, 95);
   const leadership = Math.min(40 + (exp||0)*4 + (company?8:0), 95);
 
-  const overall = Math.round(skillPct*0.5 + expScore*0.2 + openSource*0.15 + leadership*0.15);
+  // Without a skill signal, an "Overall Match %" is not meaningful —
+  // don't compute one. The UI shows a low-confidence notice instead.
+  const overall = noSkillSignal
+    ? null
+    : Math.round(skillPct*0.5 + expScore*0.2 + openSource*0.15 + leadership*0.15);
 
   const strengths = [];
   if(skillHits > 0) strengths.push({ic:'🎯', txt:`Matched ${skillHits}/${extractedSkills.length} required skills from JD`});
   if(exp) strengths.push({ic:'📅', txt:`${exp} years experience${jdExp?' — JD requires '+jdExp+'+':''}`});
   if(company) strengths.push({ic:'🏢', txt:`Currently at ${company}`});
-  if(skillPct >= 80) strengths.push({ic:'⚡', txt:`Strong skill alignment with JD`});
+  if(skillPct !== null && skillPct >= 80) strengths.push({ic:'⚡', txt:`Strong skill alignment with JD`});
   if(extractedSkills.length > 0) strengths.push({ic:'🔑', txt:`JD key skills: ${extractedSkills.slice(0,4).join(', ')}`});
 
-  return {skillRows, openSource, community, leadership, overall, strengths, matchedSkills:extractedSkills.filter(s=>candText.includes(s)), allSkills:extractedSkills};
+  return {skillRows, openSource, community, leadership, overall, noSkillSignal, strengths, matchedSkills:extractedSkills.filter(s=>candText.includes(s)), allSkills:extractedSkills};
 }
 
 function showScoreCardFromData(name, company, exp, skills, jdText, avatarText, resultElId){
@@ -2730,11 +2751,17 @@ function showScoreCardFromData(name, company, exp, skills, jdText, avatarText, r
           <div style="font-size:11px;color:var(--t3)">${company?'🏢 '+company+' · ':''}${exp?exp+' years exp':''}${scores.matchedSkills.length?'  ·  Skills matched: '+scores.matchedSkills.slice(0,3).join(', '):''}</div>
         </div>
         <div style="text-align:right;flex-shrink:0">
-          <div style="font-family:'Sora',sans-serif;font-size:28px;font-weight:900;color:var(--a);line-height:1">${scores.overall}%</div>
-          <div style="font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase">Overall Match</div>
+          ${scores.overall===null
+            ? '<div style="font-family:\'Sora\',sans-serif;font-size:18px;font-weight:800;color:var(--am)">N/A</div><div style="font-size:10px;color:var(--am);font-weight:600;text-transform:uppercase">Low Confidence</div>'
+            : `<div style="font-family:'Sora',sans-serif;font-size:28px;font-weight:900;color:var(--a);line-height:1">${scores.overall}%</div><div style="font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase">Overall Match</div>`}
         </div>
       </div>
       <div style="padding:16px 20px">
+        ${scores.noSkillSignal ? `
+        <div style="display:flex;gap:10px;align-items:flex-start;background:var(--ams);border:1px solid var(--amb);border-radius:10px;padding:12px 14px;margin-bottom:16px">
+          <span style="font-size:16px;flex-shrink:0">⚠️</span>
+          <div style="font-size:12px;color:var(--t2);line-height:1.6"><strong style="color:var(--t1)">No recognizable skills found in this JD.</strong> This usually happens with non-technical roles, or JDs written in narrative style without a clear skills list. We didn't compute an Overall Match score, since it would not be based on real signal. Try adding a "Required Skills" line with specific keywords (e.g. "IT staffing, RPO, stakeholder management, GCC hiring") for accurate scoring.</div>
+        </div>` : ''}
         <!-- Skill Scores -->
         <div style="font-size:10px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">🎯 Skill Scores (from JD)</div>
         ${scores.skillRows.length > 0 ? scores.skillRows.map(r=>`
@@ -2765,21 +2792,11 @@ function showScoreCardFromData(name, company, exp, skills, jdText, avatarText, r
 
         <!-- Actions -->
         <div style="display:flex;gap:8px;margin-top:14px">
-          <button onclick="navigator.clipboard.writeText('Candidate: ${name}\nOverall Match: ${scores.overall}%\nSkill Scores: ${scores.skillRows.map(r=>r.label+' '+r.score+'/100').join(', ')}\nOpen Source: ${scores.openSource}\nCommunity: ${scores.community}\nLeadership: ${scores.leadership}').then(()=>toast('Score card copied! ✓'))" style="flex:1;padding:10px;border-radius:9px;background:var(--bg2);border:1.5px solid var(--b2);color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">📋 Copy Score Card</button>
-          <button onclick="exportScoreCard('${name}',${scores.overall},'${scores.skillRows.map(r=>r.label+':'+r.score).join(',')}')" style="flex:1;padding:10px;border-radius:9px;background:var(--as);border:1.5px solid var(--ab);color:var(--a);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">⬇ Export</button>
+          <button onclick="navigator.clipboard.writeText('Candidate: ${name}\nOverall Match: ${scores.overall===null?'N/A (no skill signal in JD)':scores.overall+'%'}\nSkill Scores: ${scores.skillRows.map(r=>r.label+' '+r.score+'/100').join(', ')}\nOpen Source: ${scores.openSource}\nCommunity: ${scores.community}\nLeadership: ${scores.leadership}').then(()=>toast('Score card copied! ✓'))" style="flex:1;padding:10px;border-radius:9px;background:var(--bg2);border:1.5px solid var(--b2);color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">📋 Copy Score Card</button>
+          <button onclick="exportScoreCard('${name}',${scores.overall===null?"'N/A'":scores.overall},'${scores.skillRows.map(r=>r.label+':'+r.score).join(',')}')" style="flex:1;padding:10px;border-radius:9px;background:var(--as);border:1.5px solid var(--ab);color:var(--a);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">⬇ Export</button>
         </div>
       </div>
     </div>`;
-}
-
-function analyzeJD(){
-  const name = document.getElementById('jdCandName').value.trim() || 'Candidate';
-  const company = document.getElementById('jdCandCompany').value.trim();
-  const exp = parseInt(document.getElementById('jdCandExp').value) || null;
-  const jdText = document.getElementById('jdText').value.trim();
-  if(!jdText){toast('Please paste a JD or key skills first');return;}
-  const skills = extractSkillsFromJD(jdText);
-  showScoreCardFromData(name, company, exp, skills, jdText, name[0], 'jdResult');
 }
 
 function analyzeLinkedIn(){
