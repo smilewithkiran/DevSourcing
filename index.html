@@ -65,7 +65,7 @@
   "@type": "SoftwareApplication",
   "name": "DevSourcing.in",
   "url": "https://devsourcing.in",
-  "description": "15-platform developer sourcing for Indian recruiters. GitHub, Stack Overflow, Dev.to, GCC Hunt (100+ companies), Passive Finder, Hidden Talent AI expansion, Score Card Tool.",
+  "description": "19-platform developer sourcing for Indian recruiters. GitHub, Stack Overflow, Dev.to, GCC Hunt (100+ companies), Passive Finder, Hidden Talent AI expansion, Resume Scorecard.",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "offers": {
@@ -88,7 +88,7 @@
     "Tenure Targeting — passive candidates",
     "Passive Finder — dormant profiles",
     "Hidden Talent — AI title expansion",
-    "Score Card Tool",
+    "Resume Scorecard",
     "AI signal scoring",
     "CSV export",
     "Indian city filtering"
@@ -1157,7 +1157,7 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
         <li class="pc-feat"><span class="pc-feat-i">✓</span>⏳ Tenure Targeting — 2-6yr passive candidates</li>
         <li class="pc-feat"><span class="pc-feat-i">✓</span>🕵️ Passive Finder — dormant profiles, highest response rate</li>
         <li class="pc-feat"><span class="pc-feat-i">✓</span>🔮 Hidden Talent — AI title expansion, 5x bigger pool</li>
-        <li class="pc-feat"><span class="pc-feat-i">✓</span>🎯 Score Card — JD match, LinkedIn URL, PDF, bulk upload</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>🎯 Resume Scorecard — JD match, LinkedIn URL, PDF, bulk upload</li>
         <li class="pc-feat"><span class="pc-feat-i">✓</span>AI signal score on every profile · Unlimited searches</li>
         <li class="pc-feat"><span class="pc-feat-i">✓</span>📋 X-Ray Results Parser — paste search results → Excel</li>
         <li class="pc-feat"><span class="pc-feat-i">✓</span>Export shortlist to CSV · 1-day free trial</li>
@@ -1284,7 +1284,7 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
     <!-- ── SCORE CARD TOOL ── -->
     <div id="scoreCardPanel" style="margin-bottom:20px">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;cursor:pointer" onclick="toggleScoreTool()">
-        <div style="font-size:13px;font-weight:700;color:var(--t2)">🎯 Score Card Tool <span class="sct-badge sct-badge-new">NEW</span></div>
+        <div style="font-size:13px;font-weight:700;color:var(--t2)">🎯 Resume Scorecard <span class="sct-badge sct-badge-new">NEW</span></div>
         <button id="sctToggle" style="padding:4px 12px;border-radius:8px;background:var(--bg3);border:1px solid var(--b2);color:var(--t3);font-size:11px;font-weight:600;cursor:pointer;flex-shrink:0">▼ Expand</button>
       </div>
       <div id="sctWrap" class="sct-wrap" style="display:none">
@@ -1327,28 +1327,52 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
             <input type="file" accept=".pdf,.doc,.docx" onchange="handleFileSelect(event,'pdf')" multiple>
             <div class="upload-ic">📄</div>
             <div class="upload-tt">Drop PDF or Word resume here</div>
-            <div class="upload-st">or click to browse · .pdf, .doc, .docx · max 5MB each</div>
+            <div class="upload-st">or click to browse · .pdf, .doc, .docx only · max 5MB each · ZIP files not supported</div>
           </div>
           <div id="pdfFileList" class="file-list"></div>
           <div class="fl" style="margin-bottom:8px">Job Description / Skills to score against</div>
           <textarea class="jd-ta" id="pdfJd" placeholder="Paste JD or key skills..." style="min-height:80px"></textarea>
+          <div class="jd-row" style="margin-top:10px">
+            <div>
+              <div class="fl" style="margin-bottom:6px">Key Skills <span style="color:var(--t3);font-weight:400">(optional — helps if JD wording is unclear)</span></div>
+              <input class="fi" id="pdfKeySkills" type="text" placeholder="e.g. IT staffing, stakeholder management, GCC hiring">
+              <div class="sct-hint">💡 Comma-separated. Used together with the JD for scoring — add these if the JD is non-technical or auto-extraction seems off.</div>
+            </div>
+            <div>
+              <div class="fl" style="margin-bottom:6px">Min. Experience (years)</div>
+              <input class="fi" id="pdfMinExp" type="number" placeholder="e.g. 5" min="0" max="40">
+            </div>
+          </div>
           <button class="btn-sct-analyze" onclick="analyzeResumes('pdf')" style="margin-top:12px">📄 Score Resume(s)</button>
+          <div id="pdfParseStatus"></div>
           <div id="pdfResult" class="sct-results"></div>
         </div>
 
         <!-- TAB: Bulk Folder Upload -->
         <div class="sct-panel" id="sctPanel-folder">
-          <div class="fl" style="margin-bottom:8px">Bulk Upload — Multiple Candidate Profiles</div>
+          <div class="fl" style="margin-bottom:8px">Bulk Upload — Multiple Candidate Profiles (no limit)</div>
           <div class="upload-zone" id="folderZone" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleFileDrop(event,'folder')">
             <input type="file" accept=".pdf,.doc,.docx" onchange="handleFileSelect(event,'folder')" multiple webkitdirectory>
             <div class="upload-ic">📁</div>
             <div class="upload-tt">Drop a folder of resumes</div>
-            <div class="upload-st">or click to select multiple files · All PDFs and Word docs scored at once</div>
+            <div class="upload-st">or click to select multiple files · .pdf, .doc, .docx only · ZIP files not supported, select individual files or a folder instead</div>
           </div>
           <div id="folderFileList" class="file-list"></div>
           <div class="fl" style="margin-bottom:8px">Job Description / Key Skills</div>
           <textarea class="jd-ta" id="folderJd" placeholder="Paste your JD or key skills here. All uploaded resumes will be ranked against this..." style="min-height:80px"></textarea>
+          <div class="jd-row" style="margin-top:10px">
+            <div>
+              <div class="fl" style="margin-bottom:6px">Key Skills <span style="color:var(--t3);font-weight:400">(optional — helps if JD wording is unclear)</span></div>
+              <input class="fi" id="folderKeySkills" type="text" placeholder="e.g. IT staffing, stakeholder management, GCC hiring">
+              <div class="sct-hint">💡 Comma-separated. Used together with the JD for scoring — add these if the JD is non-technical or auto-extraction seems off.</div>
+            </div>
+            <div>
+              <div class="fl" style="margin-bottom:6px">Min. Experience (years)</div>
+              <input class="fi" id="folderMinExp" type="number" placeholder="e.g. 5" min="0" max="40">
+            </div>
+          </div>
           <button class="btn-sct-analyze" onclick="analyzeResumes('folder')" style="margin-top:12px">📁 Score All Resumes & Rank</button>
+          <div id="folderParseStatus"></div>
           <div id="folderResult" class="sct-results"></div>
         </div>
       </div>
@@ -1563,7 +1587,7 @@ Just paste everything and click Parse below."></textarea>
         <button class="atb" onclick="swAdmTab('Users',this)">👥 Users</button>
         <button class="atb" onclick="swAdmTab('Plans',this)">💳 Plans</button>
         <button class="atb" onclick="swAdmTab('Features',this)">🚀 Features</button>
-        <button class="atb" onclick="swAdmTab('ScoreCard',this)">🎯 Score Card</button>
+        <button class="atb" onclick="swAdmTab('ScoreCard',this)">🎯 Resume Scorecard</button>
       </div>
     </div>
 
@@ -1636,11 +1660,11 @@ Just paste everything and click Parse below."></textarea>
           </div>
           <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:var(--bg2);border:1px solid var(--b1);border-radius:8px">
             <div style="width:6px;height:6px;border-radius:50%;background:var(--a);flex-shrink:0;margin-top:5px"></div>
-            <div><div style="font-size:12px;font-weight:700;color:var(--t1)">🎯 Score Card Tool</div><div style="font-size:10px;color:var(--t3);margin-top:1px">JD match · LinkedIn URL · PDF upload · Bulk folder scoring</div></div>
+            <div><div style="font-size:12px;font-weight:700;color:var(--t1)">🎯 Resume Scorecard</div><div style="font-size:10px;color:var(--t3);margin-top:1px">JD match · LinkedIn URL · PDF upload · Bulk folder scoring</div></div>
           </div>
           <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:var(--bg2);border:1px solid var(--b1);border-radius:8px">
             <div style="width:6px;height:6px;border-radius:50%;background:var(--a);flex-shrink:0;margin-top:5px"></div>
-            <div><div style="font-size:12px;font-weight:700;color:var(--t1)">📊 Deep Profile Score Card</div><div style="font-size:10px;color:var(--t3);margin-top:1px">Per-card score card with skill bars + community scores + insights</div></div>
+            <div><div style="font-size:12px;font-weight:700;color:var(--t1)">📊 Deep Profile Score Card</div><div style="font-size:10px;color:var(--t3);margin-top:1px">Per-card score with skill bars + community scores + insights (separate from Resume Scorecard)</div></div>
           </div>
           <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:var(--bg2);border:1px solid rgba(6,182,212,.3);border-radius:8px">
             <div style="width:6px;height:6px;border-radius:50%;background:#06b6d4;flex-shrink:0;margin-top:5px"></div>
@@ -1836,12 +1860,12 @@ Just paste everything and click Parse below."></textarea>
           </div>
         </div>
 
-        <!-- Score Card Tool info -->
+        <!-- Resume Scorecard info -->
         <div style="background:var(--bg3);border:1px solid var(--ab);border-radius:14px;padding:18px">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
             <span style="font-size:24px">🎯</span>
             <div>
-              <div style="font-size:14px;font-weight:700;color:var(--a)">Score Card Tool</div>
+              <div style="font-size:14px;font-weight:700;color:var(--a)">Resume Scorecard</div>
               <div style="font-size:11px;color:var(--t3)">4 input modes — JD · LinkedIn · PDF · Bulk folder</div>
             </div>
           </div>
@@ -1897,8 +1921,8 @@ Just paste everything and click Parse below."></textarea>
     <!-- ── SCORE CARD TAB (Admin version) ── -->
     <div id="admTabScoreCard" style="display:none">
       <div style="margin-bottom:14px">
-        <div style="font-size:13px;font-weight:700;color:var(--t1);margin-bottom:4px">🎯 Score Card — Admin Test</div>
-        <p style="font-size:12px;color:var(--t3);margin-bottom:16px">Test the Score Card Tool here. Enter a candidate name, JD and skills to generate a score card.</p>
+        <div style="font-size:13px;font-weight:700;color:var(--t1);margin-bottom:4px">🎯 Resume Scorecard — Admin Test</div>
+        <p style="font-size:12px;color:var(--t3);margin-bottom:16px">Test the Resume Scorecard here. Enter a candidate name, JD and skills to generate a score card.</p>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
         <div>
@@ -1954,6 +1978,9 @@ Just paste everything and click Parse below."></textarea>
 <div class="toast" id="toast"></div>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<!-- Resume Scorecard: real PDF/Word text extraction -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script>
 // ── FIREBASE ─────────────────────────────────────────
 const FBC={apiKey:"AIzaSyBKl8993C4uNJ_ZN3gxMUwHoQVvIsd99Po",authDomain:"devsourcing-50631.firebaseapp.com",databaseURL:"https://devsourcing-50631-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"devsourcing-50631",storageBucket:"devsourcing-50631.firebasestorage.app",messagingSenderId:"903367845391",appId:"1:903367845391:web:deca21962dcd0cffeee57a"};
@@ -2045,7 +2072,7 @@ function updateNavLinks(loggedIn){
       <div class="nl" onclick="showApp()">🔍 Search</div>
       <div class="nl" onclick="showPricing()">Pricing</div>
       <div class="nl nl-xray" onclick="showXrayPage()">📋 X-Ray Parser${(S.isAdmin||S.plan==='pro')?'':' 🔒'}</div>
-      <div class="nl nl-sct" onclick="showScoreCard()">🎯 Score Card</div>
+      <div class="nl nl-sct" onclick="showScoreCard()">🎯 Resume Scorecard</div>
       ${S.isAdmin?'<div class="nl" onclick="showAdminPage()">⚙️ Admin</div>':''}`;
   } else {
     nl.innerHTML=`
@@ -2824,43 +2851,208 @@ function analyzeLinkedIn(){
   showScoreCardFromData(name, 'LinkedIn', null, skills, jdText, name[0], 'liResult');
 }
 
-function analyzeResumes(type){
+// ── REAL RESUME TEXT EXTRACTION (pdf.js for PDF, mammoth.js for Word) ──
+if(typeof pdfjsLib !== 'undefined'){
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+
+async function extractTextFromFile(file){
+  const ext = file.name.split('.').pop().toLowerCase();
+  try{
+    if(ext === 'pdf'){
+      if(typeof pdfjsLib === 'undefined') return {text:'', error:'PDF parser unavailable'};
+      const buf = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({data:buf}).promise;
+      let text = '';
+      for(let i=1;i<=pdf.numPages;i++){
+        const page = await pdf.getPage(i);
+        const content = await page.getTextContent();
+        text += content.items.map(it=>it.str).join(' ') + '\n';
+      }
+      return {text, error:null};
+    } else if(ext === 'docx'){
+      if(typeof mammoth === 'undefined') return {text:'', error:'Word parser unavailable'};
+      const buf = await file.arrayBuffer();
+      const result = await mammoth.extractRawText({arrayBuffer:buf});
+      return {text: result.value, error:null};
+    } else if(ext === 'doc'){
+      // Legacy .doc binary format isn't supported by mammoth (docx-only).
+      // Fall back to filename-based scoring for this file with a clear flag.
+      return {text:'', error:'Legacy .doc format not supported — please re-save as .docx or .pdf'};
+    }
+    return {text:'', error:'Unsupported file type'};
+  } catch(e){
+    return {text:'', error:'Could not read file — it may be corrupted, scanned/image-only, or password-protected'};
+  }
+}
+
+// Try to extract a candidate's name from resume text — look at the first
+// few non-empty lines, prefer ones that look like "Firstname Lastname"
+// (2-3 capitalized words, no digits/symbols, not a common header word).
+function extractNameFromText(text, fallbackFromFilename){
+  const headerWords = /^(resume|curriculum|cv|profile|summary|objective|contact|email|phone|address|linkedin)/i;
+  const lines = text.split('\n').map(l=>l.trim()).filter(Boolean).slice(0,12);
+  for(const line of lines){
+    if(line.length > 40 || line.length < 3) continue;
+    if(headerWords.test(line)) continue;
+    if(/[@\d]/.test(line)) continue; // skip lines with emails/phone numbers
+    const words = line.split(/\s+/).filter(Boolean);
+    if(words.length < 2 || words.length > 4) continue;
+    const looksLikeName = words.every(w => /^[A-Z][a-zA-Z.'-]*$/.test(w) || /^[A-Z]+$/.test(w));
+    if(looksLikeName){
+      return words.slice(0,3).map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join(' ');
+    }
+  }
+  return fallbackFromFilename;
+}
+
+function nameFromFilename(filename){
+  const namePart = filename.replace(/\.(pdf|doc|docx)$/i,'').replace(/[_-]/g,' ').replace(/cv|resume|profile/gi,'').trim();
+  const words = namePart.split(' ').filter(w=>w.length>1 && !/^\d+$/.test(w));
+  return words.slice(0,3).map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join(' ') || 'Candidate';
+}
+
+// Merge JD-extracted skills with manually-entered Key Skills (deduped)
+function mergeKeySkills(jdSkills, keySkillsInput){
+  if(!keySkillsInput) return jdSkills;
+  const manual = keySkillsInput.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);
+  const merged = [...jdSkills];
+  manual.forEach(s=>{ if(s && !merged.includes(s)) merged.push(s); });
+  return merged.slice(0,15);
+}
+
+let lastBulkScored = {pdf:null, folder:null}; // cache for export
+
+async function analyzeResumes(type){
   const files = sctFiles[type];
   const jdText = document.getElementById(type+'Jd').value.trim();
+  const keySkillsInput = document.getElementById(type+'KeySkills')?.value.trim() || '';
+  const minExp = parseInt(document.getElementById(type+'MinExp')?.value) || null;
   const resultEl = document.getElementById(type+'Result');
+  const statusEl = document.getElementById(type+'ParseStatus');
 
   if(files.length === 0){toast('Please upload at least one resume file');return;}
-  if(!jdText){toast('Please paste a JD or key skills');return;}
+  if(!jdText && !keySkillsInput){toast('Please paste a JD or enter Key Skills');return;}
 
-  const skills = extractSkillsFromJD(jdText);
-  let html = `<div style="font-size:12px;font-weight:700;color:var(--t2);margin-top:14px;margin-bottom:10px">📊 Scoring ${files.length} resume${files.length>1?'s':''} against JD...</div>`;
+  const jdSkills = extractSkillsFromJD(jdText || keySkillsInput);
+  const skills = mergeKeySkills(jdSkills, keySkillsInput);
 
-  // Score each file (from filename since we can't parse PDF in browser without lib)
-  const scored = files.map(f=>{
-    const namePart = f.name.replace(/\.(pdf|doc|docx)$/i,'').replace(/[_-]/g,' ').replace(/cv|resume|profile/gi,'').trim();
-    const words = namePart.split(' ').filter(w=>w.length>1);
-    const name = words.slice(0,3).map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join(' ') || 'Candidate';
-    const score = scoreCandidateAgainstJD(name,'',null,skills,jdText);
-    return {name, file:f, score};
-  }).sort((a,b)=>b.score.overall-a.score.overall);
+  if(statusEl) statusEl.innerHTML = `<div class="ls" style="margin-top:14px"><div class="spin"></div>Reading resume ${0}/${files.length}...</div>`;
+  resultEl.innerHTML = '';
 
-  // Show ranked list
+  const scored = [];
+  for(let i=0;i<files.length;i++){
+    const f = files[i];
+    if(statusEl) statusEl.innerHTML = `<div class="ls" style="margin-top:14px"><div class="spin"></div>Reading resume ${i+1}/${files.length} — ${f.name}</div>`;
+
+    const {text, error} = await extractTextFromFile(f);
+    const hasText = text && text.trim().length > 30;
+    const fallbackName = nameFromFilename(f.name);
+    const name = hasText ? extractNameFromText(text, fallbackName) : fallbackName;
+
+    // Prefer experience parsed from the resume itself; fall back to the
+    // Min. Experience field as a floor/expectation if resume parsing fails.
+    const resumeExp = hasText ? extractExpFromJD(text) : null;
+    const exp = resumeExp || minExp;
+
+    const candText = hasText ? text : '';
+    const score = scoreCandidateAgainstJD(name, '', exp, [], (jdText||keySkillsInput) + ' ' + candText);
+    // Re-run skill matching against actual resume text when we have it,
+    // so matches reflect what's really in the file, not just the JD.
+    if(hasText){
+      const lowerText = candText.toLowerCase();
+      const matched = skills.filter(s=>lowerText.includes(s));
+      score.matchedSkills = matched;
+      score.skillRows = skills.slice(0,5).map(s=>({
+        label: s.charAt(0).toUpperCase()+s.slice(1),
+        score: matched.includes(s) ? Math.floor(70+Math.random()*25) : Math.floor(20+Math.random()*20)
+      }));
+      score.overall = skills.length>0
+        ? Math.round((matched.length/skills.length)*70 + (exp?20:0) + 10)
+        : null;
+      score.overall = score.overall!==null ? Math.min(score.overall,99) : null;
+      score.noSkillSignal = skills.length===0;
+    }
+
+    scored.push({name, file:f, score, parseError: error, hasText, minExpMet: minExp ? (exp!==null && exp>=minExp) : null});
+  }
+
+  scored.sort((a,b)=>(b.score.overall??-1)-(a.score.overall??-1));
+  lastBulkScored[type] = {scored, skills, jdText: jdText||keySkillsInput};
+
+  if(statusEl) statusEl.innerHTML = '';
+
+  const parseFailCount = scored.filter(c=>!c.hasText).length;
+  const noSignalCount = scored.filter(c=>c.score.overall===null).length;
+
+  let html = `
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:14px;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:700;color:var(--t2)">📊 Ranked Results — ${files.length} resume${files.length>1?'s':''}</div>
+      <div style="display:flex;gap:6px">
+        <button class="bxo" style="background:var(--gs);color:var(--g);border-color:var(--gb)" onclick="exportBulkScoreCSV('${type}')">⬇ CSV</button>
+        <button class="bxo" style="background:var(--as);color:var(--a);border-color:var(--ab)" onclick="exportBulkScoreExcel('${type}')">⬇ Excel</button>
+      </div>
+    </div>
+    ${parseFailCount>0?`<div style="display:flex;gap:8px;align-items:flex-start;background:var(--ams);border:1px solid var(--amb);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:var(--t2)"><span>⚠️</span><span>${parseFailCount} file${parseFailCount>1?'s':''} could not be read (scanned image, password-protected, legacy .doc, or corrupted) — scored from filename only, treat with caution.</span></div>`:''}`;
+
   html += scored.map((c,i)=>`
-    <div class="sct-result-card" onclick="showScoreCardFromData('${c.name}','',null,${JSON.stringify(skills)},'${jdText.replace(/'/g,"\'")}','${c.name[0]}','${type}Result')">
+    <div class="sct-result-card" onclick="showScoreCardFromData('${c.name.replace(/'/g,"\\'")}','',null,${JSON.stringify(c.score.matchedSkills||skills)},'${(jdText||keySkillsInput).replace(/'/g,"\\'")}','${c.name[0]}','${type}Result')">
       <div style="width:28px;height:28px;border-radius:50%;background:${i===0?'var(--am)':i===1?'var(--bg3)':i===2?'rgba(180,83,9,.2)':'var(--bg3)'};border:1px solid ${i===0?'var(--amb)':'var(--b1)'};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:${i===0?'var(--am)':'var(--t3)'};flex-shrink:0">#${i+1}</div>
       <div class="sct-av">${c.name[0]}</div>
       <div class="sct-info">
-        <div class="sct-name">${c.name}</div>
+        <div class="sct-name">${c.name}${!c.hasText?' <span style="color:var(--am);font-size:10px;font-weight:600">⚠️ unparsed</span>':''}${c.minExpMet===false?' <span style="color:var(--r);font-size:10px;font-weight:600">below min exp</span>':''}</div>
         <div class="sct-sub">${c.file.name} · ${(c.file.size/1024).toFixed(0)}KB · Click for full score card</div>
       </div>
       <div class="sct-score-wrap">
-        <div class="sct-overall">${c.score.overall}%</div>
-        <div class="sct-overall-lbl">Match</div>
+        <div class="sct-overall">${c.score.overall===null?'N/A':c.score.overall+'%'}</div>
+        <div class="sct-overall-lbl">${c.score.overall===null?'Low Confidence':'Match'}</div>
       </div>
     </div>`).join('');
 
   resultEl.innerHTML = html;
-  toast(`✅ Scored ${files.length} resume${files.length>1?'s':''} — ranked by match %`);
+  toast(noSignalCount>0
+    ? `✅ Scored ${files.length} resume${files.length>1?'s':''} — ${noSignalCount} had no skill signal, ${parseFailCount} unparsed`
+    : `✅ Scored ${files.length} resume${files.length>1?'s':''} — ranked by match %`);
+}
+
+function exportBulkScoreCSV(type){
+  const data = lastBulkScored[type];
+  if(!data){toast('No results to export yet');return;}
+  const today = new Date().toLocaleDateString('en-IN');
+  const rows = [['Rank','Name','File','Overall Match %','Matched Skills','Parsed OK','Source File Size (KB)','Exported On']];
+  data.scored.forEach((c,i)=>rows.push([
+    i+1, c.name, c.file.name,
+    c.score.overall===null?'N/A':c.score.overall,
+    (c.score.matchedSkills||[]).join('; '),
+    c.hasText?'Yes':'No',
+    (c.file.size/1024).toFixed(0),
+    today
+  ]));
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = `DevSourcing_ResumeScorecard_${today.replace(/\//g,'-')}.csv`;
+  a.click();
+  toast(`✅ Exported ${data.scored.length} candidates to CSV`);
+}
+
+function exportBulkScoreExcel(type){
+  const data = lastBulkScored[type];
+  if(!data){toast('No results to export yet');return;}
+  const today = new Date().toLocaleDateString('en-IN');
+  let html = '<table border="1"><tr style="background:#dcfce7;font-weight:bold">';
+  ['Rank','Name','File','Overall Match %','Matched Skills','Parsed OK','Source File Size (KB)','Exported On'].forEach(h => html += `<th>${h}</th>`);
+  html += '</tr>';
+  data.scored.forEach((c,i) => {
+    html += `<tr><td>${i+1}</td><td>${c.name}</td><td>${c.file.name}</td><td>${c.score.overall===null?'N/A':c.score.overall}</td><td>${(c.score.matchedSkills||[]).join(', ')}</td><td>${c.hasText?'Yes':'No'}</td><td>${(c.file.size/1024).toFixed(0)}</td><td>${today}</td></tr>`;
+  });
+  html += '</table>';
+  const blob = new Blob(['\ufeff', html], { type: 'application/vnd.ms-excel' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `DevSourcing_ResumeScorecard_${today.replace(/\//g,'-')}.xls`;
+  a.click();
+  toast(`✅ Exported ${data.scored.length} candidates to Excel`);
 }
 
 function exportScoreCard(name, overall, skillsStr){
