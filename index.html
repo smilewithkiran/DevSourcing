@@ -564,8 +564,6 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 .a-tab.on{background:var(--a);color:#080c14}
 .bgoog{width:100%;padding:12px 18px;border-radius:10px;border:1.5px solid var(--b2);background:var(--bg3);color:var(--t1);font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:9px;transition:.15s;margin-bottom:14px}
 .bgoog:hover{border-color:var(--a)}
-.afeats{background:var(--bg3);border:1px solid var(--b1);border-radius:10px;padding:14px;text-align:left;display:flex;flex-direction:column;gap:8px}
-.afeat{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t2)}
 .aterms{font-size:11px;color:var(--t3);margin-top:14px;line-height:1.6}
 .adwarn{background:var(--ams);border:1px solid var(--amb);border-radius:8px;padding:10px 13px;font-size:12px;color:var(--am);margin-bottom:14px;text-align:left}
 .fg{margin-bottom:12px;text-align:left}
@@ -1157,6 +1155,37 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
     </div>
   </section>
 
+  <!-- EMAIL GUESS TEASER -->
+  <section class="signal" id="email-teaser">
+    <div class="sec-hd">
+      <div class="xray-hero-badge" style="margin-bottom:14px">✉️ New Feature</div>
+      <h2>Got a LinkedIn profile? Get likely email patterns.</h2>
+      <p>Paste a LinkedIn URL, confirm the name and company, and we generate the most common email patterns companies actually use — clearly labeled as unverified guesses, never sold to you as confirmed data.</p>
+    </div>
+    <div style="max-width:760px;margin:0 auto">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">
+        <div class="sig-card" style="flex-direction:column;text-align:center;gap:6px">
+          <div style="font-size:24px">💼</div>
+          <div style="font-size:12px;font-weight:700;color:var(--t1)">1. Paste LinkedIn URL</div>
+          <div style="font-size:11px;color:var(--t3)">We guess the name from it</div>
+        </div>
+        <div class="sig-card" style="flex-direction:column;text-align:center;gap:6px">
+          <div style="font-size:24px">✓</div>
+          <div style="font-size:12px;font-weight:700;color:var(--t1)">2. Confirm details</div>
+          <div style="font-size:11px;color:var(--t3)">Fix the name, add the company</div>
+        </div>
+        <div class="sig-card" style="flex-direction:column;text-align:center;gap:6px">
+          <div style="font-size:24px">✉️</div>
+          <div style="font-size:12px;font-weight:700;color:var(--t1)">3. Get patterns</div>
+          <div style="font-size:11px;color:var(--t3)">7 likely guesses, ranked by confidence</div>
+        </div>
+      </div>
+      <div style="text-align:center">
+        <button class="nav-cta nl-eg" style="padding:12px 28px;font-size:14px;display:inline-block" onclick="showEmailGuessPage()">✉️ Try Email Guess →</button>
+      </div>
+    </div>
+  </section>
+
   <!-- PRICING -->
   <section class="pricing" id="pricing">
     <div class="sec-hd">
@@ -1172,7 +1201,7 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
         <li class="pc-feat"><span class="pc-feat-i">✓</span>📦 Package Maintainer Finder — real npm authors + emails</li>
         <li class="pc-feat"><span class="pc-feat-i">✓</span>🤗 Hugging Face — AI/ML/NLP engineers via GitHub crossref</li>
         <li class="pc-feat"><span class="pc-feat-i">✓</span>🎯 Target Company Sourcing — current + past employees of any company</li>
-        <li class="pc-feat"><span class="pc-feat-i">✓</span>🏆 Devfolio + 🧑‍💻 CodeChef — hackathon builders & competitive coders</li>
+        <li class="pc-feat"><span class="pc-feat-i">✓</span>🏆 Devfolio + 🧑‍💻 CodeChef — early-career builders & competitive coders</li>
         <li class="pc-feat"><span class="pc-feat-i">✓</span>🏢 GCC Hunt — 100+ companies (Walmart, JPMorgan, Google...)</li>
         <li class="pc-feat"><span class="pc-feat-i">✓</span>⏳ Tenure Targeting — 2-6yr passive candidates</li>
         <li class="pc-feat"><span class="pc-feat-i">✓</span>🕵️ Passive Finder — dormant profiles, highest response rate</li>
@@ -1219,18 +1248,12 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
         <span style="font-family:'Sora',sans-serif;font-weight:800;font-size:18px">Dev<em style="font-style:normal;color:var(--a)">Sourcing</em><span style="color:var(--t3);font-weight:400;font-size:18px;letter-spacing:-.3px">.in</span></span>
       </div>
       <div class="a-h">Find developers everywhere</div>
-      <p class="a-s">Real profiles from GitHub, Stack Overflow, Dev.to and 7 more platforms. Built for Indian recruiters.</p>
+      <p class="a-s">Built for Indian recruiters.</p>
       <div id="authG">
         <button class="bgoog" onclick="handleGoogleLogin()">
           <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/><path fill="#34A853" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2.04c-.72.48-1.63.77-2.7.77-2.08 0-3.84-1.41-4.47-3.29H1.83v2.07A8 8 0 0 0 8.98 17z"/><path fill="#FBBC05" d="M4.51 10.5A4.78 4.78 0 0 1 4.27 9c0-.52.09-1.03.24-1.5V5.43H1.83A8.01 8.01 0 0 0 .98 9c0 1.29.31 2.51.85 3.57l2.68-2.07z"/><path fill="#EA4335" d="M8.98 3.21c1.17 0 2.22.4 3.05 1.2l2.28-2.28A8 8 0 0 0 1.83 5.43L4.5 7.5C5.14 5.62 6.9 3.21 8.98 3.21z"/></svg>
           Continue with Google
         </button>
-        <div class="afeats">
-          <div class="afeat"><span style="color:var(--g)">✓</span> 1-day free trial — all platforms</div>
-          <div class="afeat"><span style="color:var(--g)">✓</span> Real profiles from GitHub, SO, Dev.to live APIs</div>
-          <div class="afeat"><span style="color:var(--g)">✓</span> AI signal score on every developer</div>
-          <div class="afeat"><span style="color:var(--g)">✓</span> Export shortlist to CSV</div>
-        </div>
         <p class="aterms">₹499 / 30 days after trial. Pay via Razorpay (UPI, card, netbanking).</p>
       </div>
       <div style="margin-top:14px;text-align:center">
@@ -1292,7 +1315,6 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
     </div>
 
     <div class="cat-pills">
-      <button class="cat-pill on" onclick="setCat('all',this)">All platforms</button>
       <button class="cat-pill" onclick="setCat('live',this)">Live APIs</button>
       <button class="cat-pill" onclick="setCat('data',this)">Data & AI</button>
       <button class="cat-pill" onclick="setCat('oss',this)">Code & OSS</button>
@@ -4314,7 +4336,8 @@ function mkPackageCard(p){
 }
 
 // ── PLATFORM LIST RENDERER (categories + recommended banner) ──
-let plActiveCat='all';
+let plActiveCat=null; // no category selected by default
+let plSelectedPlat=null; // the single platform chosen within the active category, if any
 function platIconHTML(id){
   const ic=PM[id].ic;
   return `<span style="font-size:16px">${ic}</span>`;
@@ -4353,14 +4376,28 @@ function renderRecommended(){
 }
 function setCat(cat,btn){
   plActiveCat=cat;
+  plSelectedPlat=null; // re-opening/switching a category always shows its full list again
   document.querySelectorAll('.cat-pill').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
+  // Picking a new category clears any open search box from a previously
+  // selected platform, so the UI doesn't show a stale form.
+  const sb=document.getElementById('sbox');
+  if(sb)sb.classList.remove('show');
+  const rw=document.getElementById('rw');
+  if(rw){rw.classList.remove('show');rw.innerHTML='';}
   renderPlatformList();
 }
 function renderPlatformList(){
   const wrap=document.getElementById('platListWrap');
   if(!wrap)return;
-  const ids=Object.keys(PLAT_META).filter(id=>plActiveCat==='all'||PLAT_META[id].cat===plActiveCat);
+  if(!plActiveCat){
+    wrap.innerHTML=`<div class="es"><div class="es-ic">👇</div><div class="es-tt">Select a category above to see platforms</div></div>`;
+    return;
+  }
+  const allIds=Object.keys(PLAT_META).filter(id=>PLAT_META[id].cat===plActiveCat);
+  // Once a specific platform is chosen within this category, hide its
+  // siblings — only the chosen row stays visible alongside its search form.
+  const ids=plSelectedPlat ? allIds.filter(id=>id===plSelectedPlat) : allIds;
   wrap.innerHTML=ids.map(id=>{
     const m=PLAT_META[id],p=PM[id];
     const on=S.plat===id?'on':'';
@@ -4375,6 +4412,18 @@ function renderPlatformList(){
   }).join('');
 }
 function selPlatFromList(id){
+  // A recommended-banner chip can point to a platform outside the
+  // currently active category — switch category context first if needed.
+  const meta=PLAT_META[id];
+  if(meta && plActiveCat!==meta.cat){
+    plActiveCat=meta.cat;
+    document.querySelectorAll('.cat-pill').forEach(b=>b.classList.remove('on'));
+    const pills=document.querySelectorAll('.cat-pill');
+    const catLabels=['live','data','oss','community','power'];
+    const idx=catLabels.indexOf(meta.cat);
+    if(idx>=0 && pills[idx])pills[idx].classList.add('on');
+  }
+  plSelectedPlat=null;
   renderPlatformList();
   const el=document.querySelector(`.plat-row[data-p="${id}"]`);
   if(el)selPlat(el);
@@ -4382,8 +4431,13 @@ function selPlatFromList(id){
 
 // ── PLATFORM SELECT ───────────────────────────────────
 function selPlat(el){
+  plSelectedPlat=el.dataset.p; // hides sibling rows in the active category
+  renderPlatformList();
+  // Re-query after re-render since renderPlatformList rebuilds the DOM
+  const reEl=document.querySelector(`.plat-row[data-p="${el.dataset.p}"]`);
   document.querySelectorAll('.pc, .plat-row').forEach(c=>c.classList.remove('on'));
-  el.classList.add('on');S.plat=el.dataset.p;
+  if(reEl)reEl.classList.add('on');
+  S.plat=el.dataset.p;
   // Show company fields for relevant platforms
   const tenureWrap=document.getElementById('tenureCoWrap');
   if(tenureWrap)tenureWrap.style.display=el.dataset.p==='tenure'?'block':'none';
@@ -4560,6 +4614,7 @@ function renderCards(results,pl,sk,ct){
     <div class="fchips">
       <button class="fc on" onclick="filterC('all',this)">All (${results.length})</button>
       <button class="fc" onclick="filterC('hi',this)">Score 80+ (${hi})</button>
+      <button class="fc" style="margin-left:auto;color:var(--a);border-color:var(--ab);background:var(--as)" onclick="runSearch()">🔄 Load New Batch</button>
     </div>
     <div class="cgrid" id="cgrid">${results.map(pl==='pkgfinder'?mkPackageCard:mkCard).join('')}</div>
     ${sedeHtml||''}`;
