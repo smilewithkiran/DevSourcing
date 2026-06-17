@@ -908,6 +908,8 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
       <div class="nl" onclick="scrollToSection('#platforms')">Platforms</div>
       <div class="nl" onclick="scrollToSection('#how')">How it works</div>
       <div class="nl" onclick="scrollToSection('#pricing')">Pricing</div>
+      <div class="nl" onclick="scrollToSection('#xray-teaser')">X-ray sheet</div>
+      <div class="nl" onclick="scrollToSection('#email-teaser')">Email guess</div>
     </div>
     <div class="nav-r">
       <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme" id="themeBtn">🌙</button>
@@ -1324,103 +1326,6 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 
     <div class="plat-list" id="platListWrap"></div>
 
-    <!-- ── SCORE CARD TOOL ── -->
-    <div id="scoreCardPanel" style="margin-bottom:20px">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;cursor:pointer" onclick="toggleScoreTool()">
-        <div style="font-size:13px;font-weight:700;color:var(--t2)">🎯 Resume Scorecard <span class="sct-badge sct-badge-new">NEW</span></div>
-        <button id="sctToggle" style="padding:4px 12px;border-radius:8px;background:var(--bg3);border:1px solid var(--b2);color:var(--t3);font-size:11px;font-weight:600;cursor:pointer;flex-shrink:0">▼ Expand</button>
-      </div>
-      <div id="sctWrap" class="sct-wrap" style="display:none">
-        <!-- TABS -->
-        <div class="sct-tabs">
-          <div class="sct-tab on" id="sctTab-li" onclick="switchSctTab('li')">
-            <div class="sct-tab-ic">💼</div>
-            <div class="sct-tab-lbl">LinkedIn URL</div>
-          </div>
-          <div class="sct-tab" id="sctTab-pdf" onclick="switchSctTab('pdf')">
-            <div class="sct-tab-ic">📄</div>
-            <div class="sct-tab-lbl">PDF / Word</div>
-          </div>
-          <div class="sct-tab" id="sctTab-folder" onclick="switchSctTab('folder')">
-            <div class="sct-tab-ic">📁</div>
-            <div class="sct-tab-lbl">Bulk Upload</div>
-          </div>
-        </div>
-
-        <!-- TAB: LinkedIn URL -->
-        <div class="sct-panel on" id="sctPanel-li">
-          <div class="fl" style="margin-bottom:8px">LinkedIn Profile URL</div>
-          <div class="li-row">
-            <div class="li-input-wrap">
-              <span class="li-icon">in</span>
-              <input class="li-input" id="liUrl" type="url" placeholder="https://linkedin.com/in/ravi-kumar-java-developer">
-            </div>
-          </div>
-          <div class="fl" style="margin-bottom:8px;margin-top:12px">Job Description / Skills to match against</div>
-          <textarea class="jd-ta" id="liJd" placeholder="Paste JD or key skills to score this LinkedIn candidate against..." style="min-height:80px"></textarea>
-          <div class="sct-hint" style="margin-bottom:12px">💡 We generate X-Ray search queries to find matching profiles and score them against your JD. LinkedIn's API is not publicly available — we use Google X-Ray to surface the profile data.</div>
-          <button class="btn-sct-analyze" onclick="analyzeLinkedIn()">💼 Score LinkedIn Profile</button>
-          <div id="liResult" class="sct-results"></div>
-        </div>
-
-        <!-- TAB: PDF / Word upload -->
-        <div class="sct-panel" id="sctPanel-pdf">
-          <div class="fl" style="margin-bottom:8px">Upload Resume (PDF or Word)</div>
-          <div class="upload-zone" id="pdfZone" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleFileDrop(event,'pdf')">
-            <input type="file" accept=".pdf,.doc,.docx" onchange="handleFileSelect(event,'pdf')" multiple>
-            <div class="upload-ic">📄</div>
-            <div class="upload-tt">Drop PDF or Word resume here</div>
-            <div class="upload-st">or click to browse · .pdf, .doc, .docx only · max 5MB each · ZIP files not supported</div>
-          </div>
-          <div id="pdfFileList" class="file-list"></div>
-          <div class="fl" style="margin-bottom:8px">Job Description / Skills to score against</div>
-          <textarea class="jd-ta" id="pdfJd" placeholder="Paste JD or key skills..." style="min-height:80px"></textarea>
-          <div class="jd-row" style="margin-top:10px">
-            <div>
-              <div class="fl" style="margin-bottom:6px">Key Skills <span style="color:var(--t3);font-weight:400">(optional — helps if JD wording is unclear)</span></div>
-              <input class="fi" id="pdfKeySkills" type="text" placeholder="e.g. IT staffing, stakeholder management, GCC hiring">
-              <div class="sct-hint">💡 Comma-separated. Used together with the JD for scoring — add these if the JD is non-technical or auto-extraction seems off.</div>
-            </div>
-            <div>
-              <div class="fl" style="margin-bottom:6px">Min. Experience (years)</div>
-              <input class="fi" id="pdfMinExp" type="number" placeholder="e.g. 5" min="0" max="40">
-            </div>
-          </div>
-          <button class="btn-sct-analyze" onclick="analyzeResumes('pdf')" style="margin-top:12px">📄 Score Resume(s)</button>
-          <div id="pdfParseStatus"></div>
-          <div id="pdfResult" class="sct-results"></div>
-        </div>
-
-        <!-- TAB: Bulk Folder Upload -->
-        <div class="sct-panel" id="sctPanel-folder">
-          <div class="fl" style="margin-bottom:8px">Bulk Upload — Multiple Candidate Profiles (no limit)</div>
-          <div class="upload-zone" id="folderZone" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleFileDrop(event,'folder')">
-            <input type="file" accept=".pdf,.doc,.docx" onchange="handleFileSelect(event,'folder')" multiple webkitdirectory>
-            <div class="upload-ic">📁</div>
-            <div class="upload-tt">Drop a folder of resumes</div>
-            <div class="upload-st">or click to select multiple files · .pdf, .doc, .docx only · ZIP files not supported, select individual files or a folder instead</div>
-          </div>
-          <div id="folderFileList" class="file-list"></div>
-          <div class="fl" style="margin-bottom:8px">Job Description / Key Skills</div>
-          <textarea class="jd-ta" id="folderJd" placeholder="Paste your JD or key skills here. All uploaded resumes will be ranked against this..." style="min-height:80px"></textarea>
-          <div class="jd-row" style="margin-top:10px">
-            <div>
-              <div class="fl" style="margin-bottom:6px">Key Skills <span style="color:var(--t3);font-weight:400">(optional — helps if JD wording is unclear)</span></div>
-              <input class="fi" id="folderKeySkills" type="text" placeholder="e.g. IT staffing, stakeholder management, GCC hiring">
-              <div class="sct-hint">💡 Comma-separated. Used together with the JD for scoring — add these if the JD is non-technical or auto-extraction seems off.</div>
-            </div>
-            <div>
-              <div class="fl" style="margin-bottom:6px">Min. Experience (years)</div>
-              <input class="fi" id="folderMinExp" type="number" placeholder="e.g. 5" min="0" max="40">
-            </div>
-          </div>
-          <button class="btn-sct-analyze" onclick="analyzeResumes('folder')" style="margin-top:12px">📁 Score All Resumes & Rank</button>
-          <div id="folderParseStatus"></div>
-          <div id="folderResult" class="sct-results"></div>
-        </div>
-      </div>
-    </div>
-
 <div class="sbox" id="sbox">
       <div class="spbar">
         <span class="sp-ic" id="spIc"></span>
@@ -1681,6 +1586,111 @@ Just paste everything and click Parse below."></textarea>
     </div>
 
     <div id="egResults"></div>
+
+  </div>
+</div>
+<!-- ════════════════════════════════════════
+     RESUME SCORECARD PAGE
+     ════════════════════════════════════════ -->
+<div class="page-app" id="pageResumeScorecard" style="display:none">
+  <div class="app-wrap" style="max-width:900px">
+    <button onclick="goHome()" style="font-size:12px;color:var(--t3);padding:4px 8px;margin-bottom:12px;background:none;border:none;cursor:pointer">← Back to home</button>
+
+    <!-- HERO -->
+    <div class="xray-hero">
+      <div class="xray-hero-badge">🎯 Resume Scorecard</div>
+      <h1>Score candidates <em>against any JD</em></h1>
+      <p class="xray-hero-sub">
+        Paste a LinkedIn URL, upload a resume, or score a whole folder at once — we extract real text, match it against your job description, and rank everyone with a clear, honest score.
+      </p>
+    </div>
+
+    <div class="sct-tabs">
+      <div class="sct-tab on" id="sctTab-li" onclick="switchSctTab('li')">
+        <div class="sct-tab-ic">💼</div>
+        <div class="sct-tab-lbl">LinkedIn URL</div>
+      </div>
+      <div class="sct-tab" id="sctTab-pdf" onclick="switchSctTab('pdf')">
+        <div class="sct-tab-ic">📄</div>
+        <div class="sct-tab-lbl">PDF / Word</div>
+      </div>
+      <div class="sct-tab" id="sctTab-folder" onclick="switchSctTab('folder')">
+        <div class="sct-tab-ic">📁</div>
+        <div class="sct-tab-lbl">Bulk Upload</div>
+      </div>
+    </div>
+
+    <!-- TAB: LinkedIn URL -->
+    <div class="sct-panel on" id="sctPanel-li">
+      <div class="fl" style="margin-bottom:8px">LinkedIn Profile URL</div>
+      <div class="li-row">
+        <div class="li-input-wrap">
+          <span class="li-icon">in</span>
+          <input class="li-input" id="liUrl" type="url" placeholder="https://linkedin.com/in/ravi-kumar-java-developer">
+        </div>
+      </div>
+      <div class="fl" style="margin-bottom:8px;margin-top:12px">Job Description / Skills to match against</div>
+      <textarea class="jd-ta" id="liJd" placeholder="Paste JD or key skills to score this LinkedIn candidate against..." style="min-height:80px"></textarea>
+      <div class="sct-hint" style="margin-bottom:12px">💡 We generate X-Ray search queries to find matching profiles and score them against your JD. LinkedIn's API is not publicly available — we use Google X-Ray to surface the profile data.</div>
+      <button class="btn-sct-analyze" onclick="analyzeLinkedIn()">💼 Score LinkedIn Profile</button>
+      <div id="liResult" class="sct-results"></div>
+    </div>
+
+    <!-- TAB: PDF / Word upload -->
+    <div class="sct-panel" id="sctPanel-pdf">
+      <div class="fl" style="margin-bottom:8px">Upload Resume (PDF or Word)</div>
+      <div class="upload-zone" id="pdfZone" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleFileDrop(event,'pdf')">
+        <input type="file" accept=".pdf,.doc,.docx" onchange="handleFileSelect(event,'pdf')" multiple>
+        <div class="upload-ic">📄</div>
+        <div class="upload-tt">Drop PDF or Word resume here</div>
+        <div class="upload-st">or click to browse · .pdf, .doc, .docx only · max 5MB each · ZIP files not supported</div>
+      </div>
+      <div id="pdfFileList" class="file-list"></div>
+      <div class="fl" style="margin-bottom:8px">Job Description / Skills to score against</div>
+      <textarea class="jd-ta" id="pdfJd" placeholder="Paste JD or key skills..." style="min-height:80px"></textarea>
+      <div class="jd-row" style="margin-top:10px">
+        <div>
+          <div class="fl" style="margin-bottom:6px">Key Skills <span style="color:var(--t3);font-weight:400">(optional — helps if JD wording is unclear)</span></div>
+          <input class="fi" id="pdfKeySkills" type="text" placeholder="e.g. IT staffing, stakeholder management, GCC hiring">
+          <div class="sct-hint">💡 Comma-separated. Used together with the JD for scoring — add these if the JD is non-technical or auto-extraction seems off.</div>
+        </div>
+        <div>
+          <div class="fl" style="margin-bottom:6px">Min. Experience (years)</div>
+          <input class="fi" id="pdfMinExp" type="number" placeholder="e.g. 5" min="0" max="40">
+        </div>
+      </div>
+      <button class="btn-sct-analyze" onclick="analyzeResumes('pdf')" style="margin-top:12px">📄 Score Resume(s)</button>
+      <div id="pdfParseStatus"></div>
+      <div id="pdfResult" class="sct-results"></div>
+    </div>
+
+    <!-- TAB: Bulk Folder Upload -->
+    <div class="sct-panel" id="sctPanel-folder">
+      <div class="fl" style="margin-bottom:8px">Bulk Upload — Multiple Candidate Profiles (no limit)</div>
+      <div class="upload-zone" id="folderZone" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleFileDrop(event,'folder')">
+        <input type="file" accept=".pdf,.doc,.docx" onchange="handleFileSelect(event,'folder')" multiple webkitdirectory>
+        <div class="upload-ic">📁</div>
+        <div class="upload-tt">Drop a folder of resumes</div>
+        <div class="upload-st">or click to select multiple files · .pdf, .doc, .docx only · ZIP files not supported, select individual files or a folder instead</div>
+      </div>
+      <div id="folderFileList" class="file-list"></div>
+      <div class="fl" style="margin-bottom:8px">Job Description / Key Skills</div>
+      <textarea class="jd-ta" id="folderJd" placeholder="Paste your JD or key skills here. All uploaded resumes will be ranked against this..." style="min-height:80px"></textarea>
+      <div class="jd-row" style="margin-top:10px">
+        <div>
+          <div class="fl" style="margin-bottom:6px">Key Skills <span style="color:var(--t3);font-weight:400">(optional — helps if JD wording is unclear)</span></div>
+          <input class="fi" id="folderKeySkills" type="text" placeholder="e.g. IT staffing, stakeholder management, GCC hiring">
+          <div class="sct-hint">💡 Comma-separated. Used together with the JD for scoring — add these if the JD is non-technical or auto-extraction seems off.</div>
+        </div>
+        <div>
+          <div class="fl" style="margin-bottom:6px">Min. Experience (years)</div>
+          <input class="fi" id="folderMinExp" type="number" placeholder="e.g. 5" min="0" max="40">
+        </div>
+      </div>
+      <button class="btn-sct-analyze" onclick="analyzeResumes('folder')" style="margin-top:12px">📁 Score All Resumes & Rank</button>
+      <div id="folderParseStatus"></div>
+      <div id="folderResult" class="sct-results"></div>
+    </div>
 
   </div>
 </div>
@@ -2133,8 +2143,8 @@ function toggleTheme(){
 
 // ── NAVIGATION ────────────────────────────────────────
 function showPage(id){
-  const displays={pageHome:'block',pageApp:'block',pageAuth:'flex',pageAdmin:'block',pageAdmin404:'flex',pageXray:'block',pageEmailGuess:'block'};
-  ['pageHome','pageApp','pageAuth','pageAdmin','pageAdmin404','pageXray','pageEmailGuess'].forEach(p=>{
+  const displays={pageHome:'block',pageApp:'block',pageAuth:'flex',pageAdmin:'block',pageAdmin404:'flex',pageXray:'block',pageEmailGuess:'block',pageResumeScorecard:'block'};
+  ['pageHome','pageApp','pageAuth','pageAdmin','pageAdmin404','pageXray','pageEmailGuess','pageResumeScorecard'].forEach(p=>{
     const el=document.getElementById(p);
     if(el)el.style.display='none';
   });
@@ -2204,7 +2214,9 @@ function updateNavLinks(loggedIn){
     nl.innerHTML=`
       <div class="nl" onclick="scrollToSection('#platforms')">Platforms</div>
       <div class="nl" onclick="scrollToSection('#how')">How it works</div>
-      <div class="nl" onclick="scrollToSection('#pricing')">Pricing</div>`;
+      <div class="nl" onclick="scrollToSection('#pricing')">Pricing</div>
+      <div class="nl" onclick="scrollToSection('#xray-teaser')">X-ray sheet</div>
+      <div class="nl" onclick="scrollToSection('#email-teaser')">Email guess</div>`;
   }
 }
 
@@ -2715,28 +2727,9 @@ function renderTenure(sk,ct,compType,targetCompany){
 // ── SCORE CARD TOOL ──────────────────────────────────
 const sctFiles = {pdf:[], folder:[]};
 
-function toggleScoreTool(){
-  const wrap = document.getElementById('sctWrap');
-  const btn = document.getElementById('sctToggle');
-  const open = wrap.style.display === 'none';
-  wrap.style.display = open ? 'block' : 'none';
-  btn.textContent = open ? '▲ Collapse' : '▼ Expand';
-}
-
-// Jump to the Search page and auto-expand the Score Card panel —
-// lets the nav pill deep-link straight into the tool.
 function showScoreCard(){
-  showApp();
-  setTimeout(()=>{
-    const wrap = document.getElementById('sctWrap');
-    const btn = document.getElementById('sctToggle');
-    if(wrap && wrap.style.display === 'none'){
-      wrap.style.display = 'block';
-      if(btn) btn.textContent = '▲ Collapse';
-    }
-    const panel = document.getElementById('scoreCardPanel') || wrap;
-    if(panel) panel.scrollIntoView({behavior:'smooth', block:'start'});
-  }, 80);
+  showPage('pageResumeScorecard');
+  updateNavLinks(!!S.user);
 }
 // ── UNVERIFIED GUESS EMAIL-ID ──────────────────────────
 
