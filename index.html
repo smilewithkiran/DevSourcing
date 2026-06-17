@@ -2207,7 +2207,7 @@ function updateNavLinks(loggedIn){
       <div class="nl" onclick="showApp()">🔍 Search</div>
       <div class="nl" onclick="showPricing()">Pricing</div>
       <div class="nl nl-xray" onclick="showXrayPage()">📋 X-Ray Parser${(S.isAdmin||S.plan==='pro')?'':' 🔒'}</div>
-      <div class="nl nl-sct" onclick="showScoreCard()">🎯 Resume Scorecard</div>
+      <div class="nl nl-sct" onclick="showScoreCard()">🎯 Resume Scorecard${hasActiveAccess()?'':' 🔒'}</div>
       <div class="nl nl-eg" onclick="showEmailGuessPage()">✉️ Email Guess${(S.isAdmin||S.plan==='pro')?'':' 🔒'}</div>
       ${S.isAdmin?'<div class="nl" onclick="showAdminPage()">⚙️ Admin</div>':''}`;
   } else {
@@ -2728,8 +2728,20 @@ function renderTenure(sk,ct,compType,targetCompany){
 const sctFiles = {pdf:[], folder:[]};
 
 function showScoreCard(){
-  showPage('pageResumeScorecard');
-  updateNavLinks(!!S.user);
+  // Resume Scorecard: available on Pro and during the 1-day free trial —
+  // locked once the trial ends (same access rule as the Search dashboard).
+  if(canSearch()){
+    showPage('pageResumeScorecard');
+    updateNavLinks(!!S.user);
+    return;
+  }
+  if(!S.user){ showAuth(); return; }
+  const tn=document.getElementById('tnote');
+  if(tn){
+    tn.style.display='flex';
+    tn.innerHTML='🔒 Your free trial has ended. Upgrade to ₹499/30 days to unlock Resume Scorecard.';
+  }
+  openMod('prMod');
 }
 // ── UNVERIFIED GUESS EMAIL-ID ──────────────────────────
 
@@ -4831,6 +4843,14 @@ function canSearch(){
   if(!S.user)return false;
   if(S.isAdmin||S.plan==='pro')return true;
   if(S.plan==='trial'){if(Date.now()>S.user.trialEnd){S.plan='expired';if(S.user.uid&&!S.isAdmin)db.ref('ds_users/'+S.user.uid).update({plan:'expired'});renderNav();return false;}return true;}
+  return false;
+}
+// Read-only version of the same access rule, safe to call from inside a
+// template string (no side effects like flipping S.plan to 'expired').
+function hasActiveAccess(){
+  if(!S.user)return false;
+  if(S.isAdmin||S.plan==='pro')return true;
+  if(S.plan==='trial')return Date.now()<=S.user.trialEnd;
   return false;
 }
 
