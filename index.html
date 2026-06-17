@@ -634,6 +634,7 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
 .badge-smart{background:var(--pus);color:var(--pu)}
 .badge-power{background:var(--ams);color:var(--am)}
 .badge-new{background:var(--pks);color:var(--pk)}
+.badge-ai{background:linear-gradient(135deg,rgba(168,85,247,.15),rgba(236,72,153,.15));color:#c084fc;border:1px solid rgba(168,85,247,.4)}
 .live-dot-sm{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--g);margin-right:2px}
 
 @media(max-width:680px){
@@ -1062,6 +1063,12 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
         <div class="pcard-ic" style="background:#fff7ed;border-radius:6px;font-size:16px;display:flex;align-items:center;justify-content:center">☁️</div>
         <div><div class="pcard-nm">AWS UG</div><div class="pcard-tp">Cloud / DevOps / SA</div></div>
         <div class="pcard-tip"><strong>AWS User Groups</strong>Community leaders, AWS Certified pros and AWS Heroes — strong cloud/DevOps signal.</div>
+      </div>
+      <div class="pcard" style="border-color:rgba(168,85,247,.4)">
+        <div class="smart-badge" style="background:linear-gradient(135deg,rgba(168,85,247,.2),rgba(236,72,153,.2));color:#c084fc;border:1px solid rgba(168,85,247,.4)">NEW</div>
+        <div class="pcard-ic" style="background:rgba(168,85,247,.12);border-radius:6px;font-size:16px;display:flex;align-items:center;justify-content:center">🤖</div>
+        <div><div class="pcard-nm">AI Search</div><div class="pcard-tp">AI-Judged Matches</div></div>
+        <div class="pcard-tip"><strong>AI Search</strong>Claude reads and judges real candidates against your criteria — not just keyword matching. Higher precision, fewer false positives.</div>
       </div>
     </div>
   </section>
@@ -2240,7 +2247,8 @@ const PM={
   tenure:{n:'Tenure Target',ic:'⏳',d:'Passive candidates by company tenure',xr:false},
   passive:{n:'Passive Finder',ic:'🕵️',d:'Inactive LinkedIn profiles — highest response rate',xr:false},
   hidden:{n:'Hidden Talent',ic:'🔮',d:'AI title expansion — 5x bigger talent pool',xr:false},
-  competitor:{n:'Target Company Sourcing',ic:'🎯',d:'Current + past employees of any company — blogs + GitHub + LinkedIn',xr:true}
+  competitor:{n:'Target Company Sourcing',ic:'🎯',d:'Current + past employees of any company — blogs + GitHub + LinkedIn',xr:true},
+  aisearch:{n:'AI Search',ic:'🤖',d:'Claude reads & judges real candidates — not just keyword matching',xr:false}
 };
 
 // ── PLATFORM METADATA — categories, "best for" tags, badges, skill-match keywords ──
@@ -2263,10 +2271,11 @@ const PLAT_META={
   tenure:{cat:'power',best:'Passive, Any Skill',badge:'power',skills:['all']},
   passive:{cat:'power',best:'Passive, Any Skill',badge:'power',skills:['all']},
   hidden:{cat:'power',best:'Any Skill (Expanded Titles)',badge:'power',skills:['all']},
-  competitor:{cat:'power',best:'Current + Past Employees, Any Company',badge:'new',skills:['all']}
+  competitor:{cat:'power',best:'Current + Past Employees, Any Company',badge:'new',skills:['all']},
+  aisearch:{cat:'power',best:'Any Skill — AI-Judged Matches',badge:'ai',skills:['all']}
 };
 const CAT_LABELS={all:'All platforms',live:'Live APIs',data:'Data & AI',oss:'Code & OSS',community:'Community',power:'Power features'};
-const BADGE_LABELS={live:'Live',smart:'Smart',power:'Power',new:'New'};
+const BADGE_LABELS={live:'Live',smart:'Smart',power:'Power',new:'New',ai:'AI'};
 
 
 
@@ -4349,7 +4358,7 @@ function platIconHTML(id){
 }
 function platBadgeHTML(id){
   const meta=PLAT_META[id];if(!meta)return'';
-  const cls={live:'badge-live',smart:'badge-smart',power:'badge-power',new:'badge-new'}[meta.badge]||'badge-smart';
+  const cls={live:'badge-live',smart:'badge-smart',power:'badge-power',new:'badge-new',ai:'badge-ai'}[meta.badge]||'badge-smart';
   return `<span class="plat-row-badge ${cls}">${BADGE_LABELS[meta.badge]}</span>`;
 }
 function matchSkill(skillsArr,query){
@@ -4537,6 +4546,30 @@ async function runSearch(){
     renderCompetitor(sk,ct,competitorCo);
     return;
   }
+  // AI Search — Claude reads and judges real candidates instead of a
+  // boolean keyword match. Calls our Cloudflare Worker proxy (never the
+  // Anthropic API directly — the key must stay server-side).
+  // Pro-only feature with a daily cap, since each search costs real money
+  // (~₹5-10/search via the Anthropic API + web search tool) — unlike every
+  // other platform here, which is free.
+  if(pl==='aisearch'){
+    btn.disabled=false;btn.innerHTML='🔍 Search';
+    const gate=await checkAiSearchAccess();
+    if(!gate.allowed){
+      rw.innerHTML=`<div class="es"><div class="es-ic">🔒</div><div class="es-tt">${gate.title}</div><div style="font-size:12px;color:var(--t3);margin-top:6px;max-width:480px;margin-left:auto;margin-right:auto">${gate.message}</div>${gate.showUpgrade?`<button class="nav-cta" style="margin-top:16px" onclick="openMod('prMod')">Upgrade to Pro — ₹499/30 days</button>`:''}</div>`;
+      return;
+    }
+    rw.innerHTML=`<div class="ls"><div class="spin"></div>🤖 Claude is searching and judging candidates — this takes 10-20 seconds...</div>`;
+    btn.disabled=true;btn.innerHTML='<div class="spin" style="width:14px;height:14px;border-width:2px;margin-right:6px"></div>Searching...';
+    try{
+      await runAiSearch(sk,ct,document.getElementById('iEx')?.value||'');
+      await incrementAiSearchCount();
+    }catch(err){
+      rw.innerHTML=`<div class="err-box">⚠️ <strong>AI Search Error:</strong> ${err.message}</div>`;
+    }
+    btn.disabled=false;btn.innerHTML='🔍 Search';
+    return;
+  }
   if(XRAY[pl]){
     rw.innerHTML=`<div class="ls"><div class="spin"></div>Building Smart Search queries...</div>`;
     await delay(300);btn.disabled=false;btn.innerHTML='🔍 Search';
@@ -4666,10 +4699,159 @@ function renderXray(pl,sk,ct){
   const cfg=XRAY[pl],s=sk||'developer',c=ct||'India';
   if(!cfg){toast('Smart search not available');return;}
   const qs=cfg.gen(s,c);
+  const redditWarning=pl==='reddit'?`<div style="display:flex;gap:10px;align-items:flex-start;background:var(--ams);border:1px solid var(--amb);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:var(--t2);line-height:1.6"><span style="flex-shrink:0">⚠️</span><span><strong style="color:var(--t1)">Low-confidence results expected.</strong> Reddit profiles rarely contain structured professional info (no job title, company, or location fields like LinkedIn) — search engines often return loosely-related posts/comments rather than real matching developers. Treat Reddit results as a long-shot, not a primary source. Consider trying <strong style="color:var(--t1)">🤖 AI Search</strong> instead, which reads and judges results rather than just keyword-matching.</span></div>`:'';
   document.getElementById('rw').innerHTML=`
     <div class="rbar"><div><div class="rtitle">${PM[pl].ic} ${PM[pl].n} — Smart Search</div><div class="rmeta">${qs.length} precision queries · "${s}" · ${c}</div></div></div>
+    ${redditWarning}
     <div class="xql">${qs.map((q,i)=>`<div class="xqc"><div class="xqn">${i+1}</div><div class="xqi"><div class="xql-t">${q.l}</div><div class="xql-q">${q.q}</div></div><button class="bxo" onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(q.q)}','_blank')">🔍 Open</button></div>`).join('')}</div>`;
 }
+// ── AI SEARCH ACCESS CONTROL — Pro-only + daily cap ──
+// Each AI Search costs real money (~₹5-10/search via Anthropic API + web
+// search tool), unlike every other platform here, which is free. So this
+// is gated more strictly than X-Ray Parser / Resume Scorecard / Email Guess.
+const AI_SEARCH_DAILY_LIMIT = 5;
+
+function todayKey(){
+  return new Date().toISOString().slice(0,10); // 'YYYY-MM-DD', UTC-based
+}
+
+async function checkAiSearchAccess(){
+  if(S.isAdmin)return{allowed:true};
+  if(!S.user){
+    return{allowed:false,title:'Sign in required',message:'Please sign in to use AI Search.',showUpgrade:false};
+  }
+  if(S.plan!=='pro'){
+    return{
+      allowed:false,
+      title:'AI Search is a Pro feature',
+      message:'Unlike other platforms here, AI Search costs real money per use (Claude reads and judges live web results). It\'s available on Pro only — upgrade to ₹499/30 days to unlock it.',
+      showUpgrade:true
+    };
+  }
+  // Pro user — check today's usage count from Firebase (server-side,
+  // can't be bypassed by clearing localStorage or refreshing the page).
+  try{
+    const snap=await db.ref('ds_users/'+S.user.uid+'/aiSearch').once('value');
+    const data=snap.val()||{};
+    const used=data.date===todayKey()?(data.count||0):0;
+    if(used>=AI_SEARCH_DAILY_LIMIT){
+      return{
+        allowed:false,
+        title:'Daily AI Search limit reached',
+        message:`You've used all ${AI_SEARCH_DAILY_LIMIT} AI Searches for today. This limit resets at midnight UTC and exists because each search has a real API cost. Other platforms here remain unlimited and free.`,
+        showUpgrade:false
+      };
+    }
+    return{allowed:true,used,remaining:AI_SEARCH_DAILY_LIMIT-used};
+  }catch(e){
+    // If Firebase is unreachable, fail closed (safer than letting unlimited
+    // paid-API calls through) but with a clear, honest message.
+    return{allowed:false,title:'Could not verify usage',message:'We couldn\'t check your daily AI Search usage right now. Please try again in a moment.',showUpgrade:false};
+  }
+}
+
+async function incrementAiSearchCount(){
+  if(S.isAdmin||!S.user)return; // admin usage isn't capped or tracked
+  try{
+    const ref=db.ref('ds_users/'+S.user.uid+'/aiSearch');
+    const snap=await ref.once('value');
+    const data=snap.val()||{};
+    const today=todayKey();
+    const newCount=data.date===today?(data.count||0)+1:1;
+    await ref.set({date:today,count:newCount});
+  }catch(e){
+    // Non-fatal — if this write fails, the user simply isn't capped that
+    // run. Worth checking Firebase rules if this happens often.
+    console.warn('Could not record AI Search usage:',e);
+  }
+}
+
+// ── AI SEARCH — Claude reads & judges real candidates ──
+// IMPORTANT: replace this with your actual deployed Cloudflare Worker URL.
+const AI_SEARCH_WORKER_URL = 'https://devsourcing-ai-search.YOUR-SUBDOMAIN.workers.dev';
+
+async function runAiSearch(sk,ct,ex){
+  const rw=document.getElementById('rw');
+  const body={skill:sk||'developer', city:ct||'India', mode:'general', minExp:ex||null};
+
+  let data;
+  try{
+    const res=await fetch(AI_SEARCH_WORKER_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(body)
+    });
+    if(!res.ok){
+      const errBody=await res.json().catch(()=>({}));
+      throw new Error(errBody.error||`Request failed (${res.status})`);
+    }
+    data=await res.json();
+  }catch(err){
+    if(err.message==='Failed to fetch'){
+      throw new Error('Could not reach the AI Search service. Check your connection, or the worker may not be deployed yet.');
+    }
+    throw err;
+  }
+
+  renderAiSearchResults(data,sk,ct);
+}
+
+function confidenceBadge(conf){
+  const map={
+    high:{cls:'shi',label:'HIGH CONFIDENCE'},
+    medium:{cls:'smd',label:'MEDIUM CONFIDENCE'},
+    low:{cls:'slo',label:'LOW CONFIDENCE'}
+  };
+  const c=map[conf]||map.low;
+  return `<span class="sig ${c.cls}" style="font-weight:800">${c.label}</span>`;
+}
+
+function renderAiSearchResults(data,sk,ct){
+  const rw=document.getElementById('rw');
+  const candidates=data.candidates||[];
+
+  if(candidates.length===0){
+    rw.innerHTML=`
+      <div class="es">
+        <div class="es-ic">🤖</div>
+        <div class="es-tt">No confident matches found</div>
+        <div style="font-size:12px;color:var(--t3);margin-top:6px;max-width:480px;margin-left:auto;margin-right:auto">${data.searchSummary||'Claude searched but could not find candidates it was confident about for this combination of skill, location, and criteria. Try broadening the search or a different city.'}</div>
+      </div>`;
+    return;
+  }
+
+  const high=candidates.filter(c=>c.confidence==='high').length;
+  const med=candidates.filter(c=>c.confidence==='medium').length;
+  const low=candidates.filter(c=>c.confidence==='low').length;
+
+  rw.innerHTML=`
+    <div class="rbar"><div>
+      <div class="rtitle">🤖 AI Search — ${sk||'Developer'} · ${ct||'India'}</div>
+      <div class="rmeta">${candidates.length} candidates · ${high} high · ${med} medium · ${low} low confidence</div>
+    </div></div>
+    <div style="background:var(--as);border:1px solid var(--ab);border-radius:10px;padding:12px 14px;margin-bottom:18px;font-size:12px;color:var(--t2);line-height:1.6">
+      <strong style="color:var(--t1)">💡 ${data.searchSummary||'Claude searched the web and judged each candidate against your criteria.'}</strong><br>
+      Always verify independently — Claude's judgment reduces false matches but isn't infallible. Click each source link to confirm.
+    </div>
+    ${candidates.map(c=>`
+      <div class="pfc">
+        <div class="pfh">
+          <div class="pfav">${(c.name||'?')[0].toUpperCase()}</div>
+          <div class="pfbody">
+            <div class="pfnm">${c.name||'Name not confirmed'}</div>
+            <div style="font-size:12px;color:var(--t2);margin-bottom:8px">${[c.role,c.company,c.location].filter(Boolean).join(' · ')||'Details not confirmed from source'}</div>
+            <div class="sigs">
+              ${confidenceBadge(c.confidence)}
+              ${c.sourceUrl?`<span class="sig"><a href="${c.sourceUrl}" target="_blank" style="color:var(--a);text-decoration:none">🔗 View Source</a></span>`:''}
+            </div>
+            ${c.tenureEvidence?`<div style="font-size:11px;color:var(--t3);margin-top:8px;padding:8px 10px;background:var(--bg3);border-radius:8px;border-left:2px solid var(--ab)">📋 Evidence: ${c.tenureEvidence}</div>`:''}
+            ${c.confidenceReason?`<div style="font-size:11px;color:var(--t3);margin-top:6px">ℹ️ ${c.confidenceReason}</div>`:''}
+          </div>
+        </div>
+      </div>`).join('')}
+  `;
+}
+
 
 
 // ── SKILL MATCH % ─────────────────────────────────────
