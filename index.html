@@ -1065,7 +1065,7 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
         <div class="pcard-tip"><strong>AWS User Groups</strong>Community leaders, AWS Certified pros and AWS Heroes — strong cloud/DevOps signal.</div>
       </div>
       <div class="pcard" style="border-color:rgba(168,85,247,.4)">
-        <div class="smart-badge" style="background:linear-gradient(135deg,rgba(168,85,247,.2),rgba(236,72,153,.2));color:#c084fc;border:1px solid rgba(168,85,247,.4)">NEW</div>
+        <div class="smart-badge" style="background:linear-gradient(135deg,rgba(168,85,247,.2),rgba(236,72,153,.2));color:#c084fc;border:1px solid rgba(168,85,247,.4)">COMING SOON</div>
         <div class="pcard-ic" style="background:rgba(168,85,247,.12);border-radius:6px;font-size:16px;display:flex;align-items:center;justify-content:center">🤖</div>
         <div><div class="pcard-nm">AI Search</div><div class="pcard-tp">AI-Judged Matches</div></div>
         <div class="pcard-tip"><strong>AI Search</strong>Claude reads and judges real candidates against your criteria — not just keyword matching. Higher precision, fewer false positives.</div>
@@ -4415,10 +4415,11 @@ function renderPlatformList(){
   wrap.innerHTML=ids.map(id=>{
     const m=PLAT_META[id],p=PM[id];
     const on=S.plat===id?'on':'';
+    const comingSoon=(id==='aisearch'&&!S.isAdmin);
     return `<div class="plat-row ${on}" data-p="${id}" onclick="selPlat(this)">
       <div class="plat-row-ic" style="background:var(--as)">${p.ic}</div>
       <div class="plat-row-info">
-        <div class="plat-row-nm">${p.n}</div>
+        <div class="plat-row-nm">${p.n}${comingSoon?' <span style="font-size:9px;font-weight:800;color:var(--t3);background:var(--bg3);border:1px solid var(--b1);border-radius:5px;padding:2px 6px;margin-left:4px;text-transform:uppercase;letter-spacing:.3px">Coming Soon</span>':''}</div>
         <div class="plat-row-best">${m.best}</div>
       </div>
       ${platBadgeHTML(id)}
@@ -4699,7 +4700,7 @@ function renderXray(pl,sk,ct){
   const cfg=XRAY[pl],s=sk||'developer',c=ct||'India';
   if(!cfg){toast('Smart search not available');return;}
   const qs=cfg.gen(s,c);
-  const redditWarning=pl==='reddit'?`<div style="display:flex;gap:10px;align-items:flex-start;background:var(--ams);border:1px solid var(--amb);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:var(--t2);line-height:1.6"><span style="flex-shrink:0">⚠️</span><span><strong style="color:var(--t1)">Low-confidence results expected.</strong> Reddit profiles rarely contain structured professional info (no job title, company, or location fields like LinkedIn) — search engines often return loosely-related posts/comments rather than real matching developers. Treat Reddit results as a long-shot, not a primary source. Consider trying <strong style="color:var(--t1)">🤖 AI Search</strong> instead, which reads and judges results rather than just keyword-matching.</span></div>`:'';
+  const redditWarning=pl==='reddit'?`<div style="display:flex;gap:10px;align-items:flex-start;background:var(--ams);border:1px solid var(--amb);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:var(--t2);line-height:1.6"><span style="flex-shrink:0">⚠️</span><span><strong style="color:var(--t1)">Low-confidence results expected.</strong> Reddit profiles rarely contain structured professional info (no job title, company, or location fields like LinkedIn) — search engines often return loosely-related posts/comments rather than real matching developers. Treat Reddit results as a long-shot, not a primary source.</span></div>`:'';
   document.getElementById('rw').innerHTML=`
     <div class="rbar"><div><div class="rtitle">${PM[pl].ic} ${PM[pl].n} — Smart Search</div><div class="rmeta">${qs.length} precision queries · "${s}" · ${c}</div></div></div>
     ${redditWarning}
@@ -4717,37 +4718,16 @@ function todayKey(){
 
 async function checkAiSearchAccess(){
   if(S.isAdmin)return{allowed:true};
-  if(!S.user){
-    return{allowed:false,title:'Sign in required',message:'Please sign in to use AI Search.',showUpgrade:false};
-  }
-  if(S.plan!=='pro'){
-    return{
-      allowed:false,
-      title:'AI Search is a Pro feature',
-      message:'Unlike other platforms here, AI Search costs real money per use (Claude reads and judges live web results). It\'s available on Pro only — upgrade to ₹499/30 days to unlock it.',
-      showUpgrade:true
-    };
-  }
-  // Pro user — check today's usage count from Firebase (server-side,
-  // can't be bypassed by clearing localStorage or refreshing the page).
-  try{
-    const snap=await db.ref('ds_users/'+S.user.uid+'/aiSearch').once('value');
-    const data=snap.val()||{};
-    const used=data.date===todayKey()?(data.count||0):0;
-    if(used>=AI_SEARCH_DAILY_LIMIT){
-      return{
-        allowed:false,
-        title:'Daily AI Search limit reached',
-        message:`You've used all ${AI_SEARCH_DAILY_LIMIT} AI Searches for today. This limit resets at midnight UTC and exists because each search has a real API cost. Other platforms here remain unlimited and free.`,
-        showUpgrade:false
-      };
-    }
-    return{allowed:true,used,remaining:AI_SEARCH_DAILY_LIMIT-used};
-  }catch(e){
-    // If Firebase is unreachable, fail closed (safer than letting unlimited
-    // paid-API calls through) but with a clear, honest message.
-    return{allowed:false,title:'Could not verify usage',message:'We couldn\'t check your daily AI Search usage right now. Please try again in a moment.',showUpgrade:false};
-  }
+  // AI Search is paused for all non-admin users while pricing is being
+  // finalized (it has a real per-search API cost, unlike every other
+  // platform here) — Pro users see "Coming Soon" rather than a working
+  // feature, so the pricing decision can be made before this opens up.
+  return{
+    allowed:false,
+    title:'AI Search — Coming Soon',
+    message:'AI Search is being rolled out carefully since, unlike every other platform here, each search has a real cost behind it. It\'s not yet available — check back soon.',
+    showUpgrade:false
+  };
 }
 
 async function incrementAiSearchCount(){
