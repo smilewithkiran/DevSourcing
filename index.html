@@ -1352,7 +1352,7 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
             </div>
           </div>
           <input class="fi" id="iSk" type="text" placeholder="e.g. React, Node.js, AWS" onkeydown="if(event.key==='Enter')runSearch()" oninput="renderRecommended()">
-          <div class="sct-hint" id="skModeHint" style="margin-top:4px">💡 Comma-separated for multiple skills. <strong style="color:var(--t2)">ANY</strong> = candidate has at least one of these (more results). <strong style="color:var(--t2)">ALL</strong> = candidate must have every skill listed (fewer, stronger matches).</div>
+          <div class="sct-hint" id="skModeHint" style="margin-top:4px">💡 Comma-separated for multiple skills <span style="color:var(--am);font-weight:600">(Pro feature)</span>. <strong style="color:var(--t2)">ANY</strong> = candidate has at least one of these (more results). <strong style="color:var(--t2)">ALL</strong> = candidate must have every skill listed (fewer, stronger matches).</div>
         </div>
         <div><div class="fl">City (India) <span style="color:var(--t3);font-weight:400">— comma-separated for multiple</span></div><input class="fi" id="iCt" type="text" placeholder="e.g. Bengaluru, Hyderabad, Pune" onkeydown="if(event.key==='Enter')runSearch()"></div>
         <div id="tenureCoWrap" style="display:none"><div class="fl">Target Company (optional)</div><input class="fi" id="iTenureCo" type="text" placeholder="e.g. Infosys, TCS, Wipro, JPMorgan"></div>
@@ -4513,24 +4513,31 @@ function setSkillMode(mode){
   const hint=document.getElementById('skModeHint');
   if(hint){
     hint.innerHTML=mode==='AND'
-      ? '💡 Comma-separated for multiple skills. <strong style="color:var(--t2)">ALL</strong> selected — candidate must have every skill listed (fewer, stronger matches).'
-      : '💡 Comma-separated for multiple skills. <strong style="color:var(--t2)">ANY</strong> selected — candidate has at least one of these (more results).';
+      ? '💡 Comma-separated for multiple skills <span style="color:var(--am);font-weight:600">(Pro feature)</span>. <strong style="color:var(--t2)">ALL</strong> selected — candidate must have every skill listed (fewer, stronger matches).'
+      : '💡 Comma-separated for multiple skills <span style="color:var(--am);font-weight:600">(Pro feature)</span>. <strong style="color:var(--t2)">ANY</strong> selected — candidate has at least one of these (more results).';
   }
 }
 function parseList(raw){
   return (raw||'').split(',').map(s=>s.trim()).filter(Boolean);
 }
-// Builds the boolean OR-group string used by X-Ray-style queries, e.g.
-// parseList('React, Node.js') -> ("React" OR "Node.js")
-// A single item returns just "React" (no redundant grouping).
+// Builds a boolean OR group that is SAFE TO WRAP in an extra pair of
+// quotes — every XRAY generator function does `"${sk}"` internally,
+// assuming sk is always a single bare word. Rather than rewriting 150+
+// call sites across every platform generator, this produces a string
+// that, once wrapped in `"..."` by the generator, becomes a CORRECT
+// Google boolean query: e.g. for ['React','Node.js'] this returns
+// React" OR "Node.js — which the generator's own template turns into
+// "React" OR "Node.js" (valid), not "("React" OR "Node.js")" (broken,
+// double-quoted nonsense Google can't parse as boolean OR).
 function booleanOrGroup(items){
   if(items.length===0)return'';
-  if(items.length===1)return`"${items[0]}"`;
-  return'('+items.map(i=>`"${i}"`).join(' OR ')+')';
+  if(items.length===1)return items[0];
+  return items.join('" OR "');
 }
 function booleanAndGroup(items){
   if(items.length===0)return'';
-  return items.map(i=>`"${i}"`).join(' AND ');
+  if(items.length===1)return items[0];
+  return items.join('" AND "');
 }
 
 async function runSearch(){
@@ -4548,6 +4555,19 @@ async function runSearch(){
   // once here so every query builder downstream just works without changes.
   const skList=parseList(sk);
   const ctList=parseList(ct);
+  const isMultiValue=skList.length>1||ctList.length>1;
+  // Multi-skill/multi-city is a Pro feature — trial users get the same
+  // single-skill/single-city search as before. The ANY/ALL toggle and
+  // comma-separated fields stay visible during trial so the feature is
+  // discoverable, but using more than one value at search time requires
+  // Pro, same access rule pattern as Resume Scorecard.
+  if(isMultiValue && !(S.isAdmin||S.plan==='pro')){
+    const btn0=document.getElementById('btnS');
+    btn0.disabled=false;btn0.innerHTML='🔍 Search';
+    const rw0=document.getElementById('rw');rw0.className='rw show';
+    rw0.innerHTML=`<div class="es"><div class="es-ic">🔒</div><div class="es-tt">Multi-skill & multi-city search is a Pro feature</div><div style="font-size:12px;color:var(--t3);margin-top:6px;max-width:480px;margin-left:auto;margin-right:auto">Searching multiple skills or cities at once (e.g. "React, Node.js" or "Bengaluru, Hyderabad") is available on Pro. During your trial, enter one skill and one city to search.</div><button class="nav-cta" style="margin-top:16px" onclick="openMod('prMod')">Upgrade to Pro — ₹499/30 days</button></div>`;
+    return;
+  }
   const skBoolean=skList.length>1
     ? (S.skMode==='AND' ? booleanAndGroup(skList) : booleanOrGroup(skList))
     : sk;
