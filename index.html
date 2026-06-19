@@ -456,6 +456,9 @@ a{text-decoration:none;color:inherit}
 @media(max-width:740px){.srow{grid-template-columns:1fr 1fr}.srow .bts{grid-column:1/-1}}
 .fl{font-size:10px;font-weight:700;color:var(--t3);margin-bottom:6px;letter-spacing:.4px;text-transform:uppercase}
 .fi{width:100%;padding:10px 14px;border:1.5px solid var(--b2);border-radius:9px;font-size:13px;color:var(--t1);background:var(--bg3);transition:.15s;outline:none}
+.sk-mode-toggle{display:flex;gap:3px;background:var(--bg3);border:1px solid var(--b1);border-radius:7px;padding:2px;flex-shrink:0}
+.sk-mode-btn{padding:3px 10px;border-radius:5px;border:none;background:transparent;color:var(--t3);font-size:9.5px;font-weight:800;letter-spacing:.4px;cursor:pointer;font-family:inherit;transition:.15s}
+.sk-mode-btn.on{background:var(--a);color:#080c14}
 .fi:focus{border-color:var(--a);box-shadow:0 0 0 3px rgba(56,189,248,.1)}
 .fi::placeholder{color:var(--t3)}
 .fi option{background:var(--bg3)}
@@ -1340,8 +1343,18 @@ body.modal-open{overflow:hidden;position:fixed;width:100%}
         <span class="sp-dc" id="spDc"></span>
       </div>
       <div class="srow">
-        <div><div class="fl">Skill / Language / Role</div><input class="fi" id="iSk" type="text" placeholder="e.g. React, Python, DevOps, Java" onkeydown="if(event.key==='Enter')runSearch()" oninput="renderRecommended()"></div>
-        <div><div class="fl">City (India)</div><input class="fi" id="iCt" type="text" placeholder="e.g. Bengaluru, Hyderabad, Pune" onkeydown="if(event.key==='Enter')runSearch()"></div>
+        <div>
+          <div class="fl" style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+            <span>Skill(s) / Language / Role</span>
+            <div class="sk-mode-toggle" id="skModeToggle">
+              <button type="button" class="sk-mode-btn on" data-mode="OR" onclick="setSkillMode('OR')">ANY</button>
+              <button type="button" class="sk-mode-btn" data-mode="AND" onclick="setSkillMode('AND')">ALL</button>
+            </div>
+          </div>
+          <input class="fi" id="iSk" type="text" placeholder="e.g. React, Node.js, AWS" onkeydown="if(event.key==='Enter')runSearch()" oninput="renderRecommended()">
+          <div class="sct-hint" id="skModeHint" style="margin-top:4px">💡 Comma-separated for multiple skills. <strong style="color:var(--t2)">ANY</strong> = candidate has at least one of these (more results). <strong style="color:var(--t2)">ALL</strong> = candidate must have every skill listed (fewer, stronger matches).</div>
+        </div>
+        <div><div class="fl">City (India) <span style="color:var(--t3);font-weight:400">— comma-separated for multiple</span></div><input class="fi" id="iCt" type="text" placeholder="e.g. Bengaluru, Hyderabad, Pune" onkeydown="if(event.key==='Enter')runSearch()"></div>
         <div id="tenureCoWrap" style="display:none"><div class="fl">Target Company (optional)</div><input class="fi" id="iTenureCo" type="text" placeholder="e.g. Infosys, TCS, Wipro, JPMorgan"></div>
         <div id="gccCoWrap" style="display:none"><div class="fl">Specific Company (optional)</div><input class="fi" id="iGccCo" type="text" placeholder="e.g. JPMorgan, Walmart, Google GCC"></div>
         <div id="competitorCoWrap" style="display:none"><div class="fl">Target Company</div><input class="fi" id="iCompetitorCo" type="text" placeholder="e.g. Swiggy, Razorpay, PhonePe, Flipkart..."><div style="font-size:10px;color:var(--t3);margin-top:4px">Shows both current employees and alumni (past employees) of this company. Leave blank to browse top Indian product companies.</div></div>
@@ -2463,26 +2476,45 @@ function scoreDT(rc,ac,fc){let s=50;s+=Math.min(rc/50,20);s+=Math.min(ac*2,15);s
 
 async function searchGitHub(skill,city){
   const headers={Accept:'application/vnd.github.v3+json'};
-  const cityVar=city||'India';
-  // 3 different query strategies — rotate for variety
-  const qList=[
-    `location:"${cityVar}" ${skill} in:bio`,
-    `location:"${cityVar}" language:${skill}`,
-    `location:"${cityVar}" ${skill} repos:>3 followers:>5`
-  ];
-  const q=qList[Math.floor(Math.random()*qList.length)];
-  const page=Math.floor(Math.random()*3)+1;
-  let items=[];
-  try{
+  const skills=parseList(skill);
+  const cities=parseList(city);
+  const cityList=cities.length?cities:['India'];
+  const skillTerm=skills.length?skills.join(' '):skill; // GitHub ANDs bare space-separated keywords natively — good fit for "ALL" mode
+  // Note: GitHub's search syntax has no true OR operator across plain
+  // keywords, so "ANY" mode here still searches all skills together (same
+  // as "ALL") for a single city query — the real ANY/OR benefit shows up
+  // in X-Ray-style platforms below, which use real boolean OR grouping.
+
+  async function searchOneCity(cityVar){
+    const qList=[
+      `location:"${cityVar}" ${skillTerm} in:bio`,
+      `location:"${cityVar}" language:${skills[0]||skill}`,
+      `location:"${cityVar}" ${skillTerm} repos:>3 followers:>5`
+    ];
+    const q=qList[Math.floor(Math.random()*qList.length)];
+    const page=Math.floor(Math.random()*3)+1;
+    let items=[];
     const r=await fetch(`https://api.github.com/search/users?q=${encodeURIComponent(q)}&per_page=15&sort=followers&page=${page}`,{headers});
     if(r.status===403)throw new Error('GitHub rate limit hit — wait 60 seconds and try again.');
     if(r.ok){const d=await r.json();items=d.items||[];}
-  }catch(e){throw e;}
-  // Fallback to page 1 with first query if nothing found
-  if(!items.length&&page>1){
-    const r2=await fetch(`https://api.github.com/search/users?q=${encodeURIComponent(qList[0])}&per_page=15&sort=followers`,{headers});
-    if(r2.ok){const d2=await r2.json();items=d2.items||[];}
+    if(!items.length&&page>1){
+      const r2=await fetch(`https://api.github.com/search/users?q=${encodeURIComponent(qList[0])}&per_page=15&sort=followers`,{headers});
+      if(r2.ok){const d2=await r2.json();items=d2.items||[];}
+    }
+    return items;
   }
+
+  // Multiple cities cost one extra search call each (rate-limit budget),
+  // so this is capped to the first 2 cities entered to avoid blowing
+  // through GitHub's unauthenticated 60-requests/hour limit in one click.
+  const citiesToSearch=cityList.slice(0,2);
+  const cityResults=await Promise.allSettled(citiesToSearch.map(searchOneCity));
+  let items=[];
+  cityResults.forEach(r=>{ if(r.status==='fulfilled')items=items.concat(r.value); });
+  // Dedupe by login in case the same user appears across city queries
+  const seen=new Set();
+  items=items.filter(u=>{ if(seen.has(u.login))return false; seen.add(u.login); return true; });
+
   if(!items.length)return[];
   // Shuffle so results vary each search
   const shuffled=[...items].sort(()=>Math.random()-.5).slice(0,10);
@@ -2495,7 +2527,7 @@ async function searchGitHub(skill,city){
       const u=d.value;
       return{
         id:u.id,name:u.name||u.login,user:u.login,
-        loc:u.location||cityVar,p:'github',
+        loc:u.location||cityList[0],p:'github',
         bio:u.bio||`GitHub developer · ${u.public_repos} repos · ${u.followers} followers.`,
         av:u.avatar_url,url:`https://github.com/${u.login}`,
         sigs:[
@@ -4470,6 +4502,37 @@ function selPlat(el){
 }
 
 // ── SEARCH ────────────────────────────────────────────
+// ── MULTI-SKILL / MULTI-CITY SEARCH ──
+// S.skMode: 'OR' (any listed skill matches) or 'AND' (must have all).
+// Parsing helpers turn comma-separated input into clean arrays, used by
+// every query builder below instead of treating the raw string as one term.
+S.skMode='OR';
+function setSkillMode(mode){
+  S.skMode=mode;
+  document.querySelectorAll('.sk-mode-btn').forEach(b=>b.classList.toggle('on',b.dataset.mode===mode));
+  const hint=document.getElementById('skModeHint');
+  if(hint){
+    hint.innerHTML=mode==='AND'
+      ? '💡 Comma-separated for multiple skills. <strong style="color:var(--t2)">ALL</strong> selected — candidate must have every skill listed (fewer, stronger matches).'
+      : '💡 Comma-separated for multiple skills. <strong style="color:var(--t2)">ANY</strong> selected — candidate has at least one of these (more results).';
+  }
+}
+function parseList(raw){
+  return (raw||'').split(',').map(s=>s.trim()).filter(Boolean);
+}
+// Builds the boolean OR-group string used by X-Ray-style queries, e.g.
+// parseList('React, Node.js') -> ("React" OR "Node.js")
+// A single item returns just "React" (no redundant grouping).
+function booleanOrGroup(items){
+  if(items.length===0)return'';
+  if(items.length===1)return`"${items[0]}"`;
+  return'('+items.map(i=>`"${i}"`).join(' OR ')+')';
+}
+function booleanAndGroup(items){
+  if(items.length===0)return'';
+  return items.map(i=>`"${i}"`).join(' AND ');
+}
+
 async function runSearch(){
   if(!canSearch()){showPricing();return;}
   const sk=document.getElementById('iSk').value.trim();
@@ -4478,6 +4541,17 @@ async function runSearch(){
   const pl=S.plat;
   if(!pl){toast('Select a platform first');return;}
   if(!sk){toast('Enter a skill or role to search');return;}
+  // Multi-skill / multi-city: GitHub/SO/Dev.to parse the raw comma list
+  // themselves (need structured arrays, not pre-built boolean text), but
+  // every X-Ray-style boolean query (GCC Hunt, Tenure Target, Smart Search,
+  // Competitor Sourcing) needs a single ready-to-use string — build that
+  // once here so every query builder downstream just works without changes.
+  const skList=parseList(sk);
+  const ctList=parseList(ct);
+  const skBoolean=skList.length>1
+    ? (S.skMode==='AND' ? booleanAndGroup(skList) : booleanOrGroup(skList))
+    : sk;
+  const ctBoolean=ctList.length>1 ? booleanOrGroup(ctList) : (ct||'India');
   const btn=document.getElementById('btnS');
   btn.disabled=true;btn.innerHTML='<div class="spin" style="width:14px;height:14px;border-width:2px;margin-right:6px"></div>Searching...';
   const rw=document.getElementById('rw');rw.className='rw show';
@@ -4487,7 +4561,7 @@ async function runSearch(){
     await delay(400);
     btn.disabled=false;btn.innerHTML='🔍 Search';
     const tenureCo=document.getElementById('iTenureCo')?.value?.trim()||'';
-    renderTenure(sk,ct,'product',tenureCo);
+    renderTenure(skBoolean,ctBoolean,'product',tenureCo);
     return;
   }
   // Passive Finder
@@ -4495,7 +4569,7 @@ async function runSearch(){
     rw.innerHTML=`<div class="ls"><div class="spin"></div>Building Passive Finder queries for ${sk||'developer'} in ${ct||'India'}...</div>`;
     await delay(500);
     btn.disabled=false;btn.innerHTML='🔍 Search';
-    renderPassive(sk,ct,document.getElementById('iEx')?.value||'');
+    renderPassive(skBoolean,ctBoolean,document.getElementById('iEx')?.value||'');
     return;
   }
   // Hidden Talent
@@ -4503,7 +4577,7 @@ async function runSearch(){
     rw.innerHTML=`<div class="ls"><div class="spin"></div>Expanding talent pool for "${sk||'developer'}"...</div>`;
     await delay(500);
     btn.disabled=false;btn.innerHTML='🔍 Search';
-    renderHiddenTalent(sk,ct,document.getElementById('iEx')?.value||'');
+    renderHiddenTalent(skBoolean,ctBoolean,document.getElementById('iEx')?.value||'');
     return;
   }
   // GCC Hunt
@@ -4512,7 +4586,7 @@ async function runSearch(){
     await delay(600);
     btn.disabled=false;btn.innerHTML='🔍 Search';
     const gccCo=document.getElementById('iGccCo')?.value?.trim()||'';
-    renderGCC(sk,ct,document.getElementById('iEx').value,gccCo);
+    renderGCC(skBoolean,ctBoolean,document.getElementById('iEx').value,gccCo);
     // Also fetch GitHub results for top GCCs in parallel
     try{
       const ghRes=await searchGitHub(sk||'developer',ct||'India');
@@ -4544,7 +4618,7 @@ async function runSearch(){
     await delay(500);
     btn.disabled=false;btn.innerHTML='🔍 Search';
     const competitorCo=document.getElementById('iCompetitorCo')?.value?.trim()||'';
-    renderCompetitor(sk,ct,competitorCo);
+    renderCompetitor(skBoolean,ctBoolean,competitorCo);
     return;
   }
   // AI Search — Claude reads and judges real candidates instead of a
@@ -4574,7 +4648,7 @@ async function runSearch(){
   if(XRAY[pl]){
     rw.innerHTML=`<div class="ls"><div class="spin"></div>Building Smart Search queries...</div>`;
     await delay(300);btn.disabled=false;btn.innerHTML='🔍 Search';
-    renderXray(pl,sk,ct);return;
+    renderXray(pl,skBoolean,ctBoolean);return;
   }
   rw.innerHTML=`<div class="ls"><div class="spin"></div>Fetching live profiles from ${PM[pl].n}...</div>`;
   try{
