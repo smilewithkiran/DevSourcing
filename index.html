@@ -2261,7 +2261,9 @@ const PM={
   passive:{n:'Passive Finder',ic:'🕵️',d:'Inactive LinkedIn profiles — highest response rate',xr:false},
   hidden:{n:'Hidden Talent',ic:'🔮',d:'AI title expansion — 5x bigger talent pool',xr:false},
   competitor:{n:'Target Company Sourcing',ic:'🎯',d:'Current + past employees of any company — blogs + GitHub + LinkedIn',xr:true},
-  aisearch:{n:'AI Search',ic:'🤖',d:'Claude reads & judges real candidates — not just keyword matching',xr:false}
+  aisearch:{n:'AI Search',ic:'🤖',d:'Claude reads & judges real candidates — not just keyword matching',xr:false},
+  immediate:{n:'Immediate Joiners',ic:'⚡',d:'Candidates who self-disclosed they can join right away',xr:true},
+  layoffs:{n:'Recently Laid Off',ic:'📉',d:'Self-disclosed layoff signal + known affected companies',xr:true}
 };
 
 // ── PLATFORM METADATA — categories, "best for" tags, badges, skill-match keywords ──
@@ -2285,7 +2287,9 @@ const PLAT_META={
   passive:{cat:'power',best:'Passive, Any Skill',badge:'power',skills:['all']},
   hidden:{cat:'power',best:'Any Skill (Expanded Titles)',badge:'power',skills:['all']},
   competitor:{cat:'power',best:'Current + Past Employees, Any Company',badge:'new',skills:['all']},
-  aisearch:{cat:'power',best:'Any Skill — AI-Judged Matches',badge:'ai',skills:['all']}
+  aisearch:{cat:'power',best:'Any Skill — AI-Judged Matches',badge:'ai',skills:['all']},
+  immediate:{cat:'power',best:'High Intent, Any Skill',badge:'new',skills:['all']},
+  layoffs:{cat:'power',best:'High Availability, Any Skill',badge:'new',skills:['all']}
 };
 const CAT_LABELS={all:'All platforms',live:'Live APIs',data:'Data & AI',oss:'Code & OSS',community:'Community',power:'Power features'};
 const BADGE_LABELS={live:'Live',smart:'Smart',power:'Power',new:'New',ai:'AI'};
@@ -2763,6 +2767,107 @@ function renderTenure(sk,ct,compType,targetCompany){
     <div style="font-size:11px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">🐙 GitHub Profiles (${ghQ.length})</div>
     <div class="xql">${ghQ.map((q,i)=>`<div class="xqc"><div class="xqn" style="background:var(--gs);color:var(--g);border-color:var(--gb)">${i+1}</div><div class="xqi"><div class="xql-t">${q.l}</div><div style="font-size:10px;color:var(--t3);margin-bottom:4px">${q.desc}</div><div class="xql-q">${q.q}</div></div><button class="bxo" style="background:var(--gs);color:var(--g);border-color:var(--gb)" onclick="window.open('${q.ghUrl}','_blank')">🐙 GitHub</button></div>`).join('')}</div>`;
 }
+// ── IMMEDIATE JOINERS — self-disclosed notice-period signal ──
+// People who explicitly state they can join immediately or are serving
+// notice — extremely common self-tagging behavior on LinkedIn/Naukri in
+// India, so this is a reliable real signal, not an inference.
+function getImmediateJoinersQueries(skill,city,exp){
+  const s=skill||'developer',c=city||'India';
+  const expStr=exp?` ${exp}+ years`:'';
+  const queries=[];
+
+  queries.push({type:'immediate',l:`LinkedIn — "Immediate Joiner" · ${s} · ${c}`,desc:'Candidates who explicitly tag themselves as available right away',q:`site:linkedin.com/in "${s}" "${c}" ("immediate joiner" OR "immediate joining")`,tag:'linkedin'});
+  queries.push({type:'immediate',l:`LinkedIn — Serving Notice Period · ${s} · ${c}`,desc:'Already resigned, notice period in progress — predictable join date',q:`site:linkedin.com/in "${s}" "${c}" ("serving notice period" OR "notice period" OR "last working day")`,tag:'linkedin'});
+  queries.push({type:'immediate',l:`LinkedIn — Available Immediately · ${s} · ${c}${expStr}`,desc:'Direct availability statement in headline or bio',q:`site:linkedin.com/in "${s}" "${c}" ("available immediately" OR "ready to join" OR "can join asap")${expStr?` "${exp}"`:''}`,tag:'linkedin'});
+  queries.push({type:'immediate',l:`LinkedIn — Open to Work + Immediate · ${s} · ${c}`,desc:'Combines the #OpenToWork signal with an immediate-availability phrase — highest-intent combination',q:`site:linkedin.com/in "${s}" "${c}" "open to work" ("immediate" OR "notice period" OR "available")`,tag:'linkedin'});
+  queries.push({type:'immediate',l:`Naukri — Immediate Joiners · ${s} · ${c}`,desc:'Naukri profiles explicitly tagged with immediate availability',q:`site:naukri.com "${s}" "${c}" "immediate joiner"`,tag:'naukri'});
+  queries.push({type:'immediate',l:`GitHub — actively job-seeking bio · ${s} · ${c}`,desc:'Developers who mention job-seeking status directly in their GitHub bio',q:`location:"${c}" ${s} ("open to work" OR "looking for opportunities" OR "available for hire") in:bio`,tag:'github',ghUrl:`https://github.com/search?q=location%3A"${encodeURIComponent(c)}"+${encodeURIComponent(s)}+%22open+to+work%22+in%3Abio&type=users`});
+
+  return queries;
+}
+
+function renderImmediateJoiners(sk,ct,ex){
+  const queries=getImmediateJoinersQueries(sk,ct,ex);
+  const liQ=queries.filter(q=>q.tag==='linkedin');
+  const naukriQ=queries.filter(q=>q.tag==='naukri');
+  const ghQ=queries.filter(q=>q.tag==='github');
+  const rw=document.getElementById('rw');
+  rw.innerHTML=`
+    <div class="rbar"><div>
+      <div class="rtitle">⚡ Immediate Joiners — ${sk||'Developer'} · ${ct||'India'}</div>
+      <div class="rmeta">${queries.length} queries · candidates who self-tagged their own availability</div>
+    </div></div>
+    <div style="background:var(--gs);border:1px solid var(--gb);border-radius:14px;padding:18px;margin-bottom:20px;display:flex;gap:14px">
+      <div style="font-size:24px;flex-shrink:0">⚡</div>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:var(--g);margin-bottom:6px">Why this works</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.6">These candidates have <strong style="color:var(--t1)">already told you</strong> they're available now — "immediate joiner," "serving notice period," "ready to join" are phrases people type about themselves, not a guess. This is one of the most reliable signals on this platform — but always confirm the actual join date directly, since profile text can go stale.</div>
+      </div>
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--a);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">🔗 LinkedIn Queries (${liQ.length})</div>
+    <div class="xql" style="margin-bottom:20px">${liQ.map((q,i)=>`<div class="xqc"><div class="xqn" style="background:var(--as);color:var(--a);border-color:var(--ab)">${i+1}</div><div class="xqi"><div class="xql-t">${q.l}</div><div style="font-size:10px;color:var(--t3);margin-bottom:4px">${q.desc}</div><div class="xql-q">${q.q}</div></div><button class="bxo" onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(q.q)}','_blank')">🔍 Search</button></div>`).join('')}</div>
+    ${naukriQ.length?`<div style="font-size:11px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">📋 Naukri Queries (${naukriQ.length})</div>
+    <div class="xql" style="margin-bottom:20px">${naukriQ.map((q,i)=>`<div class="xqc"><div class="xqn" style="background:var(--gs);color:var(--g);border-color:var(--gb)">${i+1}</div><div class="xqi"><div class="xql-t">${q.l}</div><div style="font-size:10px;color:var(--t3);margin-bottom:4px">${q.desc}</div><div class="xql-q">${q.q}</div></div><button class="bxo" onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(q.q)}','_blank')">🔍 Search</button></div>`).join('')}</div>`:''}
+    ${ghQ.length?`<div style="font-size:11px;font-weight:700;color:var(--pu);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">⚙️ GitHub Queries (${ghQ.length})</div>
+    <div class="xql">${ghQ.map((q,i)=>`<div class="xqc"><div class="xqn" style="background:var(--pus);color:var(--pu);border-color:var(--pub)">${i+1}</div><div class="xqi"><div class="xql-t">${q.l}</div><div style="font-size:10px;color:var(--t3);margin-bottom:4px">${q.desc}</div><div class="xql-q">${q.q}</div></div><button class="bxo" onclick="window.open('${q.ghUrl}','_blank')">🔍 Search</button></div>`).join('')}</div>`:''}
+  `;
+}
+
+// ── RECENTLY LAID OFF — company-list + self-disclosed phrases ──
+// Companies with known/reported layoffs in India tech, 2024-2026 — sourced
+// from public news coverage. This list needs periodic manual updates as
+// new layoffs are reported; it is not a live feed.
+const LAYOFF_COMPANIES=[
+  'Byju\'s','Unacademy','Swiggy','Ola','Meesho','Cars24','MPL','Dunzo','Trell',
+  'ShareChat','Vedantu','Lido Learning','Udaan','Blinkit','Zomato','PharmEasy',
+  'Paytm','Microsoft','Google','Amazon','Meta','Twitter','Salesforce','Intel',
+  'Cisco','Dell','IBM','Accenture','TCS','Wipro','Tech Mahindra','Cognizant'
+];
+
+function getLayoffQueries(skill,city){
+  const s=skill||'developer',c=city||'India';
+  const queries=[];
+
+  // Self-disclosed layoff phrases — works regardless of company, catches
+  // anyone who has publicly said they were affected.
+  queries.push({type:'layoff',l:`LinkedIn — Self-Disclosed Layoff · ${s} · ${c}`,desc:'Candidates who posted/mentioned being affected by a layoff — strongest signal, company-agnostic',q:`site:linkedin.com/in "${s}" "${c}" ("laid off" OR "affected by layoffs" OR "impacted by layoffs" OR "let go" OR "role was eliminated")`,tag:'linkedin'});
+  queries.push({type:'layoff',l:`LinkedIn — Open to Work + Layoff language · ${s} · ${c}`,desc:'Combines #OpenToWork with layoff-specific phrasing for higher precision',q:`site:linkedin.com/in "${s}" "${c}" "open to work" ("layoff" OR "laid off" OR "restructuring" OR "downsizing")`,tag:'linkedin'});
+  queries.push({type:'layoff',l:`LinkedIn — Layoff Support Posts · ${s} · ${c}`,desc:'Posts from others tagging/recommending someone recently laid off (common in India tech LinkedIn culture)',q:`site:linkedin.com/in "${s}" "${c}" ("open to opportunities" OR "open to work") ("recently" OR "currently exploring")`,tag:'linkedin'});
+
+  // Company-targeted — only meaningful if we have a known layoff event
+  const compChunks=chunkArray(LAYOFF_COMPANIES,6);
+  compChunks.forEach((chunk,i)=>{
+    const cos=chunk.map(co=>`"${co}"`).join(' OR ');
+    queries.push({type:'layoff',l:`LinkedIn — Ex-employees of recently-affected companies, Group ${i+1}`,desc:`${chunk.join(', ')} — known layoff events reported in India tech news`,q:`site:linkedin.com/in "${s}" "${c}" (${cos}) ("laid off" OR "open to work" OR "former")`,tag:'company'});
+  });
+
+  return queries;
+}
+
+function renderLayoffs(sk,ct){
+  const queries=getLayoffQueries(sk,ct);
+  const liQ=queries.filter(q=>q.tag==='linkedin');
+  const coQ=queries.filter(q=>q.tag==='company');
+  const rw=document.getElementById('rw');
+  rw.innerHTML=`
+    <div class="rbar"><div>
+      <div class="rtitle">📉 Recently Laid Off — ${sk||'Developer'} · ${ct||'India'}</div>
+      <div class="rmeta">${queries.length} queries · self-disclosed layoff signal + known affected companies</div>
+    </div></div>
+    <div style="background:var(--ams);border:1px solid var(--amb);border-radius:14px;padding:18px;margin-bottom:20px;display:flex;gap:14px">
+      <div style="font-size:24px;flex-shrink:0">⚠️</div>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:var(--am);margin-bottom:6px">How this works — and its real limits</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.6">This is based on <strong style="color:var(--t1)">what people have publicly shared themselves</strong> — LinkedIn posts mentioning a layoff, plus a manually-maintained list of companies with reported layoffs in India tech news. It is <strong style="color:var(--t1)">not</strong> a confirmed HR record and the company list needs periodic updates as new layoffs happen. Always verify directly with the candidate — many people don't publicly disclose a layoff at all, so absence from these results doesn't mean someone wasn't affected.</div>
+      </div>
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--a);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">🔗 Self-Disclosed Signal (${liQ.length})</div>
+    <div class="xql" style="margin-bottom:20px">${liQ.map((q,i)=>`<div class="xqc"><div class="xqn" style="background:var(--as);color:var(--a);border-color:var(--ab)">${i+1}</div><div class="xqi"><div class="xql-t">${q.l}</div><div style="font-size:10px;color:var(--t3);margin-bottom:4px">${q.desc}</div><div class="xql-q">${q.q}</div></div><button class="bxo" onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(q.q)}','_blank')">🔍 Search</button></div>`).join('')}</div>
+    <div style="font-size:11px;font-weight:700;color:var(--am);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">🏢 Known Affected Companies (${coQ.length} groups · ${LAYOFF_COMPANIES.length} companies total)</div>
+    <div class="xql">${coQ.map((q,i)=>`<div class="xqc"><div class="xqn" style="background:var(--ams);color:var(--am);border-color:var(--amb)">${i+1}</div><div class="xqi"><div class="xql-t">${q.l}</div><div style="font-size:10px;color:var(--t3);margin-bottom:4px">${q.desc}</div><div class="xql-q">${q.q}</div></div><button class="bxo" onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(q.q)}','_blank')">🔍 Search</button></div>`).join('')}</div>
+  `;
+}
+
 
 
 // ── SCORE CARD TOOL ──────────────────────────────────
@@ -4582,6 +4687,22 @@ async function runSearch(){
     btn.disabled=false;btn.innerHTML='🔍 Search';
     const tenureCo=document.getElementById('iTenureCo')?.value?.trim()||'';
     renderTenure(skBoolean,ctBoolean,'product',tenureCo);
+    return;
+  }
+  // Immediate Joiners
+  if(pl==='immediate'){
+    rw.innerHTML=`<div class="ls"><div class="spin"></div>Building Immediate Joiners queries...</div>`;
+    await delay(400);
+    btn.disabled=false;btn.innerHTML='🔍 Search';
+    renderImmediateJoiners(skBoolean,ctBoolean,document.getElementById('iEx')?.value||'');
+    return;
+  }
+  // Recently Laid Off
+  if(pl==='layoffs'){
+    rw.innerHTML=`<div class="ls"><div class="spin"></div>Building Recently Laid Off queries...</div>`;
+    await delay(400);
+    btn.disabled=false;btn.innerHTML='🔍 Search';
+    renderLayoffs(skBoolean,ctBoolean);
     return;
   }
   // Passive Finder
