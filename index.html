@@ -2130,6 +2130,9 @@ try{firebase.initializeApp(FBC);auth=firebase.auth();db=firebase.database();}
 catch(e){console.warn('Firebase unavailable.');auth={signInWithPopup:()=>Promise.reject({code:'auth/operation-not-supported-in-this-environment',message:'Deploy to a real domain for Google login.'}),signInWithRedirect:()=>{},getRedirectResult:()=>Promise.resolve(null),signOut:()=>Promise.resolve(),onAuthStateChanged:()=>{}};db={ref:()=>({once:()=>Promise.resolve({exists:()=>false,val:()=>null,forEach:()=>{}}),set:()=>Promise.resolve(),update:()=>Promise.resolve(),transaction:f=>{const r=f(0);return Promise.resolve({snapshot:{val:()=>r}})}})};}
 
 const AP='9160075557',AP2='ds@admin9160';
+// Admin Worker URL — replace with your real deployed Cloudflare Worker URL
+// after running: wrangler deploy (in devsourcing-admin-worker folder)
+const ADMIN_WORKER_URL='https://devsourcing-admin.hr-kiranm.workers.dev';
 const S={user:null,plan:null,isAdmin:false,plat:null,results:[],shortlist:[],sk:'',ct:'',ex:''};
 const delay=ms=>new Promise(r=>setTimeout(r,ms));
 
@@ -5305,60 +5308,61 @@ function runAdminScoreCard(){
   const skills=extractSkillsFromJD(jd);
   showScoreCardFromData(name,co,exp,skills,jd,name[0],'adm_scResult');
 }
+// ── ADMIN WORKER HELPER ──────────────────────────────
+// All admin data reads/writes go through the Cloudflare Worker,
+// which holds the Firebase secret token server-side.
+async function adminWorkerCall(action, extra={}){
+  const pin=getAdminPin();
+  const res=await fetch(ADMIN_WORKER_URL,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({action,pin,...extra})
+  });
+  if(!res.ok){
+    const err=await res.json().catch(()=>({}));
+    throw new Error(err.error||'Worker error HTTP '+res.status);
+  }
+  return res.json();
+}
+
 async function loadAdmOverview(){
   const ids=['statVisitors','statTotal','statPaid','statFree'];
   ids.forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='<div class="spin" style="width:14px;height:14px;border-width:2px;display:inline-block"></div>';});
+  const warn=document.getElementById('admDbWarn');
   try{
-    const timeout=ms=>new Promise((_,r)=>setTimeout(()=>r(new Error('Timeout')),ms));
-    // Only read ds_meta (visitor count) — ds_users is secured and can only
-    // be read per-user. User stats are now viewed in Firebase Console directly.
-    // Use REST API for ds_meta read — more reliable than SDK in admin context
-    // since admin login doesn't go through Firebase Auth.
-    const metaURL='https://devsourcing-50631-default-rtdb.asia-southeast1.firebasedatabase.app/ds_meta/visitors.json';
-    const metaRes=await Promise.race([
-      fetch(metaURL),
-      timeout(8000).then(()=>{throw new Error('Firebase timeout');})
-    ]);
-    if(!metaRes.ok)throw new Error('HTTP '+metaRes.status);
-    const visitors=Math.max(0,parseInt(await metaRes.json())||0);
+    const data=await adminWorkerCall('overview');
     const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
-    set('statVisitors',visitors.toLocaleString('en-IN'));
-    // User stats — not readable from admin context with secure rules.
-    // View in Firebase Console → Data → ds_users
-    ['statTotal','statPaid','statFree'].forEach(id=>{
-      const el=document.getElementById(id);
-      if(el){el.textContent='—';el.title='Secured — view in Firebase Console → Data → ds_users';}
-    });
-    const warn=document.getElementById('admDbWarn');
+    set('statVisitors',(data.visitors||0).toLocaleString('en-IN'));
+    set('statTotal',data.total||0);
+    set('statPaid',data.paid||0);
+    set('statFree',(data.trial||0)+(data.free||0));
     if(warn)warn.style.display='none';
   }catch(e){
     console.error('Admin overview error:',e.message);
-    ids.forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='!';}); 
-    const warn=document.getElementById('admDbWarn');
-    if(warn){warn.style.display='block';warn.innerHTML='⚠️ Could not load visitor count. Check Firebase connection.';}
+    ids.forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='!';});
+    const isWorkerMissing=e.message.includes('Failed to fetch')||e.message.includes('NetworkError');
+    if(warn){
+      warn.style.display='block';
+      warn.innerHTML=isWorkerMissing
+        ?'⚠️ Admin Worker not deployed yet. Deploy <code>devsourcing-admin-worker/worker.js</code> to Cloudflare and update <code>ADMIN_WORKER_URL</code> in index.html.'
+        :'⚠️ '+e.message;
+    }
   }
 }
+
 async function loadAdmUsers(){
   const tbl=document.getElementById('admTbl');
   const cnt=document.getElementById('admCnt');
-  if(tbl)tbl.innerHTML='<div class="ls"><div class="spin"></div>Loading from Firebase...</div>';
+  if(tbl)tbl.innerHTML='<div class="ls"><div class="spin"></div>Loading users via secure Worker...</div>';
   try{
-    // Use REST API with database URL as fallback when SDK auth fails
-    const dbURL='https://devsourcing-50631-default-rtdb.asia-southeast1.firebasedatabase.app/ds_users.json';
-    const r=await fetch(dbURL);
-    if(!r.ok)throw new Error('HTTP '+r.status);
-    const data=await r.json();
-    const snap={forEach:(cb)=>{if(data)Object.entries(data).forEach(([k,v])=>cb({val:()=>v,key:k}));}};
-    const users=[];
-    snap.forEach(c=>{const v=c.val();if(v)users.push(v);});
+    const data=await adminWorkerCall('users');
+    const users=data.users||[];
     if(cnt)cnt.textContent=users.length+' registered users';
     if(!tbl)return;
     if(!users.length){
       tbl.innerHTML='<div class="es"><div class="es-ic">👥</div><div class="es-tt">No users yet</div><div class="es-sb">Users appear here after first Google login.</div></div>';
       return;
     }
-    // Sort newest first
-    users.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
     tbl.innerHTML=`<div style="overflow-x:auto"><table class="atbl">
       <thead><tr><th>#</th><th>Name</th><th>Gmail</th><th>Plan</th><th>UID</th><th>Joined</th></tr></thead>
       <tbody>${users.map((u,i)=>`<tr>
@@ -5371,38 +5375,36 @@ async function loadAdmUsers(){
       </tr>`).join('')}</tbody>
     </table></div>`;
   }catch(e){
+    const isWorkerMissing=e.message.includes('Failed to fetch')||e.message.includes('NetworkError');
     if(tbl)tbl.innerHTML=`<div style="padding:20px;font-size:12px;color:var(--am)">
-      <strong>⚠️ User list unavailable with secure rules.</strong><br><br>
-      This is expected — the admin login uses a local PIN (not Firebase Auth), so Firebase's security rules correctly block reading all users' data from a non-authenticated context. Real users are fully protected.<br><br>
-      <strong>To view users:</strong> Go to <a href="https://console.firebase.google.com" target="_blank" style="color:var(--a)">Firebase Console → Realtime Database → Data</a> and browse <code style="background:var(--bg3);padding:2px 6px;border-radius:4px">ds_users</code> directly — this is the secure way to view data without opening the database to the public.
+      <strong>⚠️ ${isWorkerMissing?'Admin Worker not deployed yet':'Could not load users: '+e.message}</strong><br><br>
+      ${isWorkerMissing?'Deploy <code>devsourcing-admin-worker/worker.js</code> to Cloudflare Workers, set the secrets (<code>ADMIN_PIN</code> and <code>FIREBASE_DB_SECRET</code>), then update <code>ADMIN_WORKER_URL</code> in index.html.':'Try refreshing. If this persists, check the Worker logs in Cloudflare dashboard.'}
     </div>`;
   }
 }
+
 async function exportUsersCSV(){
   try{
-    // Uses the same REST endpoint as the user list — will fail with secure
-    // rules since admin doesn't use Firebase Auth. Go to Firebase Console
-    // → Data tab → export from there instead as a workaround.
-    const dbURL='https://devsourcing-50631-default-rtdb.asia-southeast1.firebasedatabase.app/ds_users.json';
-    const r=await fetch(dbURL);
-    if(!r.ok)throw new Error('HTTP '+r.status+' — user data is secured, export from Firebase Console → Data tab instead');
-    const data=await r.json();
+    const data=await adminWorkerCall('users');
+    const users=data.users||[];
+    if(!users.length){toast('No users to export');return;}
     const rows=[['Name','Gmail','Plan','UID','Joined']];
-    Object.values(data||{}).forEach(u=>{rows.push([u.name||'',u.email||u.phone||'',u.plan||'',u.uid||'',u.createdAt?new Date(u.createdAt).toLocaleDateString('en-IN'):'']);});
-    const csv=rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
-    const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='devsourcing-users.csv';a.click();
-    toast('Users CSV downloaded ✓');
-  }catch(e){toast('Export unavailable: '+e.message);}
+    users.forEach(u=>{rows.push([u.name||'',u.email||u.phone||'',u.plan||'',u.uid||'',u.createdAt?new Date(u.createdAt).toLocaleDateString('en-IN'):'']);});
+    const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+    const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);a.download='devsourcing-users.csv';a.click();
+    toast('✅ Users CSV downloaded — '+users.length+' users');
+  }catch(e){toast('Export failed: '+e.message);}
 }
+
 async function admSetPlan(plan){
   const uid=document.getElementById('admUID').value.trim();
   if(!uid){toast('Paste a UID first');return;}
   try{
-    const end=plan==='pro'?Date.now()+30*86400000:plan==='trial'?Date.now()+86400000:0;
-    await db.ref('ds_users/'+uid).update({plan,proEnd:end});
-    document.getElementById('admPM').innerHTML=`<span style="color:var(--g)">✓ Plan set to "${plan}"</span>`;
+    await adminWorkerCall('setPlan',{uid,plan});
+    document.getElementById('admPM').innerHTML=`<span style="color:var(--g)">✓ Plan set to "${plan}" via Worker</span>`;
   }catch(e){document.getElementById('admPM').innerHTML=`<span style="color:var(--r)">✕ ${e.message}</span>`;}
 }
+
 
 
 // ── ADMIN PIN MANAGEMENT ─────────────────────────────
