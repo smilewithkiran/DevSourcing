@@ -2338,6 +2338,24 @@ function chunkArray(arr, size){
   return chunks;
 }
 
+// Shared disclaimer for every platform built on Google X-Ray boolean
+// queries (site:linkedin.com/in "..." style searches). Google does not
+// strictly enforce quoted phrases or OR-groups — when few/no pages match
+// literally, it quietly shows its closest approximate results instead,
+// with no indication the match was loosened. This means a result can
+// appear here without actually containing the searched phrase at all.
+// Genuine limitation, not a DevSourcing bug — same root cause across
+// every boolean-query platform, so always verify the actual profile.
+function xraySearchDisclaimer(){
+  return `<div class="eg-disclaimer" style="margin-bottom:20px">
+    <div class="eg-disclaimer-ic">⚠️</div>
+    <div>
+      <div class="eg-disclaimer-tt">Some results may not contain the exact phrase searched</div>
+      <div class="eg-disclaimer-sb">These queries run through Google search, and Google does not always strictly enforce quoted phrases or OR-groups — when few pages match literally, it can show its closest approximate results instead, without flagging that the match was loosened. A profile can appear here without actually containing words like "open to work," "laid off," or the exact skill/company searched. <strong style="color:var(--t1)">Always open and verify the actual profile before treating a result as confirmed</strong> — this is a limitation of how Google search itself works, not something a boolean query can fully control.</div>
+    </div>
+  </div>`;
+}
+
 function getGCCQueries(skill, city, exp){
   const s=skill||'developer';
   const c=city||'India';
@@ -2748,6 +2766,7 @@ function renderTenure(sk,ct,compType,targetCompany){
       <div class="rtitle">⏳ Tenure Targeting — ${sk||'Developer'} · ${ct||'India'}</div>
       <div class="rmeta">${queries.length} queries · ${range.label} tenure · ${(TENURE_COMPANIES[compType||'product']||[]).length} target companies</div>
     </div></div>
+    ${xraySearchDisclaimer()}
     <div style="background:var(--pus);border:1px solid var(--pub);border-radius:14px;padding:18px;margin-bottom:16px;display:flex;gap:14px">
       <div style="font-size:24px;flex-shrink:0">⏳</div>
       <div>
@@ -2797,6 +2816,7 @@ function renderImmediateJoiners(sk,ct,ex){
       <div class="rtitle">⚡ Immediate Joiners — ${sk||'Developer'} · ${ct||'India'}</div>
       <div class="rmeta">${queries.length} queries · candidates who self-tagged their own availability</div>
     </div></div>
+    ${xraySearchDisclaimer()}
     <div style="background:var(--gs);border:1px solid var(--gb);border-radius:14px;padding:18px;margin-bottom:20px;display:flex;gap:14px">
       <div style="font-size:24px;flex-shrink:0">⚡</div>
       <div>
@@ -2854,6 +2874,7 @@ function renderLayoffs(sk,ct){
       <div class="rtitle">📉 Recently Laid Off — ${sk||'Developer'} · ${ct||'India'}</div>
       <div class="rmeta">${queries.length} queries · self-disclosed layoff signal + known affected companies</div>
     </div></div>
+    ${xraySearchDisclaimer()}
     <div style="background:var(--ams);border:1px solid var(--amb);border-radius:14px;padding:18px;margin-bottom:20px;display:flex;gap:14px">
       <div style="font-size:24px;flex-shrink:0">⚠️</div>
       <div>
@@ -3593,6 +3614,7 @@ function renderGCC(sk, ct, ex, gccCo) {
         <div class="rtitle">🏢 GCC Hunt — ${gccCo}</div>
         <div class="rmeta">${queries.length} precision queries · "${s}" · ${c}</div>
       </div></div>
+      ${xraySearchDisclaimer()}
       <div class="xintro"><div style="font-size:22px;flex-shrink:0">🏢</div><div>
         <div class="xi-tt" style="color:var(--am)">Targeting ${gccCo}</div>
         <div class="xi-sb">LinkedIn X-Ray for current employees, the GCC/GTC team specifically, and real GitHub profiles with <strong style="color:var(--t1)">${gccCo}</strong> set as their company.</div>
@@ -3621,6 +3643,7 @@ function renderGCC(sk, ct, ex, gccCo) {
       <div class="rtitle">🏢 GCC Hunt — ${s} · ${c}</div>
       <div class="rmeta">${allQueries.length} precision queries across 100+ Global Capability Centres</div>
     </div></div>
+    ${xraySearchDisclaimer()}
     <div class="xintro"><div style="font-size:22px;flex-shrink:0">🏢</div><div>
       <div class="xi-tt" style="color:var(--am)">100+ GCC / GTC companies in India</div>
       <div class="xi-sb">LinkedIn X-Ray queries batched across Walmart, JPMorgan, Google, Microsoft, Amex and 95+ more — plus real GitHub profiles filtered by company field. Type a specific company above to focus on just one.</div>
@@ -3665,6 +3688,7 @@ function renderPassive(sk, ct, ex) {
       <div class="rtitle">🕵️ Passive Finder — ${sk||'Developer'} · ${ct||'India'}</div>
       <div class="rmeta">${queries.reduce((a,q)=>a+q.items.length,0)} targeted queries across 3 candidate tiers</div>
     </div></div>
+    ${xraySearchDisclaimer()}
 
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">
       <div style="background:var(--gs);border:1px solid var(--gb);border-radius:12px;padding:14px;text-align:center">
@@ -3801,6 +3825,7 @@ function renderHiddenTalent(sk, ct, ex) {
       <div class="rtitle">🔮 Hidden Talent — ${sk||'Developer'} · ${ct||'India'}</div>
       <div class="rmeta">${queries.length} title-expanded queries · ${titles.length} equivalent job titles identified</div>
     </div></div>
+    ${xraySearchDisclaimer()}
 
     <div style="background:rgba(217,70,239,.06);border:1px solid rgba(217,70,239,.2);border-radius:14px;padding:18px;margin-bottom:20px;display:flex;gap:14px">
       <div style="font-size:24px;flex-shrink:0">🔮</div>
@@ -4401,6 +4426,7 @@ function renderCompetitor(sk,ct,targetCo){
   const rw=document.getElementById('rw');
   rw.innerHTML=`
     <div class="rbar"><div><div class="rtitle">${title}</div><div class="rmeta">${subtitle}</div></div></div>
+    ${xraySearchDisclaimer()}
     <div class="xintro"><div style="font-size:22px;flex-shrink:0">🎯</div><div>
       <div class="xi-tt" style="color:var(--am)">Source from a specific company</div>
       <div class="xi-sb">Type any company name to find its engineers — both <strong style="color:var(--t1)">current employees</strong> (passive candidates) and <strong style="color:var(--t1)">past employees / alumni</strong> (often easier to reach), via LinkedIn, engineering blogs, GitHub and conference talks. ${targetCo?'':'Type a company name in the field above to focus all queries on just that company.'}</div>
@@ -4918,6 +4944,7 @@ function renderXray(pl,sk,ct){
   const redditWarning=pl==='reddit'?`<div style="display:flex;gap:10px;align-items:flex-start;background:var(--ams);border:1px solid var(--amb);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:var(--t2);line-height:1.6"><span style="flex-shrink:0">⚠️</span><span><strong style="color:var(--t1)">Low-confidence results expected.</strong> Reddit profiles rarely contain structured professional info (no job title, company, or location fields like LinkedIn) — search engines often return loosely-related posts/comments rather than real matching developers. Treat Reddit results as a long-shot, not a primary source.</span></div>`:'';
   document.getElementById('rw').innerHTML=`
     <div class="rbar"><div><div class="rtitle">${PM[pl].ic} ${PM[pl].n} — Smart Search</div><div class="rmeta">${qs.length} precision queries · "${s}" · ${c}</div></div></div>
+    ${xraySearchDisclaimer()}
     ${redditWarning}
     <div class="xql">${qs.map((q,i)=>`<div class="xqc"><div class="xqn">${i+1}</div><div class="xqi"><div class="xql-t">${q.l}</div><div class="xql-q">${q.q}</div></div><button class="bxo" onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(q.q)}','_blank')">🔍 Open</button></div>`).join('')}</div>`;
 }
@@ -5282,35 +5309,30 @@ async function loadAdmOverview(){
   const ids=['statVisitors','statTotal','statPaid','statFree'];
   ids.forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='<div class="spin" style="width:14px;height:14px;border-width:2px;display:inline-block"></div>';});
   try{
-    // Fetch users and meta in parallel with timeout
     const timeout=ms=>new Promise((_,r)=>setTimeout(()=>r(new Error('Timeout')),ms));
-    const [snapUsers,snapMeta]=await Promise.race([
-      Promise.all([db.ref('ds_users').once('value'),db.ref('ds_meta').once('value')]),
-      timeout(8000).then(()=>{throw new Error('Firebase timeout — check DB rules');})
+    // Only read ds_meta (visitor count) — ds_users is secured and can only
+    // be read per-user. User stats are now viewed in Firebase Console directly.
+    const snapMeta=await Promise.race([
+      db.ref('ds_meta').once('value'),
+      timeout(8000).then(()=>{throw new Error('Firebase timeout');})
     ]);
-    let total=0,paid=0,trial=0,free=0;
-    snapUsers.forEach(c=>{
-      const u=c.val();if(!u)return;
-      total++;
-      if(u.plan==='pro')paid++;
-      else if(u.plan==='trial')trial++;
-      else free++;
-    });
     const metaVal=snapMeta.val()||{};
     const visitors=metaVal.visitors||0;
     const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
     set('statVisitors',visitors.toLocaleString('en-IN'));
-    set('statTotal',total);
-    set('statPaid',paid);
-    set('statFree',trial+free);
-    // Show DB rules warning in overview if 0 users and 0 visitors
+    // User stats — not readable from admin context with secure rules.
+    // View in Firebase Console → Data → ds_users
+    ['statTotal','statPaid','statFree'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el){el.textContent='—';el.title='Secured — view in Firebase Console → Data → ds_users';}
+    });
     const warn=document.getElementById('admDbWarn');
-    if(warn)warn.style.display=(total===0&&visitors===0)?'block':'none';
+    if(warn)warn.style.display='none';
   }catch(e){
     console.error('Admin overview error:',e.message);
-    ids.forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='!';});
+    ids.forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='!';}); 
     const warn=document.getElementById('admDbWarn');
-    if(warn){warn.style.display='block';warn.innerHTML='⚠️ Firebase read failed: <strong>'+e.message+'</strong><br>Fix: Firebase Console → Realtime DB → Rules → set read/write to <code>true</code> temporarily to test.';}
+    if(warn){warn.style.display='block';warn.innerHTML='⚠️ Could not load visitor count. Check Firebase connection.';}
   }
 }
 async function loadAdmUsers(){
@@ -5346,24 +5368,28 @@ async function loadAdmUsers(){
       </tr>`).join('')}</tbody>
     </table></div>`;
   }catch(e){
-    if(tbl)tbl.innerHTML=`<div style="padding:20px;font-size:12px;color:var(--r)">
-      ⚠️ Firebase read failed: ${e.message}<br><br>
-      <strong>Fix:</strong> Go to <a href="https://console.firebase.google.com" target="_blank" style="color:var(--a)">Firebase Console</a> → 
-      Realtime Database → Rules → change to:<br>
-      <code style="background:var(--bg3);padding:4px 8px;border-radius:4px;display:inline-block;margin-top:8px">{"rules":{".read":true,".write":true}}</code><br>
-      <em style="color:var(--t3)">(Only for testing — tighten rules after)</em>
+    if(tbl)tbl.innerHTML=`<div style="padding:20px;font-size:12px;color:var(--am)">
+      <strong>⚠️ User list unavailable with secure rules.</strong><br><br>
+      This is expected — the admin login uses a local PIN (not Firebase Auth), so Firebase's security rules correctly block reading all users' data from a non-authenticated context. Real users are fully protected.<br><br>
+      <strong>To view users:</strong> Go to <a href="https://console.firebase.google.com" target="_blank" style="color:var(--a)">Firebase Console → Realtime Database → Data</a> and browse <code style="background:var(--bg3);padding:2px 6px;border-radius:4px">ds_users</code> directly — this is the secure way to view data without opening the database to the public.
     </div>`;
   }
 }
 async function exportUsersCSV(){
   try{
-    const snap=await db.ref('ds_users').once('value');
+    // Uses the same REST endpoint as the user list — will fail with secure
+    // rules since admin doesn't use Firebase Auth. Go to Firebase Console
+    // → Data tab → export from there instead as a workaround.
+    const dbURL='https://devsourcing-50631-default-rtdb.asia-southeast1.firebasedatabase.app/ds_users.json';
+    const r=await fetch(dbURL);
+    if(!r.ok)throw new Error('HTTP '+r.status+' — user data is secured, export from Firebase Console → Data tab instead');
+    const data=await r.json();
     const rows=[['Name','Gmail','Plan','UID','Joined']];
-    snap.forEach(c=>{const u=c.val();rows.push([u.name||'',u.email||u.phone||'',u.plan||'',u.uid||'',u.createdAt?new Date(u.createdAt).toLocaleDateString('en-IN'):'']);});
+    Object.values(data||{}).forEach(u=>{rows.push([u.name||'',u.email||u.phone||'',u.plan||'',u.uid||'',u.createdAt?new Date(u.createdAt).toLocaleDateString('en-IN'):'']);});
     const csv=rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
     const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='devsourcing-users.csv';a.click();
     toast('Users CSV downloaded ✓');
-  }catch(e){toast('Export failed: '+e.message);}
+  }catch(e){toast('Export unavailable: '+e.message);}
 }
 async function admSetPlan(plan){
   const uid=document.getElementById('admUID').value.trim();
