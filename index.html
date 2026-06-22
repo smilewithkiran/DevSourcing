@@ -5312,11 +5312,15 @@ async function loadAdmOverview(){
     const timeout=ms=>new Promise((_,r)=>setTimeout(()=>r(new Error('Timeout')),ms));
     // Only read ds_meta (visitor count) — ds_users is secured and can only
     // be read per-user. User stats are now viewed in Firebase Console directly.
-    const snapMeta=await Promise.race([
-      db.ref('ds_meta').once('value'),
+    // Use REST API for ds_meta read — more reliable than SDK in admin context
+    // since admin login doesn't go through Firebase Auth.
+    const metaURL='https://devsourcing-50631-default-rtdb.asia-southeast1.firebasedatabase.app/ds_meta.json';
+    const metaRes=await Promise.race([
+      fetch(metaURL),
       timeout(8000).then(()=>{throw new Error('Firebase timeout');})
     ]);
-    const metaVal=snapMeta.val()||{};
+    if(!metaRes.ok)throw new Error('HTTP '+metaRes.status);
+    const metaVal=await metaRes.json()||{};
     const visitors=metaVal.visitors||0;
     const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
     set('statVisitors',visitors.toLocaleString('en-IN'));
