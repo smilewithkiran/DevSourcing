@@ -322,6 +322,16 @@ a{text-decoration:none;color:inherit}
 /* JD input */
 .jd-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 .jd-ta{width:100%;padding:12px 14px;border:1.5px solid var(--b2);border-radius:10px;background:var(--bg3);color:var(--t1);font-size:13px;font-family:inherit;resize:vertical;min-height:100px;outline:none;line-height:1.6}
+.jd-mode-bar{display:flex;gap:4px;margin-bottom:8px;background:var(--bg3);border:1px solid var(--b1);border-radius:9px;padding:3px}
+.jd-mode-btn{flex:1;padding:6px 8px;border:none;border-radius:7px;background:transparent;color:var(--t3);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s;text-align:center}
+.jd-mode-btn.on{background:var(--as);color:var(--a);border:1px solid var(--ab)}
+.jd-url-row{display:flex;gap:8px;align-items:center}
+.jd-url-row input{flex:1}
+.jd-url-btn{padding:9px 14px;border-radius:8px;background:var(--a);color:#080c14;border:none;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit}
+.jd-file-zone{border:1.5px dashed var(--b2);border-radius:10px;padding:16px;text-align:center;cursor:pointer;background:var(--bg3);transition:.15s;position:relative}
+.jd-file-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.jd-file-zone:hover{border-color:var(--a);background:var(--as)}
+.jd-file-loaded{font-size:12px;color:var(--g);margin-top:6px;padding:6px 10px;background:var(--gs);border-radius:6px;border:1px solid var(--gb)}
 .jd-ta:focus{border-color:var(--a)}
 .sct-hint{font-size:11px;color:var(--t3);margin-top:6px;line-height:1.5}
 /* LinkedIn input */
@@ -1650,7 +1660,31 @@ Just paste everything and click Parse below."></textarea>
         </div>
       </div>
       <div class="fl" style="margin-bottom:8px;margin-top:12px">Job Description / Skills to match against</div>
-      <textarea class="jd-ta" id="liJd" placeholder="Paste JD or key skills to score this LinkedIn candidate against..." style="min-height:80px"></textarea>
+      <div class="jd-mode-bar">
+        <button class="jd-mode-btn on" onclick="setJdMode('li','paste')">✏️ Paste Text</button>
+        <button class="jd-mode-btn" onclick="setJdMode('li','file')">📄 Upload JD (PDF/Word)</button>
+        <button class="jd-mode-btn" onclick="setJdMode('li','url')">🔗 From URL</button>
+      </div>
+      <div id="liJdPaste">
+        <textarea class="jd-ta" id="liJd" placeholder="Paste JD or key skills to score this LinkedIn candidate against..." style="min-height:80px"></textarea>
+      </div>
+      <div id="liJdFile" style="display:none">
+        <div class="jd-file-zone" id="liJdFileZone">
+          <input type="file" accept=".pdf,.doc,.docx" onchange="handleJdFile(event,'li')">
+          <div style="font-size:20px;margin-bottom:6px">📄</div>
+          <div style="font-size:13px;font-weight:600;color:var(--t2)">Drop JD file here or click to browse</div>
+          <div style="font-size:11px;color:var(--t3);margin-top:4px">.pdf, .doc, .docx supported</div>
+        </div>
+        <div id="liJdFileStatus"></div>
+      </div>
+      <div id="liJdUrl" style="display:none">
+        <div class="jd-url-row">
+          <input class="fi" id="liJdUrlInput" type="url" placeholder="Paste job posting URL (LinkedIn, Naukri, company site...)">
+          <button class="jd-url-btn" onclick="fetchJdFromUrl('li')">Fetch JD</button>
+        </div>
+        <div id="liJdUrlStatus" style="font-size:11px;color:var(--t3);margin-top:6px"></div>
+        <textarea class="jd-ta" id="liJdFromUrl" placeholder="Fetched JD text will appear here — you can edit before scoring..." style="min-height:80px;margin-top:8px;display:none"></textarea>
+      </div>
       <div class="sct-hint" style="margin-bottom:12px">💡 We generate X-Ray search queries to find matching profiles and score them against your JD. LinkedIn's API is not publicly available — we use Google X-Ray to surface the profile data.</div>
       <button class="btn-sct-analyze" onclick="analyzeLinkedIn()">💼 Score LinkedIn Profile</button>
       <div id="liResult" class="sct-results"></div>
@@ -1667,7 +1701,31 @@ Just paste everything and click Parse below."></textarea>
       </div>
       <div id="pdfFileList" class="file-list"></div>
       <div class="fl" style="margin-bottom:8px">Job Description / Skills to score against</div>
-      <textarea class="jd-ta" id="pdfJd" placeholder="Paste JD or key skills..." style="min-height:80px"></textarea>
+      <div class="jd-mode-bar">
+        <button class="jd-mode-btn on" onclick="setJdMode('pdf','paste')">✏️ Paste Text</button>
+        <button class="jd-mode-btn" onclick="setJdMode('pdf','file')">📄 Upload JD (PDF/Word)</button>
+        <button class="jd-mode-btn" onclick="setJdMode('pdf','url')">🔗 From URL</button>
+      </div>
+      <div id="pdfJdPaste">
+        <textarea class="jd-ta" id="pdfJd" placeholder="Paste JD or key skills..." style="min-height:80px"></textarea>
+      </div>
+      <div id="pdfJdFile" style="display:none">
+        <div class="jd-file-zone" id="pdfJdFileZone">
+          <input type="file" accept=".pdf,.doc,.docx" onchange="handleJdFile(event,'pdf')">
+          <div style="font-size:20px;margin-bottom:6px">📄</div>
+          <div style="font-size:13px;font-weight:600;color:var(--t2)">Drop JD file here or click to browse</div>
+          <div style="font-size:11px;color:var(--t3);margin-top:4px">.pdf, .doc, .docx supported</div>
+        </div>
+        <div id="pdfJdFileStatus"></div>
+      </div>
+      <div id="pdfJdUrl" style="display:none">
+        <div class="jd-url-row">
+          <input class="fi" id="pdfJdUrlInput" type="url" placeholder="Paste job posting URL (LinkedIn, Naukri, company site...)">
+          <button class="jd-url-btn" onclick="fetchJdFromUrl('pdf')">Fetch JD</button>
+        </div>
+        <div id="pdfJdUrlStatus" style="font-size:11px;color:var(--t3);margin-top:6px"></div>
+        <textarea class="jd-ta" id="pdfJdFromUrl" placeholder="Fetched JD text will appear here — you can edit before scoring..." style="min-height:80px;margin-top:8px;display:none"></textarea>
+      </div>
       <div class="jd-row" style="margin-top:10px">
         <div>
           <div class="fl" style="margin-bottom:6px">Key Skills <span style="color:var(--t3);font-weight:400">(optional — helps if JD wording is unclear)</span></div>
@@ -1695,7 +1753,31 @@ Just paste everything and click Parse below."></textarea>
       </div>
       <div id="folderFileList" class="file-list"></div>
       <div class="fl" style="margin-bottom:8px">Job Description / Key Skills</div>
-      <textarea class="jd-ta" id="folderJd" placeholder="Paste your JD or key skills here. All uploaded resumes will be ranked against this..." style="min-height:80px"></textarea>
+      <div class="jd-mode-bar">
+        <button class="jd-mode-btn on" onclick="setJdMode('folder','paste')">✏️ Paste Text</button>
+        <button class="jd-mode-btn" onclick="setJdMode('folder','file')">📄 Upload JD (PDF/Word)</button>
+        <button class="jd-mode-btn" onclick="setJdMode('folder','url')">🔗 From URL</button>
+      </div>
+      <div id="folderJdPaste">
+        <textarea class="jd-ta" id="folderJd" placeholder="Paste your JD or key skills here. All uploaded resumes will be ranked against this..." style="min-height:80px"></textarea>
+      </div>
+      <div id="folderJdFile" style="display:none">
+        <div class="jd-file-zone" id="folderJdFileZone">
+          <input type="file" accept=".pdf,.doc,.docx" onchange="handleJdFile(event,'folder')">
+          <div style="font-size:20px;margin-bottom:6px">📄</div>
+          <div style="font-size:13px;font-weight:600;color:var(--t2)">Drop JD file here or click to browse</div>
+          <div style="font-size:11px;color:var(--t3);margin-top:4px">.pdf, .doc, .docx supported</div>
+        </div>
+        <div id="folderJdFileStatus"></div>
+      </div>
+      <div id="folderJdUrl" style="display:none">
+        <div class="jd-url-row">
+          <input class="fi" id="folderJdUrlInput" type="url" placeholder="Paste job posting URL (LinkedIn, Naukri, company site...)">
+          <button class="jd-url-btn" onclick="fetchJdFromUrl('folder')">Fetch JD</button>
+        </div>
+        <div id="folderJdUrlStatus" style="font-size:11px;color:var(--t3);margin-top:6px"></div>
+        <textarea class="jd-ta" id="folderJdFromUrl" placeholder="Fetched JD text will appear here — you can edit before scoring..." style="min-height:80px;margin-top:8px;display:none"></textarea>
+      </div>
       <div class="jd-row" style="margin-top:10px">
         <div>
           <div class="fl" style="margin-bottom:6px">Key Skills <span style="color:var(--t3);font-weight:400">(optional — helps if JD wording is unclear)</span></div>
@@ -3257,9 +3339,9 @@ function showScoreCardFromData(name, company, exp, skills, jdText, avatarText, r
 
 function analyzeLinkedIn(){
   const url = document.getElementById('liUrl').value.trim();
-  const jdText = document.getElementById('liJd').value.trim();
+  const jdText = getJdText('li');
   if(!url){toast('Please enter a LinkedIn URL');return;}
-  if(!jdText){toast('Please paste a JD or skills to match against');return;}
+  if(!jdText){toast('Please add a JD — paste text, upload a file, or fetch from URL');return;}
 
   // Extract name from URL
   const urlParts = url.replace('https://','').replace('http://','').replace('www.','').split('/');
@@ -3352,9 +3434,104 @@ function mergeKeySkills(jdSkills, keySkillsInput){
 
 let lastBulkScored = {pdf:null, folder:null}; // cache for export
 
+// ── JD INPUT — three modes: paste, file upload, URL ──────────────────
+// Each scorecard tab (li, pdf, folder) has its own set of JD input
+// elements. setJdMode() switches which is visible; getJdText() reads
+// the active mode's content so analyzeResumes() always gets the right JD.
+
+function setJdMode(tab, mode){
+  ['paste','file','url'].forEach(m=>{
+    const el=document.getElementById(tab+'Jd'+m.charAt(0).toUpperCase()+m.slice(1));
+    if(el)el.style.display=m===mode?'block':'none';
+  });
+  document.querySelectorAll('#'+tab+'Panel .jd-mode-btn, #sctPanel-'+tab+' .jd-mode-btn').forEach((b,i)=>{
+    b.classList.toggle('on',['paste','file','url'][i]===mode);
+  });
+}
+
+function getJdText(tab){
+  // Check which mode is active by which panel is visible
+  const fileSt=document.getElementById(tab+'JdFileStatus');
+  const urlTa=document.getElementById(tab+'JdFromUrl');
+  const pasteTa=document.getElementById(tab+'Jd');
+  const filePanel=document.getElementById(tab+'JdFile');
+  const urlPanel=document.getElementById(tab+'JdUrl');
+
+  if(filePanel&&filePanel.style.display!=='none'){
+    // File mode — text was extracted into the hidden textarea
+    return (fileSt&&fileSt.dataset.jdText)||'';
+  }
+  if(urlPanel&&urlPanel.style.display!=='none'){
+    // URL mode — text was fetched into urlTa
+    return urlTa?urlTa.value.trim():'';
+  }
+  // Paste mode (default)
+  return pasteTa?pasteTa.value.trim():'';
+}
+
+async function handleJdFile(event, tab){
+  const file = event.target.files?.[0];
+  if(!file)return;
+  const statusEl = document.getElementById(tab+'JdFileStatus');
+  if(statusEl) statusEl.innerHTML='<div style="font-size:12px;color:var(--t3);margin-top:8px">⏳ Reading JD file...</div>';
+  const {text, error} = await extractTextFromFile(file);
+  if(error||!text||text.trim().length<20){
+    if(statusEl) statusEl.innerHTML='<div style="font-size:12px;color:var(--r);margin-top:8px">⚠️ Could not read this file — try pasting the JD text instead.</div>';
+    return;
+  }
+  // Store the extracted text on the element as a data attribute
+  if(statusEl){
+    statusEl.dataset.jdText = text.trim();
+    statusEl.innerHTML=`<div class="jd-file-loaded">✅ JD loaded from <strong>${file.name}</strong> — ${text.trim().split(/\s+/).length} words extracted. You can switch to Paste Text to review or edit it.</div>`;
+  }
+}
+
+async function fetchJdFromUrl(tab){
+  const input = document.getElementById(tab+'JdUrlInput');
+  const statusEl = document.getElementById(tab+'JdUrlStatus');
+  const ta = document.getElementById(tab+'JdFromUrl');
+  const url = input?.value.trim();
+  if(!url){toast('Paste a URL first');return;}
+
+  if(statusEl) statusEl.innerHTML='⏳ Fetching JD from URL...';
+  if(ta) ta.style.display='none';
+
+  try{
+    // Use AllOrigins as a CORS proxy — free, no auth needed, works for
+    // most public job posting pages (LinkedIn Jobs, Naukri, company sites).
+    // Note: LinkedIn's app pages are SPA-rendered and may not return full
+    // text — pasting or uploading the JD directly is more reliable for
+    // LinkedIn job posts specifically.
+    const proxyUrl='https://api.allorigins.win/get?url='+encodeURIComponent(url);
+    const res = await fetch(proxyUrl);
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    if(!data.contents) throw new Error('No content returned');
+
+    // Strip HTML tags to get plain text
+    const div=document.createElement('div');
+    div.innerHTML=data.contents;
+    // Remove script/style blocks first
+    div.querySelectorAll('script,style,nav,header,footer').forEach(el=>el.remove());
+    const text = (div.textContent||div.innerText||'')
+      .replace(/\s{3,}/g,'\n\n').trim();
+
+    if(text.length<100) throw new Error('Page returned too little text — it may require login or be JavaScript-rendered. Try pasting or uploading the JD instead.');
+
+    if(ta){
+      ta.value=text.slice(0,5000); // cap at 5000 chars — plenty for a JD
+      ta.style.display='block';
+    }
+    if(statusEl) statusEl.innerHTML='<span style="color:var(--g)">✅ JD fetched — review the text below and edit if needed before scoring.</span>';
+  }catch(e){
+    if(statusEl) statusEl.innerHTML='<span style="color:var(--r)">⚠️ Could not fetch: '+e.message+'</span>';
+    if(ta) ta.style.display='none';
+  }
+}
+
 async function analyzeResumes(type){
   const files = sctFiles[type];
-  const jdText = document.getElementById(type+'Jd').value.trim();
+  const jdText = getJdText(type);
   const keySkillsInput = document.getElementById(type+'KeySkills')?.value.trim() || '';
   const minExp = parseInt(document.getElementById(type+'MinExp')?.value) || null;
   const resultEl = document.getElementById(type+'Result');
