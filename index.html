@@ -3473,12 +3473,40 @@ async function handleJdFile(event, tab){
   const file = event.target.files?.[0];
   if(!file)return;
   const statusEl = document.getElementById(tab+'JdFileStatus');
+  const ext = file.name.split('.').pop().toLowerCase();
+
   if(statusEl) statusEl.innerHTML='<div style="font-size:12px;color:var(--t3);margin-top:8px">⏳ Reading JD file...</div>';
-  const {text, error} = await extractTextFromFile(file);
-  if(error||!text||text.trim().length<20){
-    if(statusEl) statusEl.innerHTML='<div style="font-size:12px;color:var(--r);margin-top:8px">⚠️ Could not read this file — try pasting the JD text instead.</div>';
+
+  // Check library availability upfront with clear user-facing messages
+  if(ext==='pdf' && typeof pdfjsLib==='undefined'){
+    if(statusEl) statusEl.innerHTML='<div style="font-size:12px;color:var(--r);margin-top:8px">⚠️ PDF reader library not loaded — check your internet connection and refresh the page, then try again. Or paste the JD text directly.</div>';
     return;
   }
+  if((ext==='docx'||ext==='doc') && typeof mammoth==='undefined'){
+    if(statusEl) statusEl.innerHTML='<div style="font-size:12px;color:var(--r);margin-top:8px">⚠️ Word document reader not loaded — check your internet connection and refresh the page, then try again. Or paste the JD text directly.</div>';
+    return;
+  }
+  if(ext==='doc'){
+    if(statusEl) statusEl.innerHTML='<div style="font-size:12px;color:var(--am);margin-top:8px">⚠️ Legacy .doc format is not supported. Please re-save the file as <strong>.docx</strong> (File → Save As → Word Document .docx) or <strong>.pdf</strong>, then upload again.</div>';
+    return;
+  }
+  if(!['pdf','docx'].includes(ext)){
+    if(statusEl) statusEl.innerHTML='<div style="font-size:12px;color:var(--r);margin-top:8px">⚠️ Unsupported file type ".'+ext+'" — only PDF and Word (.docx) files are supported for JD upload.</div>';
+    return;
+  }
+
+  const {text, error} = await extractTextFromFile(file);
+
+  if(error){
+    // Show the specific error from extractTextFromFile rather than a generic message
+    if(statusEl) statusEl.innerHTML='<div style="font-size:12px;color:var(--r);margin-top:8px">⚠️ '+error+' — try pasting the JD text directly instead.</div>';
+    return;
+  }
+  if(!text||text.trim().length<20){
+    if(statusEl) statusEl.innerHTML='<div style="font-size:12px;color:var(--r);margin-top:8px">⚠️ No readable text found in this file — it may be a scanned image PDF (no text layer). Try copying the JD text and pasting it directly.</div>';
+    return;
+  }
+
   // Store the extracted text on the element as a data attribute
   if(statusEl){
     statusEl.dataset.jdText = text.trim();
