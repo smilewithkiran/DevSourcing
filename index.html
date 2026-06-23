@@ -3394,19 +3394,46 @@ async function analyzeResumes(type){
       score.matchedSkills = matched;
       score.skillRows = skills.slice(0,5).map(s=>({
         label: s.charAt(0).toUpperCase()+s.slice(1),
-        score: matched.includes(s) ? Math.floor(70+Math.random()*25) : Math.floor(20+Math.random()*20)
+        score: matched.includes(s) ? Math.floor(70+Math.random()*25) : Math.floor(10+Math.random()*15)
       }));
-      score.overall = skills.length>0
-        ? Math.round((matched.length/skills.length)*70 + (exp?20:0) + 10)
-        : null;
-      score.overall = score.overall!==null ? Math.min(score.overall,99) : null;
+
+      // ── Role relevance gate ──────────────────────────────────────
+      // A resume that matches fewer than 2 required JD skills (out of
+      // however many we extracted) is almost certainly a wrong-function
+      // profile — a UI dev scoring 37% against a Recruiter JD because
+      // "stakeholder management" appears once is not a real match.
+      // Rule: must match at least 2 skills OR at least 30% of extracted
+      // skills (whichever is lower) to get a real score. Below that → 0.
+      const minMatchRequired = Math.max(1, Math.min(2, Math.floor(skills.length*0.3)));
+      const isNotRelevant = skills.length > 0 && matched.length < minMatchRequired;
+
+      if(isNotRelevant){
+        // Zero score — candidate doesn't have enough of the required skills
+        // to be considered a real match. Show as "Not Relevant" not just low %.
+        score.overall = 0;
+        score.notRelevant = true;
+        score.notRelevantReason = `Only matched ${matched.length}/${skills.length} required skills — profile appears to be a different function/role entirely`;
+      } else {
+        // No free base score (+10 removed) — must earn every point.
+        // Formula: skill match is 80% of score, experience is 20%.
+        score.overall = skills.length>0
+          ? Math.min(99, Math.round((matched.length/skills.length)*80 + (exp && minExp && exp>=minExp ? 20 : exp ? 10 : 0)))
+          : null;
+        score.notRelevant = false;
+      }
       score.noSkillSignal = skills.length===0;
     }
 
     scored.push({name, file:f, score, parseError: error, hasText, minExpMet: minExp ? (exp!==null && exp>=minExp) : null});
   }
 
-  scored.sort((a,b)=>(b.score.overall??-1)-(a.score.overall??-1));
+  scored.sort((a,b)=>{
+    // Not Relevant (wrong function/role) → always last
+    if(a.score.notRelevant && !b.score.notRelevant) return 1;
+    if(!a.score.notRelevant && b.score.notRelevant) return -1;
+    // Low confidence (null) → second to last
+    return (b.score.overall??-1)-(a.score.overall??-1);
+  });
   lastBulkScored[type] = {scored, skills, jdText: jdText||keySkillsInput};
 
   if(statusEl) statusEl.innerHTML = '';
@@ -3424,20 +3451,31 @@ async function analyzeResumes(type){
     </div>
     ${parseFailCount>0?`<div style="display:flex;gap:8px;align-items:flex-start;background:var(--ams);border:1px solid var(--amb);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:var(--t2)"><span>⚠️</span><span>${parseFailCount} file${parseFailCount>1?'s':''} could not be read (scanned image, password-protected, legacy .doc, or corrupted) — scored from filename only, treat with caution.</span></div>`:''}`;
 
-  html += scored.map((c,i)=>`
-    <div class="sct-result-card" onclick="showScoreCardFromData('${c.name.replace(/'/g,"\\'")}','',null,${JSON.stringify(c.score.matchedSkills||skills)},'${(jdText||keySkillsInput).replace(/'/g,"\\'")}','${c.name[0]}','${type}Result')">
-      <div style="width:28px;height:28px;border-radius:50%;background:${i===0?'var(--am)':i===1?'var(--bg3)':i===2?'rgba(180,83,9,.2)':'var(--bg3)'};border:1px solid ${i===0?'var(--amb)':'var(--b1)'};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:${i===0?'var(--am)':'var(--t3)'};flex-shrink:0">#${i+1}</div>
-      <div class="sct-av">${c.name[0]}</div>
-      <div class="sct-info">
-        <div class="sct-name">${c.name}${!c.hasText?' <span style="color:var(--am);font-size:10px;font-weight:600">⚠️ unparsed</span>':''}${c.minExpMet===false?' <span style="color:var(--r);font-size:10px;font-weight:600">below min exp</span>':''}</div>
-        <div class="sct-sub">${c.file.name} · ${(c.file.size/1024).toFixed(0)}KB · Click for full score card</div>
-      </div>
-      <div class="sct-score-wrap">
-        <div class="sct-overall">${c.score.overall===null?'N/A':c.score.overall+'%'}</div>
-        <div class="sct-overall-lbl">${c.score.overall===null?'Low Confidence':'Match'}</div>
-      </div>
-    </div>`).join('');
-
+  html += scored.map((c,i)=>{
+    const nr=c.score.notRelevant;
+    const scoreVal=nr?'0%':c.score.overall===null?'N/A':(c.score.overall+'%');
+    const scoreLbl=nr?'Not Relevant':c.score.overall===null?'Low Confidence':'Match';
+    const scoreColor=nr?'color:#f87171':c.score.overall===null?'color:var(--am)':'';
+    const notRelMsg=nr?('<div style="font-size:10px;color:#f87171;padding:6px 12px 10px;border-top:1px solid rgba(248,113,113,.2)">⚠️ Wrong function/role — only '+(c.score.matchedSkills||[]).length+' of '+(c.score.allSkills||skills).length+' required skills found in resume</div>'):'';
+    const rank=i===0?'var(--am)':i===1?'var(--bg3)':i===2?'rgba(180,83,9,.2)':'var(--bg3)';
+    const rankBdr=i===0?'var(--amb)':'var(--b1)';
+    const rankClr=i===0?'var(--am)':'var(--t3)';
+    const unparsed=!c.hasText?' <span style="color:var(--am);font-size:10px;font-weight:600">⚠️ unparsed</span>':'';
+    const belowExp=c.minExpMet===false?' <span style="color:var(--r);font-size:10px;font-weight:600">below min exp</span>':'';
+    const nm=c.name.replace(/'/g,"\\'");
+    const jd=(jdText||keySkillsInput).replace(/'/g,"\\'");
+    return '<div class="sct-result-card" onclick="showScoreCardFromData(\''+nm+'\',\'\',null,'+JSON.stringify(c.score.matchedSkills||skills)+',' +'\''+ jd+'\''  +',' +'\''+ c.name[0]+'\''+',' +'\''+ type+'Result'+'\''+')">'
+      +'<div style="width:28px;height:28px;border-radius:50%;background:'+rank+';border:1px solid '+rankBdr+';display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:'+rankClr+';flex-shrink:0">#'+(i+1)+'</div>'
+      +'<div class="sct-av">'+c.name[0]+'</div>'
+      +'<div class="sct-info">'
+      +'<div class="sct-name">'+c.name+unparsed+belowExp+'</div>'
+      +'<div class="sct-sub">'+c.file.name+' · '+(c.file.size/1024).toFixed(0)+'KB · Click for full score card</div>'
+      +'</div>'
+      +'<div class="sct-score-wrap">'
+      +'<div class="sct-overall" style="'+scoreColor+'">'+scoreVal+'</div>'
+      +'<div class="sct-overall-lbl" style="'+scoreColor+'">'+scoreLbl+'</div>'
+      +'</div></div>'+notRelMsg;
+  }).join('');
   resultEl.innerHTML = html;
   toast(noSignalCount>0
     ? `✅ Scored ${files.length} resume${files.length>1?'s':''} — ${noSignalCount} had no skill signal, ${parseFailCount} unparsed`
@@ -3448,10 +3486,11 @@ function exportBulkScoreCSV(type){
   const data = lastBulkScored[type];
   if(!data){toast('No results to export yet');return;}
   const today = new Date().toLocaleDateString('en-IN');
-  const rows = [['Rank','Name','File','Overall Match %','Matched Skills','Parsed OK','Source File Size (KB)','Exported On']];
+  const rows = [['Rank','Name','File','Overall Match %','Relevant','Matched Skills','Parsed OK','Source File Size (KB)','Exported On']];
   data.scored.forEach((c,i)=>rows.push([
     i+1, c.name, c.file.name,
-    c.score.overall===null?'N/A':c.score.overall,
+    c.score.notRelevant?'0 (Not Relevant)':c.score.overall===null?'N/A':c.score.overall,
+    c.score.notRelevant?'No':'Yes',
     (c.score.matchedSkills||[]).join('; '),
     c.hasText?'Yes':'No',
     (c.file.size/1024).toFixed(0),
