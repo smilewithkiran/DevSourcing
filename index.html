@@ -1688,10 +1688,10 @@ Just paste everything and click Parse below."></textarea>
     <div class="sct-panel" id="sctPanel-folder">
       <div class="fl" style="margin-bottom:8px">Bulk Upload — Multiple Candidate Profiles (no limit)</div>
       <div class="upload-zone" id="folderZone" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleFileDrop(event,'folder')">
-        <input type="file" accept=".pdf,.doc,.docx" onchange="handleFileSelect(event,'folder')" multiple webkitdirectory>
+        <input type="file" accept=".pdf,.doc,.docx" onchange="handleFileSelect(event,'folder')" multiple>
         <div class="upload-ic">📁</div>
-        <div class="upload-tt">Drop a folder of resumes</div>
-        <div class="upload-st">or click to select multiple files · .pdf, .doc, .docx only · ZIP files not supported, select individual files or a folder instead</div>
+        <div class="upload-tt">Drop files or a folder of resumes here</div>
+        <div class="upload-st">or click to select individual files · .pdf, .doc, .docx only · ZIP files not supported</div>
       </div>
       <div id="folderFileList" class="file-list"></div>
       <div class="fl" style="margin-bottom:8px">Job Description / Key Skills</div>
