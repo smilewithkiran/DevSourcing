@@ -3398,21 +3398,51 @@ async function analyzeResumes(type){
       }));
 
       // ── Role relevance gate ──────────────────────────────────────
-      // A resume that matches fewer than 2 required JD skills (out of
-      // however many we extracted) is almost certainly a wrong-function
-      // profile — a UI dev scoring 37% against a Recruiter JD because
-      // "stakeholder management" appears once is not a real match.
-      // Rule: must match at least 2 skills OR at least 30% of extracted
-      // skills (whichever is lower) to get a real score. Below that → 0.
-      const minMatchRequired = Math.max(1, Math.min(2, Math.floor(skills.length*0.3)));
-      const isNotRelevant = skills.length > 0 && matched.length < minMatchRequired;
+      // Two-layer check:
+      // 1. Function mismatch: if the resume's primary function is clearly
+      //    NOT the JD's function, mark as Not Relevant regardless of
+      //    keyword overlap (generic words like "sourcing," "onboarding,"
+      //    "negotiation" appear in many roles in different contexts).
+      // 2. Minimum skill match: must meet a minimum threshold.
+
+      // Detect JD function from the skill list and JD text
+      const jdLower = (jdText||keySkillsInput).toLowerCase();
+      const isRecruitingJD = jdLower.includes('recruit') || jdLower.includes('talent acquisition') ||
+        jdLower.includes('sourcing') || jdLower.includes('staffing') || jdLower.includes('hiring manager');
+      const isTechJD = jdLower.includes('software engineer') || jdLower.includes('developer') ||
+        jdLower.includes('full stack') || jdLower.includes('frontend') || jdLower.includes('backend');
+
+      // Detect resume's primary function from its text
+      const resumeLower = lowerText;
+      const resumeIsTech = (resumeLower.includes('software engineer') || resumeLower.includes('ui developer') ||
+        resumeLower.includes('sqa engineer') || resumeLower.includes('data analyst') ||
+        resumeLower.includes('data engineer') || resumeLower.includes('frontend developer') ||
+        resumeLower.includes('ui developer') || resumeLower.includes('angular') ||
+        resumeLower.includes('react js') || resumeLower.includes('machine learning')) &&
+        !resumeLower.includes('recruiting') && !resumeLower.includes('talent acquisition');
+
+      const resumeIsCustomerSuccess = (resumeLower.includes('customer success') ||
+        resumeLower.includes('account management') || resumeLower.includes('revenue growth') ||
+        resumeLower.includes('customer operations') || resumeLower.includes('saas') && resumeLower.includes('retention')) &&
+        !resumeLower.includes('recruiting') && !resumeLower.includes('talent acquisition');
+
+      const resumeIsDigitalCX = (resumeLower.includes('digital experience') ||
+        resumeLower.includes('digital marketing') || resumeLower.includes('seo') ||
+        resumeLower.includes('content strategy') || resumeLower.includes('web experience')) &&
+        !resumeLower.includes('recruiting') && !resumeLower.includes('talent acquisition');
+
+      // Function mismatch: recruiting JD vs clearly non-recruiting resume
+      const functionMismatch = isRecruitingJD && (resumeIsTech || resumeIsCustomerSuccess || resumeIsDigitalCX);
+
+      const minMatchRequired = Math.min(Math.max(2, Math.ceil(skills.length*0.35)), 3);
+      const isNotRelevant = functionMismatch || (skills.length > 0 && matched.length < minMatchRequired);
 
       if(isNotRelevant){
-        // Zero score — candidate doesn't have enough of the required skills
-        // to be considered a real match. Show as "Not Relevant" not just low %.
         score.overall = 0;
         score.notRelevant = true;
-        score.notRelevantReason = `Only matched ${matched.length}/${skills.length} required skills — profile appears to be a different function/role entirely`;
+        score.notRelevantReason = functionMismatch
+          ? 'Resume function does not match JD — candidate\'s primary role is unrelated to this position'
+          : 'Only matched '+matched.length+'/'+skills.length+' required skills — profile appears to be a different function/role entirely';
       } else {
         // No free base score (+10 removed) — must earn every point.
         // Formula: skill match is 80% of score, experience is 20%.
